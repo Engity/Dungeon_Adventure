@@ -12,16 +12,15 @@ import static java.lang.Thread.sleep;
 /**
  * Text based GUI for general functions like displaying main menu
  * {@code @author:} Toan Nguyen
- * @version 07 13 2022
+ * @version 07 15 2022
  */
 public class TextBasedGUI_GeneralDisplay {
     /**
      * The source to input from.
      * Default is System.in
      */
-    private Scanner input;
+    private static final Scanner INPUT_SCANNER = new Scanner (System.in);
     public TextBasedGUI_GeneralDisplay(){
-        input = new Scanner (System.in);
         displayMainMenu();
     }
 
@@ -51,7 +50,7 @@ public class TextBasedGUI_GeneralDisplay {
                 3. Exit"""
         );
 
-        String choice = input.next();
+        String choice = INPUT_SCANNER.next();
         switch (choice) {
             case "1" -> {
                 startNewGame();
@@ -73,27 +72,52 @@ public class TextBasedGUI_GeneralDisplay {
      * Prompt the user for hero's name and class choice
      * Can update to contain input check
      * Can update to have further character customization
+     * Updated class choice verification
      */
-    private void startNewGame(){
+    private void startNewGame() {
         System.out.println("Please input your character name");
-        String nameCharacter = input.next();
-
-        System.out.println("""
+        String nameCharacter = INPUT_SCANNER.next();
+        int classChoice = 1;
+        String className = "";
+        while (true){
+            System.out.println("""
                         Please choose your class (by inputting 1, 2 or 3):
-                        \t1. Warrior
+                        \t1. Warrior (Default class)
                         \t2. Priestess 
                         \t3. Thief"""
-        );
-        int classChoice = input.nextInt();
+            );
+
+            String promptAnswer = INPUT_SCANNER.next();
+
+            //Blank answer provided, will go for default class
+            if (promptAnswer.isBlank()){
+                break;
+            }
+
+            //Input check
+            try {
+                classChoice = Integer.parseInt(promptAnswer);
+                //Checking whether the answer is within range
+                if (classChoice < 0 || classChoice > 3){
+                    System.out.println("Incorrect format, please input again");
+                }
+                else{
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please provide your answer in number. Please input again!");
+            }
+        }
 
         //Calling dungeon adventure to create hero with these specs
         //nameCharacter and classChoice
-        String className = "";
-        switch(classChoice){
+        className = "";
+        switch (classChoice) {
             case 1 -> className = "mighty warrior";
             case 2 -> className = "holy priestess";
             case 3 -> className = "notorious thief";
         }
+
         System.out.println("Welcome, " + nameCharacter + ", the " + className + ", to Dungeon Adventure");
 
         //Just a test to see if anyone read the code
@@ -168,9 +192,9 @@ public class TextBasedGUI_GeneralDisplay {
             for (int saveGameOrder = 0; saveGameOrder < saveGamesName.length; saveGameOrder++) {
                 System.out.println(saveGameOrder + ". " + saveGamesName[saveGameOrder]);
             }
-            int saveGameChoice = input.nextInt();
+            int saveGameChoice = INPUT_SCANNER.nextInt();
 
-            File saveFile = new File(directorySaves.getAbsolutePath() + "\\"+ saveGamesName[saveGameChoice]);
+            File saveFile = new File(directorySaves.getAbsolutePath() + "\\" + saveGamesName[saveGameChoice]);
 
             loadASaveGame(saveFile);
         }
