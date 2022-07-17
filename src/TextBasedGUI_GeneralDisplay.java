@@ -12,7 +12,7 @@ import static java.lang.Thread.sleep;
 /**
  * Text based GUI for general functions like displaying main menu
  * {@code @author:} Toan Nguyen
- * @version 07 15 2022
+ * @version 07 17 2022
  */
 public class TextBasedGUI_GeneralDisplay {
     /**
@@ -27,19 +27,19 @@ public class TextBasedGUI_GeneralDisplay {
     /**
      * Displaying the whole menu including function
      * 1. Start a new game {@link TextBasedGUI_GeneralDisplay#startNewGame()}
-     * 2. Load a save game
+     * 2. Load a save game {@link TextBasedGUI_GeneralDisplay#loadGame()}
      * 3. Exit
      */
     private void displayMainMenu(){
         System.out.println("""
-                ______                                       ___      _                 _                 
-                |  _  \\                                     / _ \\    | |               | |                
+                ______                                       ___      _                 _
+                |  _  \\                                     / _ \\    | |               | |
                 | | | |_   _ _ __   __ _  ___  ___  _ __   / /_\\ \\ __| __   _____ _ __ | |_ _   _ _ __ ___
                 | | | | | | | '_ \\ / _` |/ _ \\/ _ \\| '_ \\  |  _  |/ _` \\ \\ / / _ | '_ \\| __| | | | '__/ _ \\
                 | |/ /| |_| | | | | (_| |  __| (_) | | | | | | | | (_| |\\ V |  __| | | | |_| |_| | | |  __/
                 |___/  \\__,_|_| |_|\\__, |\\___|\\___/|_| |_| \\_| |_/\\__,_| \\_/ \\___|_| |_|\\__|\\__,_|_|  \\___|
-                                    __/ |                                                                 
-                                   |___/       
+                                    __/ |
+                                   |___/
                 """
         );
         System.out.println("By Group 8, T CSS 360 A: Toan Nguyen, Thao Nguyen, Justin Noel");
@@ -52,12 +52,8 @@ public class TextBasedGUI_GeneralDisplay {
 
         String choice = INPUT_SCANNER.next();
         switch (choice) {
-            case "1" -> {
-                startNewGame();
-            }
-            case "2" -> {
-                loadGame();
-            }
+            case "1" -> startNewGame();
+            case "2" -> loadGame();
             case "3" -> {
                 System.out.println("Exit now!");
                 return;
@@ -78,12 +74,12 @@ public class TextBasedGUI_GeneralDisplay {
         System.out.println("Please input your character name");
         String nameCharacter = INPUT_SCANNER.next();
         int classChoice = 1;
-        String className = "";
+        String className;
         while (true){
             System.out.println("""
                         Please choose your class (by inputting 1, 2 or 3):
                         \t1. Warrior (Default class)
-                        \t2. Priestess 
+                        \t2. Priestess
                         \t3. Thief"""
             );
 
@@ -183,20 +179,50 @@ public class TextBasedGUI_GeneralDisplay {
         File directorySaves = new File(System.getProperty("user.dir") +"\\save\\");
 
         //List of all files and directories
-        String saveGamesName[] = directorySaves.list();
+        String[] saveGameList = directorySaves.list();
         //Check whether the save directory is empty or not
-        if (saveGamesName == null){
+        if (saveGameList == null){
             System.out.println("There is no save game to load");
         }
         else {
-            for (int saveGameOrder = 0; saveGameOrder < saveGamesName.length; saveGameOrder++) {
-                System.out.println(saveGameOrder + ". " + saveGamesName[saveGameOrder]);
+            int saveGameChoice = 0;
+            while (true) {
+                for (int saveGameOrder = 0; saveGameOrder < saveGameList.length; saveGameOrder++) {
+                    System.out.println(saveGameOrder + ". " + saveGameList[saveGameOrder]);
+                }
+
+                //Getting the answer from console
+                String promptAnswer = INPUT_SCANNER.next();
+
+
+                //Input check
+                try {
+                    saveGameChoice = Integer.parseInt(promptAnswer);
+                    //Checking whether the answer is within range
+                    if (saveGameChoice < 0 || saveGameChoice >= saveGameList.length) {
+                        System.out.println("There is no save game with that index, please try again");
+                    } else {
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Please provide your answer in number!");
+                }
             }
-            int saveGameChoice = INPUT_SCANNER.nextInt();
 
-            File saveFile = new File(directorySaves.getAbsolutePath() + "\\" + saveGamesName[saveGameChoice]);
-
+            File saveFile = new File(directorySaves.getAbsolutePath() + "\\" + saveGameList[saveGameChoice]);
             loadASaveGame(saveFile);
         }
     }
+
+    //Sword art used for (The biggest width is 68 chars)
+    //                __
+    //               \  /
+    //                 \\
+    //                   \\
+    // ___________________||/\_
+    //(___________________()| _||||||||||||||||||||||||||||||||||||||||||>
+    //                    ||\/
+    //                   //
+    //                 //
+    //               /__\
 }
