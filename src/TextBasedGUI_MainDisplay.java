@@ -14,20 +14,21 @@ import static java.lang.Thread.sleep;
  * {@code @author:} Toan Nguyen
  * @version 07 17 2022
  */
-public class TextBasedGUI_GeneralDisplay {
+public class TextBasedGUI_MainDisplay {
     /**
      * The source to input from.
      * Default is System.in
      */
+    private DungeonAdventure myGameController;
     private static final Scanner INPUT_SCANNER = new Scanner (System.in);
-    public TextBasedGUI_GeneralDisplay(){
+    public TextBasedGUI_MainDisplay(){
         displayMainMenu();
     }
 
     /**
      * Displaying the whole menu including function
-     * 1. Start a new game {@link TextBasedGUI_GeneralDisplay#startNewGame()}
-     * 2. Load a save game {@link TextBasedGUI_GeneralDisplay#loadGame()}
+     * 1. Start a new game {@link TextBasedGUI_MainDisplay#startNewGame()}
+     * 2. Load a save game {@link TextBasedGUI_MainDisplay#loadGame()}
      * 3. Exit
      */
     private void displayMainMenu(){
@@ -119,7 +120,7 @@ public class TextBasedGUI_GeneralDisplay {
         //Just a test to see if anyone read the code
         //Delete it  when merge to main branch
         if (classChoice == 3){
-            System.out.println("Wait, where is my wallet?");
+            System.out.println("Wait, where are my healing potions I left here earlier?");
 
             try {
                 sleep(3000);
@@ -127,9 +128,13 @@ public class TextBasedGUI_GeneralDisplay {
                 throw new RuntimeException(e);
             }
 
-            System.out.println("Oh ... you have gone to the next stage, okay ... wev");
+            System.out.println("Oh ... you have gone to the next stage, okay ...");
 
         }
+
+        //Starting new game here
+
+        myGameController = new DungeonAdventure();
     }
 
     /**
@@ -140,7 +145,7 @@ public class TextBasedGUI_GeneralDisplay {
      * Potential update: Use LZW or Huffman encoder\decoder to secure save files, discouraging cheating via file editing
      * @param theSaveGame Contains the save game to load
      */
-    private void loadASaveGame(File theSaveGame){
+    private void loadASaveGame(final File theSaveGame){
         System.out.println("Loading save file " + theSaveGame.getName());
         System.out.println();//Add extra line for readability
 
@@ -162,7 +167,6 @@ public class TextBasedGUI_GeneralDisplay {
             throw new RuntimeException(e);
         }
     }
-
 
     /**
      * Currently is just a placeholder

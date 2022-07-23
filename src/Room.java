@@ -17,36 +17,47 @@ import java.util.ArrayList;
  */
 
 public class Room {
+    private int id;
     private ArrayList<Object> myContents;
-    private byte myAccessCode ; //Bit 0th for North, 1st for West, 2nd for South, 3rd for East
+    private byte myAccessCode ; //Bit 0th for North, 1st for East, 2nd for South, 3rd for West
 
     //private Monster myGuardian; //Comment out because monster has not yet been implemented
-    private boolean myDiscoveredStatus;
 
     //Default constructor, creating an empty room with no guardian
-    Room(){
+    public Room(){
+        this(0);
+    }
+
+    public Room(final int theID){
         myContents = new ArrayList<>();
         myAccessCode = 0;//Every door is closed
-        myDiscoveredStatus = false;
         //myGuardian = null;
+        id = theID;
     }
-    void setAccessCode(byte theNewAccessCode){
+    void setAccessCode(final byte theNewAccessCode){
         byte mask = 0xf;//15 in Dec, 0000 1111 in Bin
 
-        //Comparing the last 4 bits
+        //Override the last 4 bits
         myAccessCode &= theNewAccessCode & mask;
     }
 
     byte getAccessCode(){
         return myAccessCode;
     }
-
-    void setDiscoveredStatus(boolean theNewDiscoveredStatus){
-        myDiscoveredStatus = theNewDiscoveredStatus ;
+    int getID(){
+        return id;
     }
 
-    boolean getDiscoveredStatus(){
-        return myDiscoveredStatus;
+    boolean getAccess(final int direction){//0 for North, 1 for East, 2 for South, 3 for West
+        //Get bit corresponding to the direction
+        if (((myAccessCode >> direction) & 1) == 1){
+            return true;
+        }
+        return false;
+    }
+
+    void openAccess(final int direction){//0 for North, 1 for East, 2 for South, 3 for West
+        myAccessCode |= 1 << direction;
     }
 
 }
