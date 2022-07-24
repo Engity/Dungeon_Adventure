@@ -22,16 +22,16 @@ public class DungeonCharacter {
      * @param theMin
      * @param theMax
      * @param theBlock
-     * @param theCritChanc
+     * @param theCritChance
      */
-    public DungeonCharacter(final double theHit, final int theAttack, final String theName, final double theMin, final double theMax, final double theBlock, final double theCritChanc) {
+    public DungeonCharacter(final double theHit, final int theAttack, final String theName, final double theMin, final double theMax, final double theBlock, final double theCritChance) {
         myHitpoints = theHit;
         myAttackSpeed = theAttack;
         myCharacterName = theName;
         myDamageMin = theMin;
         myDamageMax = theMax;
         myBlockChance = theBlock;
-        myCritChance =theCritChanc;
+        myCritChance =theCritChance;
     }
 
     /**
