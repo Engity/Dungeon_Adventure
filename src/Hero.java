@@ -14,10 +14,10 @@ public class Hero extends DungeonCharacter{
      * @param theMin
      * @param theMax
      * @param theBlock
-     * @param theCritChanc
+     * @param theCritChance
      */
-    public Hero(final double theHit, final int theAttack, final String theName, final double theMin, final double theMax, final double theBlock, final double theCritChanc) {
-        super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChanc);
+    public Hero(final double theHit, final int theAttack, final String theName, final double theMin, final double theMax, final double theBlock, final double theCritChance) {
+        super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
         myBlockChance = theBlock;
     }
 

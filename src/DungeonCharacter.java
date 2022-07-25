@@ -55,8 +55,8 @@ public class DungeonCharacter {
      * @param theEnemy
      */
     public void attack(final DungeonCharacter theEnemy) {
-        Random rand = new Random();
-        theEnemy.setMyHitpoints(theEnemy.getMyHitpoints() - (myDamageMin + (myDamageMin + myDamageMax) * rand.nextDouble()));
+        Random RANDOM_SEED = new Random();
+        theEnemy.setMyHitpoints(theEnemy.getMyHitpoints() - (myDamageMin + (myDamageMin + myDamageMax) * RANDOM_SEED.nextDouble()));
     }
 
     public void defend(final double theIncomingDamage) {
