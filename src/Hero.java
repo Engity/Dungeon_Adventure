@@ -27,7 +27,7 @@ public class Hero extends DungeonCharacter{
     }
 
     /**
-     *
+     * this is the attack behavior and other battle behavior
      */
     public void attackBehavior() {
 

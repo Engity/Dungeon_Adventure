@@ -13,9 +13,10 @@ public class DungeonCharacter {
     private double myDamageMax;
     private double myBlockChance;
     private double myCritChance;
+    Random RANDOM_SEED;
 
     /**
-     *
+     * parameters for hero and subclasses
      * @param theHit
      * @param theAttack
      * @param theName
@@ -32,18 +33,21 @@ public class DungeonCharacter {
         myDamageMax = theMax;
         myBlockChance = theBlock;
         myCritChance =theCritChance;
+        RANDOM_SEED = new Random();
     }
 
     /**
-     *
+     * Returns myHitPoints
      * @return
      */
     public double getMyHitpoints() {
         return myHitpoints;
     }
+    public double getMyDamageMin() { return myDamageMin; }
+    public double getMyDamageMax() { return myDamageMax; }
 
     /**
-     *
+     * parameters for myHitpoints
      * @param myHitpoints
      */
     public void setMyHitpoints(double myHitpoints) {
@@ -51,11 +55,10 @@ public class DungeonCharacter {
     }
 
     /**
-     *
+     * parameters for fighting an enemy
      * @param theEnemy
      */
     public void attack(final DungeonCharacter theEnemy) {
-        Random RANDOM_SEED = new Random();
         theEnemy.setMyHitpoints(theEnemy.getMyHitpoints() - (myDamageMin + (myDamageMin + myDamageMax) * RANDOM_SEED.nextDouble()));
     }
 
