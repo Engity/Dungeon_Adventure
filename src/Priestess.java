@@ -6,7 +6,7 @@ public class Priestess extends Hero{
     double mySpecialAttackChance;
 
     public Priestess(String theSpecialSkill, double theSpecialSkillChance, double theSpecialSkillDamage) {
-        super(100, 100, "Priestess", 100, 100, 100, 100);
+        super(80, 100, "Priestess", 20, 50, 0.2, 0.7);
         mySpecialAttack = theSpecialSkill;
         mySpecialAttackChance = theSpecialSkillChance;
         mySpecialDamage = theSpecialSkillDamage;

@@ -6,7 +6,7 @@ public class Warrior extends Hero{
     double mySpecialAttackChance;
 
     public Warrior(String theSpecialAttack, double theSpecialAttackChance, double theSpecialAttackDamage) {
-        super(180, 100, "Warrior", 100, 100, 100, 100);
+        super(180, 100, "Warrior", 60, 80, 0.6, 0.5);
         mySpecialAttack = theSpecialAttack;
         mySpecialAttackChance = theSpecialAttackChance;
         mySpecialDamage = theSpecialAttackDamage;

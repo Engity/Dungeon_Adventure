@@ -6,7 +6,7 @@ public class Thief extends Hero{
     double mySpecialAttackChance;
 
     public Thief(String theSpecialAttack, double theSpecialAttackChance, double theSpecialAttackDamage) {
-        super(100, 100, "Thief", 100, 100, 100, 100);
+        super(60, 100, "Thief", 15, 40, 0.4, 0.9);
         mySpecialAttack = theSpecialAttack;
         mySpecialAttackChance = theSpecialAttackChance;
         mySpecialDamage = theSpecialAttackDamage;
