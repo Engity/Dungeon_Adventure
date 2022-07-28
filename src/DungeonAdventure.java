@@ -4,6 +4,7 @@
  * Professor Tom Capaul
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
@@ -14,7 +15,7 @@ import java.util.Stack;
  * @version 07 20 2022
  */
 
-public class DungeonAdventure {
+public class DungeonAdventure implements Serializable {
     private Room [][] myMap;
     //private Hero myHero; //Comment out because Hero has not been implemented
     private final static int MAP_SIZE_WIDTH = 5;
@@ -25,24 +26,39 @@ public class DungeonAdventure {
     private final int [] DY = new int[]{ 0, 1, 0, -1};
 
     //Coordinate for the starting position
-    private final int myEntranceY;
-    private final int myEntranceX;
+    private int myEntranceY;
+    private int myEntranceX;
 
     private Room myCurrentRoom;
     private boolean[][] myRoomVisitedStatus;//True if the room has been visited, false otherwise
 
     private final static Random RANDOM_SEED = new Random();
 
+    private TextBasedGUI_MainDisplay myMainDisplayView;
+
     public DungeonAdventure(){
+        myMainDisplayView = TextBasedGUI_MainDisplay.getInstance();
+        myMainDisplayView.attachController(this);
+        myMainDisplayView.displayMainMenu();
+
+    }
+
+    /**
+     * Creating a new game
+     * @param theHeroName the player's name
+     * @param theHeroClass the player's class
+     */
+
+    public void createANewGame(final String theHeroName,final int theHeroClass){
         myMap = new Room[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
         myRoomVisitedStatus = new boolean[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
         myEntranceX = 0;
         myEntranceY = RANDOM_SEED.nextInt(MAP_SIZE_HEIGHT);//Randomly selected starting cell
-
         initMap();
         //Testing outputting world map
         System.out.println(getWorldMap());
     }
+
     /**
      * @return a boolean, true if coordinate [i,j] is within the border of the map, false otherwise
      */

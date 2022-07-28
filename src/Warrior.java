@@ -1,21 +1,22 @@
 import java.util.Random;
 
 public class Warrior extends Hero{
-    String mySpecialAttack;
+    String mySpecialSkill;
     double mySpecialDamage;
-    double mySpecialAttackChance;
+    double mySpecialSkillChance;
 
-    public Warrior(String theSpecialAttack, double theSpecialAttackChance, double theSpecialAttackDamage) {
-        super(180, 100, "Warrior", 60, 80, 0.6, 0.5);
-        mySpecialAttack = theSpecialAttack;
-        mySpecialAttackChance = theSpecialAttackChance;
-        mySpecialDamage = theSpecialAttackDamage;
+    public Warrior(String theSpecialSkill, double theSpecialSkillChance, double theSpecialSkillDamage) {
+        super(180, 4, "Warrior", 60, 80, 0.6, 0.5);
+        mySpecialSkill = theSpecialSkill;
+        mySpecialSkillChance = theSpecialSkillChance;
+        mySpecialDamage = theSpecialSkillDamage;
     }
 
-    public double specialAttack() {
+    public double specialSkill() {
         Random rand = new Random();
         double attackChance = super.getMyDamageMin() + (super.getMyDamageMax() - super.getMyDamageMin()) * rand.nextDouble();
-        if(attackChance > mySpecialAttackChance) {
+        mySpecialDamage = 100 + (200-100) * rand.nextDouble();
+        if(attackChance > mySpecialSkillChance) {
             return mySpecialDamage;
         }
         return 0;

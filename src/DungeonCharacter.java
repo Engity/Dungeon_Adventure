@@ -58,16 +58,29 @@ public class DungeonCharacter {
      * parameters for fighting an enemy
      * @param theEnemy
      */
-    public void attack(final DungeonCharacter theEnemy) {
-        theEnemy.setMyHitpoints(theEnemy.getMyHitpoints() - (myDamageMin + (myDamageMin + myDamageMax) * RANDOM_SEED.nextDouble()));
+    public String attack(final DungeonCharacter theEnemy) {
+
+        double damage = (myDamageMin + (myDamageMin + myDamageMax) * RANDOM_SEED.nextDouble());
+
+        theEnemy.setMyHitpoints(theEnemy.getMyHitpoints() - damage);
+
+        return "Player hit the enemy and dealt " + damage + "amount of damage";
     }
 
     public void defend(final double theIncomingDamage) {
         Random rand = new Random();
         if((rand.nextDouble() * 100) < myBlockChance) {
             myHitpoints -= theIncomingDamage;
-        }
 
+        }
+        //check players Hitpoints and return whether they are alive or dead
+    }
+    public boolean isDeath() {
+
+        if ((myHitpoints <= 0))
+            return true;
+        else
+            return false;
     }
 
 }

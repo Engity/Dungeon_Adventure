@@ -1,24 +1,19 @@
 import java.util.Random;
 
 public class Priestess extends Hero{
-    String mySpecialAttack;
-    double mySpecialDamage;
-    double mySpecialAttackChance;
+    String mySpecialSkill;
+    double myHealPoints;
 
-    public Priestess(String theSpecialSkill, double theSpecialSkillChance, double theSpecialSkillDamage) {
-        super(80, 100, "Priestess", 20, 50, 0.2, 0.7);
-        mySpecialAttack = theSpecialSkill;
-        mySpecialAttackChance = theSpecialSkillChance;
-        mySpecialDamage = theSpecialSkillDamage;
+    public Priestess(String theSpecialSkill, double theHeal) {
+        super(80, 5, "Priestess", 20, 50, 0.2, 0.7);
+        mySpecialSkill = theSpecialSkill;
+        myHealPoints = theHeal;
     }
 
-    public double specialAttack() {
+    public void specialSkill() {
         Random rand = new Random();
-        double attackChance = super.getMyDamageMin() + (super.getMyDamageMax() - super.getMyDamageMin()) * rand.nextDouble();
-        if(attackChance > mySpecialAttackChance) {
-            return mySpecialDamage;
-        }
-        return 0;
+        super.setMyHitpoints(super.getMyHitpoints()+(10 + (50-10) * rand.nextDouble()));
+
     }
 
 }

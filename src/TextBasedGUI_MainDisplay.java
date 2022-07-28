@@ -19,10 +19,22 @@ public class TextBasedGUI_MainDisplay {
      * The source to input from.
      * Default is System.in
      */
-    private DungeonAdventure myGameController;
     private static final Scanner INPUT_SCANNER = new Scanner (System.in);
-    public TextBasedGUI_MainDisplay(){
-        displayMainMenu();
+
+    //Singleton design
+
+    private static TextBasedGUI_MainDisplay myMainDisplayInstance = new TextBasedGUI_MainDisplay();
+    private DungeonAdventure myGameController;
+    private TextBasedGUI_MainDisplay(){
+    }
+
+    public void attachController(final DungeonAdventure theGameController){
+        myGameController = theGameController;
+
+    }
+
+    public static TextBasedGUI_MainDisplay getInstance(){
+        return myMainDisplayInstance;
     }
 
     /**
@@ -31,7 +43,7 @@ public class TextBasedGUI_MainDisplay {
      * 2. Load a save game {@link TextBasedGUI_MainDisplay#loadGame()}
      * 3. Exit
      */
-    private void displayMainMenu(){
+    public void displayMainMenu(){
         System.out.println("""
                 ______                                       ___      _                 _
                 |  _  \\                                     / _ \\    | |               | |
@@ -134,7 +146,7 @@ public class TextBasedGUI_MainDisplay {
 
         //Starting new game here
 
-        myGameController = new DungeonAdventure();
+        myGameController.createANewGame(nameCharacter, classChoice);
     }
 
     /**
