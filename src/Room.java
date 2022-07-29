@@ -83,4 +83,7 @@ public class Room {
         myAccessCode |= 1 << theDirection;
     }
 
+    boolean equals(final Room theRoom){
+        return id == theRoom.getID();
+    }
 }
