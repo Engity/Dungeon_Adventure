@@ -14,7 +14,7 @@ import static java.lang.Thread.sleep;
 /**
  * Text based GUI for general functions like displaying main menu
  * {@code @author:} Toan Nguyen
- * @version 07 28 2022
+ * @version 07 29 2022
  */
 public class TextBasedGUI_MainDisplay {
     /**
@@ -77,7 +77,7 @@ public class TextBasedGUI_MainDisplay {
                         \t3. Exit"""
         );
 
-        mainMenuChecker.setMyWrongFormatPrompt("Incorrect format or range, please input again");
+        mainMenuChecker.setMyWrongRangePrompt("Incorrect format or range, please input again");
         mainMenuChecker.setMyErrorPrompt("Please provide your answer in number. Please input again!");
 
         int userChoice = mainMenuChecker.inputCheckForNumber();
@@ -208,7 +208,7 @@ public class TextBasedGUI_MainDisplay {
 
             InputChecker saveGameChoiceChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
             saveGameChoiceChecker.setMyRepeatingPrompt(saveGameListString.toString());
-            saveGameChoiceChecker.setMyWrongFormatPrompt("There is no save game with that index, please try again");
+            saveGameChoiceChecker.setMyWrongRangePrompt("There is no save game with that index, please try again");
             saveGameChoiceChecker.setBound(0, saveGameList.length - 1);
             saveGameChoiceChecker.setMyErrorPrompt("Please provide your answer in number!");
 

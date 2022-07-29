@@ -4,13 +4,14 @@
  * Professor Tom Capaul
  */
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.HashSet;
 import java.util.Scanner;
+
 /**
  * Input Checker with the purpose of checking user input and prompt them again if it is in the wrong format
  * {@code @author:} Toan Nguyen
- * @version 07 28 2022
+ * @version 07 29 2022
  */
 public class InputChecker {
 
@@ -19,8 +20,10 @@ public class InputChecker {
     private String myInitialPrompt;
     private String myRepeatingPrompt;
     private String myErrorPrompt;
-    private String myWrongFormatPrompt;
+    private String myWrongRangePrompt;
     private String mySuccessPrompt;
+
+    private HashSet<Integer> myForbiddenNumbers;
 
     private int myDefaultChoice;
 
@@ -45,8 +48,8 @@ public class InputChecker {
         this.myErrorPrompt = theErrorPrompt;
     }
 
-    public void setMyWrongFormatPrompt(final String theWrongFormatPrompt) {
-        this.myWrongFormatPrompt = theWrongFormatPrompt;
+    public void setMyWrongRangePrompt(final String theWrongFormatPrompt) {
+        this.myWrongRangePrompt = theWrongFormatPrompt;
     }
 
     public void setMySuccessPrompt(final String theSuccessPrompt) {
@@ -54,6 +57,14 @@ public class InputChecker {
     }
     public void setMyDefaultChoice(final int theChoice){
         myDefaultChoice = theChoice;
+    }
+
+    public void addToMyForbiddenNumbers(final int theNumber){
+        myForbiddenNumbers.add(theNumber);
+    }
+
+    public void removeFromMyForbiddenNumbers(final int theNumber){
+        myForbiddenNumbers.remove(theNumber);
     }
 
     public InputChecker(){
@@ -64,11 +75,12 @@ public class InputChecker {
         myInitialPrompt = "";
         myRepeatingPrompt = "";
         myErrorPrompt = "";
-        myWrongFormatPrompt = "Incorrect format, please input again";
+        myWrongRangePrompt = "Incorrect format, please input again";
         mySuccessPrompt = "";
         myOutputStream = theOutput;
         myInputStream = theInput;
         myDefaultChoice = 0;
+        myForbiddenNumbers = new HashSet<>();
     }
 
     /**
@@ -122,8 +134,8 @@ public class InputChecker {
             try {
                 choice = Integer.parseInt(promptAnswer);
                 //Checking whether the answer is within range
-                if (choice < myLowerBound || choice > myUpperBound){
-                    myOutputStream.println(myWrongFormatPrompt);
+                if (choice < myLowerBound || choice > myUpperBound || myForbiddenNumbers.contains(choice)){
+                    myOutputStream.println(myWrongRangePrompt);
                 }
                 else{
                     break;

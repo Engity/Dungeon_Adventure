@@ -3,6 +3,8 @@
  * Summer 2022
  * Professor Tom Capaul
  */
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 /**
  * Text based GUI for combat
@@ -14,11 +16,16 @@ public class TextBasedGUI_CombatView {
      * The source to input from.
      * Default is System.in
      */
+    private static final InputStream INPUT_SOURCE = System.in;
 
-    private static final Scanner INPUT_SCANNER = new Scanner (System.in);
+    /**
+     * The destination to output to.
+     * Default is System.out
+     */
+    private static final PrintStream OUTPUT_DESTINATION = System.out;
     private DungeonAdventure myGameController;
 
-    private static TextBasedGUI_CombatView myCombatViewInstance = new TextBasedGUI_CombatView();
+    private static final TextBasedGUI_CombatView myCombatViewInstance = new TextBasedGUI_CombatView();
     private TextBasedGUI_CombatView(){
         this(null);
     }

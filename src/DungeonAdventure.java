@@ -12,14 +12,14 @@ import java.util.Stack;
 /**
  * Is the main logic of the game, similar to Controller in MVC.
  * {@code @author:} Toan Nguyen
- * @version 07 20 2022
+ * @version 07 29 2022
  */
 
 public class DungeonAdventure implements Serializable {
     private Room [][] myMap;
     //private Hero myHero; //Comment out because Hero has not been implemented
-    private final static int MAP_SIZE_WIDTH = 5;
-    private final static int MAP_SIZE_HEIGHT = 5;
+    final static int MAP_SIZE_WIDTH = 5;
+    final static int MAP_SIZE_HEIGHT = 5;
 
     //Serve as a reference for North, East, South, West coordinate
     private final int [] DX = new int[]{-1, 0, 1, 0};
@@ -35,12 +35,25 @@ public class DungeonAdventure implements Serializable {
     private final static Random RANDOM_SEED = new Random();
 
     private TextBasedGUI_MainDisplay myMainDisplayView;
+    private TextBasedGUI_NavigationView myNavigationView;
+    private TextBasedGUI_CombatView myCombatView;
+
+    //Used to track the state of the game
+    private boolean gameOver;//Is false if the player has not lost yet
+    private boolean victory;//Is false if the player has not won yet
 
     public DungeonAdventure(){
+        //Init the view and attach controller to them
         myMainDisplayView = TextBasedGUI_MainDisplay.getInstance();
         myMainDisplayView.attachController(this);
-        myMainDisplayView.displayMainMenu();
 
+        myNavigationView = TextBasedGUI_NavigationView.getInstance();
+        myNavigationView.attachController(this);
+
+        myCombatView = TextBasedGUI_CombatView.getInstance();
+        myCombatView.attachController(this);
+
+        myMainDisplayView.displayMainMenu();
     }
 
     /**
@@ -52,21 +65,26 @@ public class DungeonAdventure implements Serializable {
     public void createANewGame(final String theHeroName,final int theHeroClass){
         myMap = new Room[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
         myRoomVisitedStatus = new boolean[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
-        myEntranceX = 0;
+        myEntranceX = RANDOM_SEED.nextInt(MAP_SIZE_WIDTH);;
         myEntranceY = RANDOM_SEED.nextInt(MAP_SIZE_HEIGHT);//Randomly selected starting cell
         initMap();
         //Testing outputting world map
-        System.out.println(getWorldMap());
+        System.out.println(getWorldMapFullVisibility());
+
+        //Testing visibility world map
+        System.out.println(getWorldMapWithVisibility());
+
+        gameLoop();
     }
 
     /**
      * @return a boolean, true if coordinate [i,j] is within the border of the map, false otherwise
      */
-    static boolean checkValid(final int i, final int j){
-        if (j >= MAP_SIZE_WIDTH || j < 0){
+    static boolean checkValid(final int theXCoordinate, final int theYCoordinate){
+        if (theYCoordinate >= MAP_SIZE_WIDTH || theYCoordinate < 0){
             return false;
         }
-        return i < MAP_SIZE_HEIGHT && i >= 0;
+        return theXCoordinate < MAP_SIZE_HEIGHT && theXCoordinate >= 0;
     }
 
     /**
@@ -143,6 +161,20 @@ public class DungeonAdventure implements Serializable {
 
         //Clearing visited status
         myRoomVisitedStatus = new boolean[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
+        myRoomVisitedStatus[myEntranceY][myEntranceX] = true;
+
+//        myRoomVisitedStatus[3][3] = true;
+//        myRoomVisitedStatus[3][4] = true;
+//        myRoomVisitedStatus[2][3] = true;
+//        myRoomVisitedStatus[1][2] = true;
+//        myRoomVisitedStatus[2][1] = true;
+
+
+//        //Testing
+//        if (myEntranceY + 1 < MAP_SIZE_HEIGHT)
+//            myRoomVisitedStatus[myEntranceY + 1][myEntranceX] = true;
+//        if (myEntranceY + 1 < MAP_SIZE_HEIGHT)
+//            myRoomVisitedStatus[myEntranceY][myEntranceX+1] = true;
     }
 
     /**
@@ -151,7 +183,7 @@ public class DungeonAdventure implements Serializable {
      * S is the entrance
      * P is current location of player
      */
-    public String getWorldMap(){
+     String getWorldMapFullVisibility(){
         StringBuilder res = new StringBuilder();
         res.append("Width: " + MAP_SIZE_WIDTH + " Height: " + MAP_SIZE_HEIGHT + "\n");
         res.append("X means no access, ' ' means there is a way\n");
@@ -182,12 +214,6 @@ public class DungeonAdventure implements Serializable {
                 else if (myRoomVisitedStatus[i][j]){
                     res.append('.');
                 }
-//                    else if (i == destinationX && j == destinationY) {
-//                        res.append("G");
-//                    }
-//                    else if (maze[i][j].sol) {
-//                        res.append("+");
-//                    }
                 else {
                     res.append(" ");
                 }
@@ -206,5 +232,169 @@ public class DungeonAdventure implements Serializable {
         return res.toString();
     }
 
+    /**
+     * @return a String, as the whole map but will conceal room where player has not visited
+     * X means no access, ' ' means there is a way
+     * Room has not been visited will not show up
+     * P is current location of player
+     */
+    String getWorldMapWithVisibility(){
+        //a 3x3 char matrix for each room, representing access of the room and whether it has been visited or not
+        //Exp: If player is in Room (0,0), and it has access to the East and South
+        //          'X', 'X', 'X',
+        //          'X', 'P', ' ',
+        //          'X', ' ', 'X',
+        //Exp: If player has not visited this room, room (0,0) is:
+        //          'X', 'X', 'X',
+        //          'X', '?', '?',
+        //          'X', '?', 'X',
 
+        char[][][][] roomPresentation = new char[MAP_SIZE_HEIGHT] [MAP_SIZE_WIDTH][3][3];
+        for (int i = 0 ; i < MAP_SIZE_HEIGHT; i++){
+            for (int j = 0 ; j < MAP_SIZE_WIDTH; j++){
+                //Fill the room with 'X'
+                if (myRoomVisitedStatus[i][j]) {
+                    for (int k = 0; k < 3; k++) {
+                        for (int l = 0; l < 3; l++) {
+                            //The wall
+                            roomPresentation[i][j][k][l] = 'x';
+///                            switch (k){
+//                                case (0) -> {
+//                                    switch (l) {
+//                                        case (0) -> roomPresentation[i][j][k][l] = '|';//'┌';
+//                                        case (1) -> roomPresentation[i][j][k][l] = '-';
+//                                        case (2) -> roomPresentation[i][j][k][l] = '|';//'┐';
+//                                    }
+//                                }
+//                                case (1) -> {
+//                                    switch (l) {
+//                                        case (0), (2) -> roomPresentation[i][j][k][l] = '|';
+//                                        case (1) -> roomPresentation[i][j][k][l] = '-';
+//                                    }
+//                                }
+//                                case (2) -> {
+//                                    switch (l) {
+//                                        case (0) -> roomPresentation[i][j][k][l] = '└';
+//                                        case (1) -> roomPresentation[i][j][k][l] = '-';
+//                                        case (2) -> roomPresentation[i][j][k][l] = '┘';
+//                                    }
+//                                }
+                        }
+                    }
+                }
+                else{
+                    for (int k = 0; k < 3; k++) {
+                        for (int l = 0; l < 3; l++) {
+                            //The unvisited room
+                            roomPresentation[i][j][k][l] = '?';
+                        }
+                    }
+                }
+
+                //Review the direction the room has access to
+                for (int direction = 0; direction < 4; direction++){
+                    int x = 1 + DX[direction];
+                    int y = 1 + DY[direction];
+
+                    //If the room has access in the corresponding direction
+                    if (myMap[i][j].getAccess(direction)){
+                        if (myRoomVisitedStatus[i][j]){
+                            roomPresentation[i][j][x][y] = ' ';
+//                            //For visibility, add direction
+//                            if (direction % 2 == 0)
+//                                roomPresentation[i][j][x][y] = ' ';
+//                            else roomPresentation[i][j][x][y] = '-';
+                        }
+                        else{
+                            roomPresentation[i][j][x][y] = '?';
+                        }
+                    }
+                }
+                if (myMap[i][j].equals(myCurrentRoom)){
+                    roomPresentation[i][j][1][1] = 'P';
+                }
+                else{
+                    if (!myRoomVisitedStatus[i][j]){
+                        roomPresentation[i][j][1][1] = '?';
+                    }
+                    else{
+                        //Visited room
+                        roomPresentation[i][j][1][1] = ' ';
+                    }
+                }
+
+            }
+        }
+
+        //Collect result from the representation of the room
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < MAP_SIZE_HEIGHT; i++){
+            for (int k = 0 ; k < 3; k++){
+                int prevSpace = -1;
+                boolean addANewLine = false;
+                for (int j = 0 ; j < MAP_SIZE_WIDTH ; j++){
+                    //Add space to correct the alignment
+                    if (myRoomVisitedStatus[i][j]){
+                        for (int q = 0; q < (j - 1 - prevSpace) * 3; q++){
+                            res.append(' ');
+                        }
+                        prevSpace = j;
+                    }
+                    for (int l = 0; l < 3; l++){
+                        if (roomPresentation[i][j][k][l] != '?') {
+                            res.append(Character.toString(roomPresentation[i][j][k][l]));
+                            addANewLine = true;
+                        }
+                    }
+                }
+                //Only add a new line when there is new content
+                if (addANewLine){
+                    res.append("\n");
+                }
+
+            }
+        }
+        return res.toString();
+    }
+
+    /**
+     * Move the player in the according direction. Will not move if the new location is invalid
+     * @param theDirection the direction wishes to move the player to (0: North, 1: East, 2: South, 3: West)
+     */
+
+    private void movePlayer(final int theDirection){
+        //Get the currentCoordinate
+        int currentLocationX = myCurrentRoom.getID() / MAP_SIZE_WIDTH;
+        int currentLocationY = myCurrentRoom.getID() % MAP_SIZE_WIDTH;
+
+        //New coordinate
+        int newLocationX = currentLocationX + DX[theDirection];
+        int newLocationY = currentLocationY + DY[theDirection];
+        //If it is a valid location then move the player
+        if (checkValid(newLocationX, newLocationY)){
+            myCurrentRoom = myMap[newLocationX][newLocationY];
+            //Unlocking visited status
+            myRoomVisitedStatus[newLocationX][newLocationY] = true;
+        }
+    }
+
+    /**
+     * The code is byte (8 bit) with the bit from 0th to 3rd signify whether the room has access to the corresponding direction
+     * 0th is for North, 1st is for East, 2nd is for South, 3rd is for West
+     * If the bit is 1, the room has access. If it is 0, the room doesn't have access to that direction.
+     * @return int, as the access code
+     */
+    byte getCurrentRoomAccessCode(){
+        return myCurrentRoom.getAccessCode();
+    }
+
+    /**
+     * Looping until the player die or have achieved victory
+     */
+    void gameLoop(){
+        while (!gameOver || !victory){
+            int userInputDirection = myNavigationView.promptUserForDirection();
+            movePlayer(userInputDirection);
+        }
+    }
 }
