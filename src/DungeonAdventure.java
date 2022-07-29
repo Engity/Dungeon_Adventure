@@ -34,9 +34,9 @@ public class DungeonAdventure implements Serializable {
 
     private final static Random RANDOM_SEED = new Random();
 
-    private TextBasedGUI_MainDisplay myMainDisplayView;
-    private TextBasedGUI_NavigationView myNavigationView;
-    private TextBasedGUI_CombatView myCombatView;
+    private final TextBasedGUI_MainDisplay myMainDisplayView;
+    private final TextBasedGUI_NavigationView myNavigationView;
+    private final TextBasedGUI_CombatView myCombatView;
 
     //Used to track the state of the game
     private boolean gameOver;//Is false if the player has not lost yet
@@ -65,7 +65,7 @@ public class DungeonAdventure implements Serializable {
     public void createANewGame(final String theHeroName,final int theHeroClass){
         myMap = new Room[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
         myRoomVisitedStatus = new boolean[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
-        myEntranceX = RANDOM_SEED.nextInt(MAP_SIZE_WIDTH);;
+        myEntranceX = RANDOM_SEED.nextInt(MAP_SIZE_WIDTH);
         myEntranceY = RANDOM_SEED.nextInt(MAP_SIZE_HEIGHT);//Randomly selected starting cell
         initMap();
         //Testing outputting world map
@@ -95,7 +95,7 @@ public class DungeonAdventure implements Serializable {
      *         Pop a cell from the stack and make it a current cell
      *         If the current cell has any neighbours which have not been visited
      *         Push the current cell to the stack
-     *
+     * <p>
      *         Remove the wall between the current cell and the chosen cell
      */
     private void initMap(){
@@ -335,14 +335,12 @@ public class DungeonAdventure implements Serializable {
                 for (int j = 0 ; j < MAP_SIZE_WIDTH ; j++){
                     //Add space to correct the alignment
                     if (myRoomVisitedStatus[i][j]){
-                        for (int q = 0; q < (j - 1 - prevSpace) * 3; q++){
-                            res.append(' ');
-                        }
+                        res.append(" ".repeat(Math.max(0, (j - 1 - prevSpace) * 3)));
                         prevSpace = j;
                     }
                     for (int l = 0; l < 3; l++){
                         if (roomPresentation[i][j][k][l] != '?') {
-                            res.append(Character.toString(roomPresentation[i][j][k][l]));
+                            res.append(roomPresentation[i][j][k][l]);
                             addANewLine = true;
                         }
                     }

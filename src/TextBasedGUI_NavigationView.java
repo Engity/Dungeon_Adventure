@@ -42,7 +42,7 @@ public class TextBasedGUI_NavigationView {
         int theCurrentRoomAccess = myGameController.getCurrentRoomAccessCode();
 
 
-        int userChoice = 0;
+        int userChoice;
         InputChecker directionChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         //Add the map to repeating prompt
