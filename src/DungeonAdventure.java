@@ -18,8 +18,8 @@ import java.util.Stack;
 public class DungeonAdventure implements Serializable {
     private Room [][] myMap;
     //private Hero myHero; //Comment out because Hero has not been implemented
-    final static int MAP_SIZE_WIDTH = 5;
-    final static int MAP_SIZE_HEIGHT = 5;
+    private final static int MAP_SIZE_WIDTH = 5;
+    private final static int MAP_SIZE_HEIGHT = 5;
 
     //Serve as a reference for North, East, South, West coordinate
     private final int [] DX = new int[]{-1, 0, 1, 0};
@@ -34,26 +34,29 @@ public class DungeonAdventure implements Serializable {
 
     private final static Random RANDOM_SEED = new Random();
 
-    private final TextBasedGUI_MainDisplay myMainDisplayView;
-    private final TextBasedGUI_NavigationView myNavigationView;
-    private final TextBasedGUI_CombatView myCombatView;
+    private final TextBasedGUI_MainDisplay myMainDisplayView = TextBasedGUI_MainDisplay.getInstance();
+    private final TextBasedGUI_NavigationView myNavigationView = TextBasedGUI_NavigationView.getInstance();
+    private final TextBasedGUI_CombatView myCombatView = TextBasedGUI_CombatView.getInstance();
 
     //Used to track the state of the game
     private boolean gameOver;//Is false if the player has not lost yet
     private boolean victory;//Is false if the player has not won yet
 
-    public DungeonAdventure(){
+    private final static DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
+
+    private DungeonAdventure(){
         //Init the view and attach controller to them
-        myMainDisplayView = TextBasedGUI_MainDisplay.getInstance();
         myMainDisplayView.attachController(this);
 
-        myNavigationView = TextBasedGUI_NavigationView.getInstance();
         myNavigationView.attachController(this);
 
-        myCombatView = TextBasedGUI_CombatView.getInstance();
         myCombatView.attachController(this);
 
         myMainDisplayView.displayMainMenu();
+    }
+
+    public static DungeonAdventure getInstance(){
+        return myDungeonAdventureInstance;
     }
 
     /**
@@ -62,7 +65,7 @@ public class DungeonAdventure implements Serializable {
      * @param theHeroClass the player's class
      */
 
-    public void createANewGame(final String theHeroName,final int theHeroClass){
+    void createANewGame(final String theHeroName,final int theHeroClass){
         myMap = new Room[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
         myRoomVisitedStatus = new boolean[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
         myEntranceX = RANDOM_SEED.nextInt(MAP_SIZE_WIDTH);
@@ -182,6 +185,7 @@ public class DungeonAdventure implements Serializable {
      * X means no access, ' ' means there is a way
      * S is the entrance
      * P is current location of player
+     * Full visibility is only used for testing purposes
      */
      String getWorldMapFullVisibility(){
         StringBuilder res = new StringBuilder();
@@ -234,7 +238,7 @@ public class DungeonAdventure implements Serializable {
 
     /**
      * @return a String, as the whole map but will conceal room where player has not visited
-     * X means no access, ' ' means there is a way
+     * + means no access, ' ' means there is a way
      * Room has not been visited will not show up
      * P is current location of player
      */
@@ -257,7 +261,7 @@ public class DungeonAdventure implements Serializable {
                     for (int k = 0; k < 3; k++) {
                         for (int l = 0; l < 3; l++) {
                             //The wall
-                            roomPresentation[i][j][k][l] = 'x';
+                            roomPresentation[i][j][k][l] = '+';
 ///                            switch (k){
 //                                case (0) -> {
 //                                    switch (l) {
@@ -330,7 +334,7 @@ public class DungeonAdventure implements Serializable {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < MAP_SIZE_HEIGHT; i++){
             for (int k = 0 ; k < 3; k++){
-                int prevSpace = -1;
+                int prevSpace = 0;
                 boolean addANewLine = false;
                 for (int j = 0 ; j < MAP_SIZE_WIDTH ; j++){
                     //Add space to correct the alignment
@@ -384,6 +388,27 @@ public class DungeonAdventure implements Serializable {
      */
     byte getCurrentRoomAccessCode(){
         return myCurrentRoom.getAccessCode();
+    }
+
+    int getMapSizeWidth() {
+        return MAP_SIZE_WIDTH;
+    }
+
+    int getMapSizeHeight() {
+        return MAP_SIZE_WIDTH;
+    }
+
+
+    /**
+     * Set the player's position, only used for testing
+     * @param theXPos the player's x position
+     * @param theYPos the player's y position
+     */
+    void setPlayerPosition(final int theXPos, final int theYPos){
+        //Check whether the new coordinate is valid
+        if (checkValid(theXPos, theYPos)){
+            myCurrentRoom = myMap[theXPos][theYPos];
+        }
     }
 
     /**

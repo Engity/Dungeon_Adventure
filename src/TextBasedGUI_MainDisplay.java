@@ -52,7 +52,7 @@ public class TextBasedGUI_MainDisplay {
      * 2. Load a save game {@link TextBasedGUI_MainDisplay#loadGame()}
      * 3. Exit
      */
-    public void displayMainMenu(){
+    void displayMainMenu(){
         InputChecker mainMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
         mainMenuChecker.setMyDefaultChoice(1);
         mainMenuChecker.setBound(1,3);
@@ -187,7 +187,7 @@ public class TextBasedGUI_MainDisplay {
      * Load a save game
      * List available save game with character name + create date or playtime
      */
-    private void loadGame(){
+    void loadGame(){
         //Creating a File object for directory
         File directorySaves = new File(System.getProperty("user.dir") +"\\save\\");
 
