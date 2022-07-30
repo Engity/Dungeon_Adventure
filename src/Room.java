@@ -83,7 +83,35 @@ public class Room {
         myAccessCode |= 1 << theDirection;
     }
 
+    /**
+     * Compare the rooms
+     * @param theRoom the room to be compared
+     * @return true if the room id is equal, false otherwise
+     */
     boolean equals(final Room theRoom){
         return id == theRoom.getID();
+    }
+
+    /**
+     * Convert ID to Coordinate
+     * @param theID the ID to be converted
+     * @return an array with the first element is the x coordinate, second is the y coordinate
+     */
+    static int[] convertIDtoCoordinate(final int theID){
+        int[] res = new int[2];
+        res[0] = theID / DungeonAdventure.getInstance().getMapSizeWidth();
+        res[1] = theID % DungeonAdventure.getInstance().getMapSizeWidth();
+        return res;
+    }
+
+    /**
+     * Convert Coordinate to ID
+     * @param theXPos the x position
+     * @param theYPos the y position
+     * @return an int, the ID retrieve from these coordinate
+     */
+
+    static int convertCoordinateToID(final int theXPos, final int theYPos){
+        return DungeonAdventure.getInstance().getMapSizeWidth() * theXPos + theYPos;
     }
 }

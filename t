@@ -133,19 +133,21 @@ public class DungeonAdventure implements Serializable {
         stack.push(myCurrentRoom);
 
         //Use to keeping track of coordinate of the room in dfs
-        int vx, vy, nextDirection;
+        int ux, uy, vx, vy, nextDirection;
 
         while (!stack.isEmpty()){
 
             //Pop a room from the stack and make it a current cell
             Room u = stack.pop();
             int[] uCoordinate = Room.convertIDtoCoordinate(u.getID());
+            ux = u.getID() / MAP_SIZE_WIDTH;
+            uy = u.getID() % MAP_SIZE_WIDTH;
 
             ArrayList<Integer> unvisitedPool = new ArrayList<>();
             //Checking visited neighbors
             for (int direction = 0 ; direction < 4; direction++){
-                vx = uCoordinate[0]  + DX[direction];
-                vy = uCoordinate[1] + DY[direction];
+                vx = ux + DX[direction];
+                vy = uy + DY[direction];
                 if (checkValid(vx, vy) && !myRoomVisitedStatus[vx][vy]){
                     unvisitedPool.add(direction);
                 }
@@ -155,17 +157,17 @@ public class DungeonAdventure implements Serializable {
             if (!unvisitedPool.isEmpty()){
                 //If the current cell has any neighbours which have not been visited
                 //Push the current cell to the stack
-                stack.push(myMap[uCoordinate[0]][uCoordinate[1]]);
+                stack.push(myMap[ux][uy]);
                 //Choose one of the unvisited neighbours
                 nextDirection = unvisitedPool.get(RANDOM_SEED.nextInt(unvisitedPool.size()));
-                vx = uCoordinate[0]  + DX[nextDirection];
-                vy = uCoordinate[1] + DY[nextDirection];
+                vx = ux + DX[nextDirection];
+                vy = uy + DY[nextDirection];
 
                 //If the chosen neighbour has not been visited:
                 if (checkValid(vx, vy) && !myRoomVisitedStatus[vx][vy]){
                     //Remove the wall between the current cell and the chosen neighbour.
 
-                    myMap[uCoordinate[0]][uCoordinate[1]].openAccess(nextDirection);
+                    myMap[ux][uy].openAccess(nextDirection);
                     myMap[vx][vy].openAccess((nextDirection + 2) % 4);
 
                     //Mark the chosen cell as visited and push it to the stack
@@ -379,11 +381,12 @@ public class DungeonAdventure implements Serializable {
 
     void movePlayer(final int theDirection){
         //Get the currentCoordinate
-        int[] currentCoordinate = Room.convertIDtoCoordinate(myCurrentRoom.getID());
+        int currentLocationX = myCurrentRoom.getID() / MAP_SIZE_WIDTH;
+        int currentLocationY = myCurrentRoom.getID() % MAP_SIZE_WIDTH;
 
         //New coordinate
-        int newLocationX = currentCoordinate[0] + DX[theDirection];
-        int newLocationY = currentCoordinate[1] + DY[theDirection];
+        int newLocationX = currentLocationX + DX[theDirection];
+        int newLocationY = currentLocationY + DY[theDirection];
         //If it is a valid location then move the player
         if (checkValid(newLocationX, newLocationY)){
             myCurrentRoom = myMap[newLocationX][newLocationY];
