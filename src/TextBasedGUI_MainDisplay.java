@@ -33,12 +33,13 @@ public class TextBasedGUI_MainDisplay {
 
     //Singleton design
 
-    private static TextBasedGUI_MainDisplay myMainDisplayInstance = new TextBasedGUI_MainDisplay();
+    private final static TextBasedGUI_MainDisplay myMainDisplayInstance = new TextBasedGUI_MainDisplay();
+
     private DungeonAdventure myGameController;
     private TextBasedGUI_MainDisplay(){
     }
 
-    public void attachController(final DungeonAdventure theGameController){
+    void attachController(final DungeonAdventure theGameController){
         myGameController = theGameController;
     }
 

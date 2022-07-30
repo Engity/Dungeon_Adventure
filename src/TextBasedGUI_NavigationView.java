@@ -28,111 +28,24 @@ public class TextBasedGUI_NavigationView {
     private TextBasedGUI_NavigationView(){
 
     }
+    void attachController(final DungeonAdventure theGameController){
+        myGameController = theGameController;
+    }
     private static final TextBasedGUI_NavigationView myNavigationViewInstance = new TextBasedGUI_NavigationView();
 
     public static TextBasedGUI_NavigationView getInstance(){
         return myNavigationViewInstance;
     }
 
-    public void attachController(final DungeonAdventure theGameController){
-        myGameController = theGameController;
-    }
-
-//    String getWorldMapWithVisibility() {
-//        //a 3x3 char matrix for each room, representing access of the room and whether it has been visited or not
-//        //Exp: If player is in Room (0,0), and it has access to the East and South
-//        //          'X', 'X', 'X',
-//        //          'X', 'P', ' ',
-//        //          'X', ' ', 'X',
-//        //Exp: If player has not visited this room, room (0,0) is:
-//        //          'X', 'X', 'X',
-//        //          'X', '?', '?',
-//        //          'X', '?', 'X',
-//
-//        char[][][][] roomPresentation = new char[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH][3][3];
-//        for (int i = 0; i < MAP_SIZE_HEIGHT; i++) {
-//            for (int j = 0; j < MAP_SIZE_WIDTH; j++) {
-//                //Fill the room with 'X'
-//                if (myRoomVisitedStatus[i][j]) {
-//                    for (int k = 0; k < 3; k++) {
-//                        for (int l = 0; l < 3; l++) {
-//                            //The wall
-//                            roomPresentation[i][j][k][l] = '+';
-/////                            switch (k){
-////                                case (0) -> {
-////                                    switch (l) {
-////                                        case (0) -> roomPresentation[i][j][k][l] = '|';//'┌';
-////                                        case (1) -> roomPresentation[i][j][k][l] = '-';
-////                                        case (2) -> roomPresentation[i][j][k][l] = '|';//'┐';
-////                                    }
-////                                }
-////                                case (1) -> {
-////                                    switch (l) {
-////                                        case (0), (2) -> roomPresentation[i][j][k][l] = '|';
-////                                        case (1) -> roomPresentation[i][j][k][l] = '-';
-////                                    }
-////                                }
-////                                case (2) -> {
-////                                    switch (l) {
-////                                        case (0) -> roomPresentation[i][j][k][l] = '└';
-////                                        case (1) -> roomPresentation[i][j][k][l] = '-';
-////                                        case (2) -> roomPresentation[i][j][k][l] = '┘';
-////                                    }
-////                                }
-//                        }
-//                    }
-//                } else {
-//                    for (int k = 0; k < 3; k++) {
-//                        for (int l = 0; l < 3; l++) {
-//                            //The unvisited room
-//                            roomPresentation[i][j][k][l] = '?';
-//                        }
-//                    }
-//                }
-//
-//                //Review the direction the room has access to
-//                for (int direction = 0; direction < 4; direction++) {
-//                    int x = 1 + DX[direction];
-//                    int y = 1 + DY[direction];
-//
-//                    //If the room has access in the corresponding direction
-//                    if (myMap[i][j].getAccess(direction)) {
-//                        if (myRoomVisitedStatus[i][j]) {
-//                            roomPresentation[i][j][x][y] = ' ';
-////                            //For visibility, add direction
-////                            if (direction % 2 == 0)
-////                                roomPresentation[i][j][x][y] = ' ';
-////                            else roomPresentation[i][j][x][y] = '-';
-//                        } else {
-//                            roomPresentation[i][j][x][y] = '?';
-//                        }
-//                    }
-//                }
-//                if (myMap[i][j].equals(myCurrentRoom)) {
-//                    roomPresentation[i][j][1][1] = 'P';
-//                } else {
-//                    if (!myRoomVisitedStatus[i][j]) {
-//                        roomPresentation[i][j][1][1] = '?';
-//                    } else {
-//                        //Visited room
-//                        roomPresentation[i][j][1][1] = 'o';
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-
     public int promptUserForDirection(){
         int theCurrentRoomAccess = myGameController.getCurrentRoomAccessCode();
-
 
         int userChoice;
         InputChecker directionChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         //Add the map to repeating prompt
         StringBuilder repeatingPrompt = new StringBuilder("Current Location: \n");
-        repeatingPrompt.append(myGameController.getWorldMapWithVisibility());
+        repeatingPrompt.append(myGameController.parseWorldMapWithVisibility());
 
         //Name of the direction
         final String[] directionName = {"North ^", "East ->", "South v", "West <-"};

@@ -22,8 +22,8 @@ public class DungeonAdventure implements Serializable {
     private final static int MAP_SIZE_HEIGHT = 5;
 
     //Serve as a reference for North, East, South, West coordinate
-    private final int [] DX = new int[]{-1, 0, 1, 0};
-    private final int [] DY = new int[]{ 0, 1, 0, -1};
+    private final static int [] DX = new int[]{-1, 0, 1, 0};
+    private final static int [] DY = new int[]{ 0, 1, 0, -1};
 
     //Coordinate for the starting position
     private int myEntranceY;
@@ -42,17 +42,35 @@ public class DungeonAdventure implements Serializable {
     private boolean gameOver;//Is false if the player has not lost yet
     private boolean victory;//Is false if the player has not won yet
 
-    private final static DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
+    private static final DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
 
     private DungeonAdventure(){
-        //Init the view and attach controller to them
         myMainDisplayView.attachController(this);
-
         myNavigationView.attachController(this);
-
         myCombatView.attachController(this);
+        init();
+    }
 
-        myMainDisplayView.displayMainMenu();
+    /**
+     * Init a fields and variables
+     */
+    void init(){
+        myMap = new Room[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
+        myRoomVisitedStatus = new boolean[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
+        myEntranceX = RANDOM_SEED.nextInt(MAP_SIZE_WIDTH);
+        myEntranceY = RANDOM_SEED.nextInt(MAP_SIZE_HEIGHT);//Randomly selected starting cell
+
+        int id = 0;
+        for (int i = 0 ; i < MAP_SIZE_HEIGHT; i++){
+            myMap[i] = new Room[MAP_SIZE_WIDTH];
+
+            for (int j = 0 ; j < MAP_SIZE_WIDTH; ++j){
+                myMap[i][j] = new Room(id);
+                ++id;
+            }
+        }
+
+        myCurrentRoom = myMap[myEntranceY][myEntranceX];
     }
 
     public static DungeonAdventure getInstance(){
@@ -66,16 +84,13 @@ public class DungeonAdventure implements Serializable {
      */
 
     void createANewGame(final String theHeroName,final int theHeroClass){
-        myMap = new Room[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
-        myRoomVisitedStatus = new boolean[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
-        myEntranceX = RANDOM_SEED.nextInt(MAP_SIZE_WIDTH);
-        myEntranceY = RANDOM_SEED.nextInt(MAP_SIZE_HEIGHT);//Randomly selected starting cell
-        initMap();
+        init();
+        randomizeMap();
         //Testing outputting world map
         System.out.println(getWorldMapFullVisibility());
 
         //Testing visibility world map
-        System.out.println(getWorldMapWithVisibility());
+        System.out.println(parseWorldMapWithVisibility());
 
         gameLoop();
     }
@@ -101,17 +116,7 @@ public class DungeonAdventure implements Serializable {
      * <p>
      *         Remove the wall between the current cell and the chosen cell
      */
-    private void initMap(){
-        int id = 0;
-        for (int i = 0 ; i < MAP_SIZE_HEIGHT; i++){
-            myMap[i] = new Room[MAP_SIZE_WIDTH];
-
-            for (int j = 0 ; j < MAP_SIZE_WIDTH; ++j){
-                myMap[i][j] = new Room(id);
-                ++id;
-            }
-        }
-
+    private void randomizeMap(){
         myCurrentRoom = myMap[myEntranceY][myEntranceX];
         myRoomVisitedStatus[myEntranceY][myEntranceX] = true;
 
@@ -242,7 +247,7 @@ public class DungeonAdventure implements Serializable {
      * Room has not been visited will not show up
      * P is current location of player
      */
-    String getWorldMapWithVisibility(){
+    String parseWorldMapWithVisibility(){
         //a 3x3 char matrix for each room, representing access of the room and whether it has been visited or not
         //Exp: If player is in Room (0,0), and it has access to the East and South
         //          'X', 'X', 'X',
@@ -364,7 +369,7 @@ public class DungeonAdventure implements Serializable {
      * @param theDirection the direction wishes to move the player to (0: North, 1: East, 2: South, 3: West)
      */
 
-    private void movePlayer(final int theDirection){
+    void movePlayer(final int theDirection){
         //Get the currentCoordinate
         int currentLocationX = myCurrentRoom.getID() / MAP_SIZE_WIDTH;
         int currentLocationY = myCurrentRoom.getID() % MAP_SIZE_WIDTH;
@@ -397,17 +402,30 @@ public class DungeonAdventure implements Serializable {
     int getMapSizeHeight() {
         return MAP_SIZE_WIDTH;
     }
+    Room getMyCurrentRoom(){
+        return myCurrentRoom;
+    }
+    boolean getRoomVisitedStatus(final int theXPos, final int theYPos){
+        return myRoomVisitedStatus[theXPos][theYPos];
+    }
 
 
     /**
      * Set the player's position, only used for testing
+     * Do nothing if the new location is invalid
      * @param theXPos the player's x position
      * @param theYPos the player's y position
      */
     void setPlayerPosition(final int theXPos, final int theYPos){
+        int myX = getMyCurrentRoom().getID() / getMapSizeWidth();
+        int myY = getMyCurrentRoom().getID() % getMapSizeWidth();
         //Check whether the new coordinate is valid
         if (checkValid(theXPos, theYPos)){
+            //Set the visited status of the current location to false
+            myRoomVisitedStatus[myX][myY] = false;
+            //Move to the new place
             myCurrentRoom = myMap[theXPos][theYPos];
+            myRoomVisitedStatus[theXPos][theYPos] = true;
         }
     }
 

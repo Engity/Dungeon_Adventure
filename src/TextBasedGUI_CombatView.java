@@ -26,20 +26,18 @@ public class TextBasedGUI_CombatView {
     private DungeonAdventure myGameController;
 
     private static final TextBasedGUI_CombatView myCombatViewInstance = new TextBasedGUI_CombatView();
-    private TextBasedGUI_CombatView(){
-        this(null);
-    }
-    private TextBasedGUI_CombatView(final DungeonAdventure theGameController){
-        myGameController = theGameController;
-    }
 
     public static TextBasedGUI_CombatView getInstance(){
         return myCombatViewInstance;
     }
 
-    public void attachController(final DungeonAdventure theGameController){
+    void attachController(final DungeonAdventure theGameController){
         myGameController = theGameController;
     }
+    private TextBasedGUI_CombatView(){
+
+    }
+
 
 
     //Sword art used for combat (The biggest width is 68 chars)
