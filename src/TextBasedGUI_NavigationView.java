@@ -43,6 +43,15 @@ public class TextBasedGUI_NavigationView {
         int userChoice;
         InputChecker directionChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
+        directionChecker.setMyInitialPrompt("""
+                .__   __.      ___   ____    ____  __    _______      ___   .___________. __    ______   .__   __.\s
+                |  \\ |  |     /   \\  \\   \\  /   / |  |  /  _____|    /   \\  |           ||  |  /  __  \\  |  \\ |  |\s
+                |   \\|  |    /  ^  \\  \\   \\/   /  |  | |  |  __     /  ^  \\ `---|  |----`|  | |  |  |  | |   \\|  |\s
+                |  . `  |   /  /_\\  \\  \\      /   |  | |  | |_ |   /  /_\\  \\    |  |     |  | |  |  |  | |  . `  |\s
+                |  |\\   |  /  _____  \\  \\    /    |  | |  |__| |  /  _____  \\   |  |     |  | |  `--'  | |  |\\   |\s
+                |__| \\__| /__/     \\__\\  \\__/     |__|  \\______| /__/     \\__\\  |__|     |__|  \\______/  |__| \\__|
+                """);
+
         //Add the map to repeating prompt
         StringBuilder repeatingPrompt = new StringBuilder("Current Location: \n");
         repeatingPrompt.append(myGameController.parseWorldMapWithVisibility());
