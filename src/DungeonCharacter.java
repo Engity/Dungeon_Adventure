@@ -1,67 +1,32 @@
+import java.util.Random;
+public class DungeonCharacter {
+    private String myCharacterName;
 
-
-public abstract class DungeonCharacter {
-    private String myName;
-    private int myHitPoints;
-
-    public String getMyName() {
-        return myName;
-    }
-
-    public void setMyName(String myName) {
-        this.myName = myName;
-    }
-
-    public int getMyHitPoints() {
-        return myHitPoints;
-    }
-
-    public void setMyHitPoints(int myHitPoints) {
-        this.myHitPoints = myHitPoints;
-    }
-
-    public int getMyAttackSpeed() {
-        return myAttackSpeed;
-    }
-
-    public void setMyAttackSpeed(int myAttackSpeed) {
-        this.myAttackSpeed = myAttackSpeed;
-    }
-
-    public double getMyChangeToHit() {
-        return myChangeToHit;
-    }
-
-    public void setMyChangeToHit(double myChangeToHit) {
-        this.myChangeToHit = myChangeToHit;
-    }
-
-    public int getMyMinimumDamage() {
-        return myMinimumDamage;
-    }
-
-    public void setMyMinimumDamage(int myMinimumDamage) {
-        this.myMinimumDamage = myMinimumDamage;
-    }
-
-    public int getMyMaximumDamage() {
-        return myMaximumDamage;
-    }
-
-    public void setMyMaximumDamage(int myMaximumDamage) {
-        this.myMaximumDamage = myMaximumDamage;
-    }
-
+    private double myHitPoints;
     private int myAttackSpeed;
-    private double myChangeToHit;
-    private int myMinimumDamage;
-    private int myMaximumDamage;
 
-    protected DungeonCharacter(String name) {
-        this.myName = name;
+    private double myChangeToHit;
+
+    private double myDamageMin;
+    private double myDamageMax;
+    Random RANDOM_SEED;
+
+
+    public DungeonCharacter(final String theName,final double theHit, final int theAttack,final double theChance,  final double theMin, final double theMax) {
+        myCharacterName = theName;
+        myHitPoints = theHit;
+        myAttackSpeed = theAttack;
+        myChangeToHit = theChance;
+        myDamageMin = theMin;
+        myDamageMax = theMax;
+        RANDOM_SEED = new Random();
     }
 
-    // check hit point to see if character is alive
+    public DungeonCharacter() {
+
+    }
+
+
     public boolean isDeath() {
 
         if ((myHitPoints <= 0))
@@ -69,5 +34,5 @@ public abstract class DungeonCharacter {
         else
             return false;
     }
-}
 
+}

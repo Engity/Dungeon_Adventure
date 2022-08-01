@@ -1,33 +1,20 @@
-public abstract class Monster extends DungeonCharacter {
-    private double myChangeToHeal;
-    private int myMinimumHealPoints;
-    private int myMaximumHealPoints;
+public class Monster extends DungeonCharacter{
 
-    public double getMyChangeToHeal() {
-        return myChangeToHeal;
+
+    private double myChancetoHeal;
+
+    private int myMinHealPoints;
+    private int myMaxHealPoints;
+
+    public Monster(String theName, double theHit, int theAttack, double theChance, double theMin, double theMax, double theChancetoHeal) {
+        super(theName, theHit,theAttack, theChance,theMin,theMax);
+
     }
 
-    public void setMyChangeToHeal(double myChangeToHeal) {
-        this.myChangeToHeal = myChangeToHeal;
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
-    public int getMyMinimumHealPoints() {
-        return myMinimumHealPoints;
     }
 
-    public void setMyMinimumHealPoints(int myMinimumHealPoints) {
-        this.myMinimumHealPoints = myMinimumHealPoints;
-    }
-
-    public int getMyMaximumHealPoints() {
-        return myMaximumHealPoints;
-    }
-
-    public void setMyMaximumHealPoints(int myMaximumHealPoints) {
-        this.myMaximumHealPoints = myMaximumHealPoints;
-    }
-
-    protected Monster(String name) {
-        super(name);
-    }
-}
