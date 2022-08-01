@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class Room {
-    private int id;
+    private final int id;
     private ArrayList<Object> myContents;
     private byte myAccessCode ; //Bit 0th for North, 1st for East, 2nd for South, 3rd for West
 
@@ -68,11 +68,8 @@ public class Room {
      * @param theDirection direction wishes to return, 0 for North, 1 for East, 2 for South, 3 for West
      */
     boolean getAccess(final int theDirection){
-        //Get bit corresponding to the direction
-        if (((myAccessCode >> theDirection) & 1) == 1){
-            return true;
-        }
-        return false;
+        //Get bits corresponding to the direction
+        return ((myAccessCode >> theDirection) & 1) == 1;
     }
 
     /**

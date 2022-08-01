@@ -65,12 +65,8 @@ public class TextBasedGUI_NavigationView {
         for (int direction = 0; direction < 4; direction++){
             //If the room has access to the corresponding direction, add it to the map
             if (((theCurrentRoomAccess >> direction) & 1) == 1){
-//                availableDirections.put(availableDirections.size() + 1, direction);
-//                //Attach to the display prompt
-//                repeatingPrompt.append("\n");
-//                repeatingPrompt.append(availableDirections.size());
-//                repeatingPrompt.append(". ").append(directionName[direction]);
                 repeatingPrompt.append("\n");
+                //Add options to the repeating prompt
                 repeatingPrompt.append(direction + 1).append(". ");
                 repeatingPrompt.append(directionName[direction]);
             }
@@ -83,9 +79,6 @@ public class TextBasedGUI_NavigationView {
         directionChecker.setBound(0, 4);
 
 
-
-        //Add options to the repeating prompt
-
         //Setting prompts
         directionChecker.setMyRepeatingPrompt(repeatingPrompt.toString());
         directionChecker.setMyWrongRangePrompt("There is no the direction corresponding to the index you just inputted, please try again");
@@ -95,9 +88,72 @@ public class TextBasedGUI_NavigationView {
 
         //Launch pause menu
         if (userChoice == -1){
-            //Will replace main menu with pause menu
-            TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
+            displayPauseMenu();
         }
+
         return userChoice;
+    }
+
+    public void displayPauseMenu(){
+        InputChecker pauseMenuSelection = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+
+        StringBuilder optionPrompt = new StringBuilder("Please enter your selection: ");
+        String [] optionName = {"Resume", "Save game", "Load game", "Return to main menu", "Exit"};
+
+        //Attach option names to the prompt
+        for (int i = 0; i < optionName.length; i++){
+            optionPrompt.append("\n\t");
+            optionPrompt.append(i).append(". ");
+            optionPrompt.append(optionName[i]);
+        }
+        pauseMenuSelection.setBound(0, optionName.length - 1);
+        pauseMenuSelection.setMyRepeatingPrompt(optionPrompt.toString());
+        pauseMenuSelection.setMyWrongRangePrompt("There is no the option corresponding to the index you just inputted, please try again");
+        pauseMenuSelection.setMyErrorPrompt("Wrong format, please input numbers only!");
+
+        int userChoice = pauseMenuSelection.inputCheckForNumber();
+
+        switch (userChoice){
+            //Resume
+            case (0)->{
+                OUTPUT_DESTINATION.println("\nResuming\n");
+                return;
+            }
+            //Save
+            case(1)->{
+                OUTPUT_DESTINATION.println("\nSaving the game\n");
+                //Call the save game function
+                System.out.println("CALL THE SAVE GAME FUNCTION HERE");
+            }
+            //Load
+            case(2)->{
+                OUTPUT_DESTINATION.println("\nLoading the game\n");
+                //Call the load game function
+                System.out.println("CALL THE LOAD GAME FUNCTION HERE");
+            }
+            //Return to main menu
+            case(3)->{
+                InputChecker yesNoChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+
+                yesNoChecker.setMyInitialPrompt("Are you sure, unsaved progress will be lost");
+                boolean userConfirm = yesNoChecker.inputCheckForYNConfirmation();
+
+                if (userConfirm){
+                    //return to the main menu
+                    TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
+                }
+                else{
+                    //Display the pause menu again but exit right after this to avoid indefinite recursively loop
+                    displayPauseMenu();
+                    return;
+                }
+            }
+
+            //Exit
+            case (4) ->{
+                OUTPUT_DESTINATION.println("Exiting the game!");
+                System.exit(0);
+            }
+        }
     }
 }

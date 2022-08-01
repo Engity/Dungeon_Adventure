@@ -18,8 +18,8 @@ import java.util.Stack;
 public class DungeonAdventure implements Serializable {
     private Room [][] myMap;
     //private Hero myHero; //Comment out because Hero has not been implemented
-    private final static int MAP_SIZE_WIDTH = 5;
-    private final static int MAP_SIZE_HEIGHT = 5;
+    private final static int MAP_SIZE_WIDTH = 4;
+    private final static int MAP_SIZE_HEIGHT = 4;
 
     //Serve as a reference for North, East, South, West coordinate
     private final static int [] DX = new int[]{-1, 0, 1, 0};
@@ -336,7 +336,7 @@ public class DungeonAdventure implements Serializable {
                     }
                     else{
                         //Visited room
-                        roomPresentation[i][j][1][1] = ' ';
+                        roomPresentation[i][j][1][1] = '.';
                     }
                 }
 
@@ -347,7 +347,7 @@ public class DungeonAdventure implements Serializable {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < MAP_SIZE_HEIGHT; i++){
             for (int k = 0 ; k < 3; k++){
-                int prevSpace = 0;
+                int prevSpace = -1;
                 boolean addANewLine = false;
                 for (int j = 0 ; j < MAP_SIZE_WIDTH ; j++){
                     //Add space to correct the alignment
@@ -470,6 +470,9 @@ public class DungeonAdventure implements Serializable {
     void gameLoop(){
         while (!gameOver || !victory){
             int userInputDirection = myNavigationView.promptUserForDirection();
+            if (userInputDirection == -1){
+                continue;
+            }
             movePlayer(userInputDirection);
         }
     }

@@ -99,7 +99,7 @@ public class InputChecker {
      * Display the prompts and ask the user for input
      * The order of outputting prompt are:
      *     1. Initial
-     *     2. Repeat (Loop begin here)
+     *     2. Repeat prompt (Loop begin here)
      *          2.1 Error (If there is) or Wrong format
      *          2.2 Go back to 2.
      *     3. Success Prompt
@@ -154,6 +154,63 @@ public class InputChecker {
             myOutputStream.println(mySuccessPrompt);
         }
         return choice;
+    }
+    /**
+     * Display the prompts and ask the user to confirm yes or no
+     * The order of outputting prompt are:
+     *     1. Initial
+     *     2. The repeat prompt like this "1. Yes"
+     *        "2. No" (Loop begin here)
+     *          2.1 Error (If there is) or Wrong format
+     *          2.2 Go back to 2.
+     *     3. Success Prompt
+     * Will repeating until the user type in the correct format
+     * @return a boolean reflecting the user choice
+     */
+    public boolean inputCheckForYNConfirmation(){
+        //Only print if the prompt is not blank
+        if (!myInitialPrompt.isBlank()){
+            myOutputStream.println(myInitialPrompt);
+        }
+
+        //Start looping until user getting the prompt right
+        Scanner input = new Scanner(myInputStream);
+        int choice = 0;
+
+        //Default repeating prompt for YN question
+        if (myRepeatingPrompt.isBlank()){
+            myRepeatingPrompt = "1. Yes\n2. No";
+        }
+
+        //Loop till the user get it
+        // right
+        while (true){
+            myOutputStream.println(myRepeatingPrompt);
+
+            //Input check
+            try {
+                String promptAnswer = input.next();
+
+                switch (promptAnswer.toLowerCase()){
+                    case "1", "y", "yes" -> {
+                        return true;
+                    }
+                    case "2", "n", "no" ->{
+                        return false;
+                    }
+                    default -> {
+                        myOutputStream.println(myWrongRangePrompt);
+                    }
+                }
+            } catch (final Exception theException) {
+                if (!myErrorPrompt.isBlank()){
+                    myOutputStream.println(myErrorPrompt);
+                }
+                else{
+                    myOutputStream.println(theException.getMessage());
+                }
+            }
+        }
     }
 
 

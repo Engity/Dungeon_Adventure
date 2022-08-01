@@ -54,6 +54,12 @@ public class TextBasedGUI_MainDisplay {
      * 3. Exit
      */
     void displayMainMenu(){
+        //Without these lines, the instances won't be created
+        TextBasedGUI_NavigationView.getInstance();
+        TextBasedGUI_CombatView.getInstance();
+        TextBasedGUI_MainDisplay.getInstance();
+        DungeonAdventure.getInstance();
+
         InputChecker mainMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
         mainMenuChecker.setMyDefaultChoice(1);
         mainMenuChecker.setBound(1,3);
@@ -67,7 +73,7 @@ public class TextBasedGUI_MainDisplay {
                 |___/  \\__,_|_| |_|\\__, |\\___|\\___/|_| |_| \\_| |_/\\__,_| \\_/ \\___|_| |_|\\__|\\__,_|_|  \\___|
                                     __/ |
                                    |___/
-                By Group 8, T CSS 360 A: Toan Nguyen, Thao Nguyen, Justin Noel, Salahuddin Majed
+                By Group 8, T CSS 360 A: Toan Nguyen, Thao Nguyen, Justin Noel
                 """
         );
 
