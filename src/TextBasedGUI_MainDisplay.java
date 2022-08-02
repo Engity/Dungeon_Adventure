@@ -3,10 +3,11 @@
  * Summer 2022
  * Professor Tom Capaul
  */
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
@@ -14,7 +15,7 @@ import static java.lang.Thread.sleep;
 /**
  * Text based GUI for general functions like displaying main menu
  * {@code @author:} Toan Nguyen
- * @version 07 29 2022
+ * @version 08 02 2022
  */
 public class TextBasedGUI_MainDisplay {
     /**
@@ -97,8 +98,6 @@ public class TextBasedGUI_MainDisplay {
             }
         }
     }
-
-
 
     /**
      * Start a new game
@@ -190,7 +189,6 @@ public class TextBasedGUI_MainDisplay {
     }
 
     /**
-     * Currently is just a placeholder
      * Load a save game
      * List available save game with character name + create date or playtime
      */
@@ -200,6 +198,8 @@ public class TextBasedGUI_MainDisplay {
 
         //List of all files and directories
         String[] saveGameList = directorySaves.list();
+        Arrays.sort(saveGameList, Collections.reverseOrder());
+
         //Check whether the save directory is empty or not
         if (saveGameList == null){
             OUTPUT_DESTINATION.println("There is no save game to load");
@@ -226,5 +226,33 @@ public class TextBasedGUI_MainDisplay {
         }
     }
 
+    /**
+     * Save the current state of the game
+     * The save name will be the current date and time so the player can distinguish which save game it is.
+     */
+
+    void saveGame(){
+         try{
+             //Obtain the date
+             LocalDateTime myDateObj = LocalDateTime.now();
+             DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
+             //Format it
+             String fileName = myDateObj.format(myFormatObj);
+             System.out.println("After formatting: " + fileName);
+
+              //Creating the object
+              //Creating stream and writing the object
+              FileOutputStream fOut = new FileOutputStream("save\\" + fileName + ".ser");
+              ObjectOutputStream out = new ObjectOutputStream(fOut);
+              out.writeObject(myGameController);
+              out.flush();
+              //closing the stream
+              out.close();
+              System.out.println("success");
+          }
+         catch(Exception e){
+             System.out.println(e);
+         }
+    }
 
 }

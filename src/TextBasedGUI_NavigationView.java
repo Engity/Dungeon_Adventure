@@ -84,17 +84,20 @@ public class TextBasedGUI_NavigationView {
         directionChecker.setMyWrongRangePrompt("There is no the direction corresponding to the index you just inputted, please try again");
         directionChecker.setMyErrorPrompt("Wrong format, please input numbers only!");
 
-        userChoice = directionChecker.inputCheckForNumber() - 1;
+        userChoice = directionChecker.inputCheckForNumber();
 
         //Launch pause menu
-        if (userChoice == -1){
-            displayPauseMenu();
+        if (userChoice == 0){
+            int pauseMenuChoice = displayPauseMenu();
+            if (pauseMenuChoice == 2){
+                return 5;
+            }
         }
 
         return userChoice;
     }
 
-    public void displayPauseMenu(){
+    public int displayPauseMenu(){
         InputChecker pauseMenuSelection = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         StringBuilder optionPrompt = new StringBuilder("Please enter your selection: ");
@@ -117,19 +120,21 @@ public class TextBasedGUI_NavigationView {
             //Resume
             case (0)->{
                 OUTPUT_DESTINATION.println("\nResuming\n");
-                return;
+                return 0;
             }
             //Save
             case(1)->{
                 OUTPUT_DESTINATION.println("\nSaving the game\n");
                 //Call the save game function
                 System.out.println("CALL THE SAVE GAME FUNCTION HERE");
+                TextBasedGUI_MainDisplay.getInstance().saveGame();
             }
             //Load
             case(2)->{
                 OUTPUT_DESTINATION.println("\nLoading the game\n");
                 //Call the load game function
                 System.out.println("CALL THE LOAD GAME FUNCTION HERE");
+                return 2;
             }
             //Return to main menu
             case(3)->{
@@ -141,11 +146,7 @@ public class TextBasedGUI_NavigationView {
                 if (userConfirm){
                     //return to the main menu
                     TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
-                }
-                else{
-                    //Display the pause menu again but exit right after this to avoid indefinite recursively loop
-                    displayPauseMenu();
-                    return;
+                    return 0;
                 }
             }
 
@@ -155,5 +156,9 @@ public class TextBasedGUI_NavigationView {
                 System.exit(0);
             }
         }
+        //Display the pause menu again
+        return displayPauseMenu();
     }
+
+
 }

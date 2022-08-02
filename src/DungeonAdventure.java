@@ -12,7 +12,7 @@ import java.util.Stack;
 /**
  * Is the main logic of the game, similar to Controller in MVC.
  * {@code @author:} Toan Nguyen
- * @version 07 29 2022
+ * @version 08 02 2022
  */
 
 public class DungeonAdventure implements Serializable {
@@ -34,13 +34,16 @@ public class DungeonAdventure implements Serializable {
 
     private final static Random RANDOM_SEED = new Random();
 
-    private final TextBasedGUI_MainDisplay myMainDisplayView = TextBasedGUI_MainDisplay.getInstance();
-    private final TextBasedGUI_NavigationView myNavigationView = TextBasedGUI_NavigationView.getInstance();
-    private final TextBasedGUI_CombatView myCombatView = TextBasedGUI_CombatView.getInstance();
+    //Used in Serialization
+    private static final long serialVersionUID = 11L;
+
+    private final transient TextBasedGUI_MainDisplay myMainDisplayView = TextBasedGUI_MainDisplay.getInstance();
+    private final transient TextBasedGUI_NavigationView myNavigationView = TextBasedGUI_NavigationView.getInstance();
+    private final transient TextBasedGUI_CombatView myCombatView = TextBasedGUI_CombatView.getInstance();
 
     //Used to track the state of the game
-    private boolean gameOver;//Is false if the player has not lost yet
-    private boolean victory;//Is false if the player has not won yet
+    private boolean myGameOverStatus;//Is false if the player has not lost yet
+    private boolean myVictoryStatus;//Is false if the player has not won yet
 
     private static final DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
 
@@ -57,7 +60,7 @@ public class DungeonAdventure implements Serializable {
     }
 
     /**
-     * Init a fields and variables
+     * Init fields and variables
      */
     void init(){
         myMap = new Room[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
@@ -200,7 +203,7 @@ public class DungeonAdventure implements Serializable {
      * P is current location of player
      * Full visibility is only used for testing purposes
      */
-     String getWorldMapFullVisibility(){
+     private String getWorldMapFullVisibility(){
         StringBuilder res = new StringBuilder();
         res.append("Width: " + MAP_SIZE_WIDTH + " Height: " + MAP_SIZE_HEIGHT + "\n");
         res.append("X means no access, ' ' means there is a way\n");
@@ -270,32 +273,11 @@ public class DungeonAdventure implements Serializable {
         for (int i = 0 ; i < MAP_SIZE_HEIGHT; i++){
             for (int j = 0 ; j < MAP_SIZE_WIDTH; j++){
                 //Fill the room with 'X'
-                if (myRoomVisitedStatus[i][j]) {
+                if (myRoomVisitedStatus[i][j] || canBeSeenByVisionPotion(i,j)) {
                     for (int k = 0; k < 3; k++) {
                         for (int l = 0; l < 3; l++) {
                             //The wall
                             roomPresentation[i][j][k][l] = '+';
-///                            switch (k){
-//                                case (0) -> {
-//                                    switch (l) {
-//                                        case (0) -> roomPresentation[i][j][k][l] = '|';//'┌';
-//                                        case (1) -> roomPresentation[i][j][k][l] = '-';
-//                                        case (2) -> roomPresentation[i][j][k][l] = '|';//'┐';
-//                                    }
-//                                }
-//                                case (1) -> {
-//                                    switch (l) {
-//                                        case (0), (2) -> roomPresentation[i][j][k][l] = '|';
-//                                        case (1) -> roomPresentation[i][j][k][l] = '-';
-//                                    }
-//                                }
-//                                case (2) -> {
-//                                    switch (l) {
-//                                        case (0) -> roomPresentation[i][j][k][l] = '└';
-//                                        case (1) -> roomPresentation[i][j][k][l] = '-';
-//                                        case (2) -> roomPresentation[i][j][k][l] = '┘';
-//                                    }
-//                                }
                         }
                     }
                 }
@@ -315,7 +297,7 @@ public class DungeonAdventure implements Serializable {
 
                     //If the room has access in the corresponding direction
                     if (myMap[i][j].getAccess(direction)){
-                        if (myRoomVisitedStatus[i][j]){
+                        if (myRoomVisitedStatus[i][j] || canBeSeenByVisionPotion(i,j)){
                             roomPresentation[i][j][x][y] = ' ';
 //                            //For visibility, add direction
 //                            if (direction % 2 == 0)
@@ -331,7 +313,7 @@ public class DungeonAdventure implements Serializable {
                     roomPresentation[i][j][1][1] = 'P';
                 }
                 else{
-                    if (!myRoomVisitedStatus[i][j]){
+                    if (!myRoomVisitedStatus[i][j] && !canBeSeenByVisionPotion(i,j)){
                         roomPresentation[i][j][1][1] = '?';
                     }
                     else{
@@ -351,7 +333,7 @@ public class DungeonAdventure implements Serializable {
                 boolean addANewLine = false;
                 for (int j = 0 ; j < MAP_SIZE_WIDTH ; j++){
                     //Add space to correct the alignment
-                    if (myRoomVisitedStatus[i][j]){
+                    if (myRoomVisitedStatus[i][j] || canBeSeenByVisionPotion(i,j)){
                         res.append(" ".repeat(Math.max(0, (j - 1 - prevSpace) * 3)));
                         prevSpace = j;
                     }
@@ -425,7 +407,7 @@ public class DungeonAdventure implements Serializable {
      * @return an int that is the height of the map
      */
     int getMapSizeHeight() {
-        return MAP_SIZE_WIDTH;
+        return MAP_SIZE_HEIGHT;
     }
     /**
      * The room where the player is at
@@ -468,12 +450,44 @@ public class DungeonAdventure implements Serializable {
      * Looping until the player die or have achieved victory
      */
     void gameLoop(){
-        while (!gameOver || !victory){
+        while (!myGameOverStatus || !myVictoryStatus){
+            //moving
             int userInputDirection = myNavigationView.promptUserForDirection();
-            if (userInputDirection == -1){
-                continue;
+            if (userInputDirection > 0 && userInputDirection <= 4){
+                movePlayer(userInputDirection - 1);
             }
-            movePlayer(userInputDirection);
+
+            if (userInputDirection == 5){
+
+                System.out.println("As we are loading the game, this game loop wil end or the status can be changed here");
+
+                return;
+            }
+
         }
     }
+
+    /**
+     * Experimenting fields
+     */
+
+    //These fields will be brought up if tested and implemented
+
+    private boolean canBeSeenByVisionPotion(final int theXPos, final int theYPos){
+        //Add an if statement here to check whether healing potion is on or off
+
+            //THis code works but don't merge yet because we don't have buff/debuff
+//        //offset to track surrounding
+//        final int[] dx = {-1,  0,  1, 1, 1, 0, -1, -1};
+//        final int[] dy = {-1, -1, -1, 0, 1, 1, 1,   0};
+//        int[] currentPlayerPos = Room.convertIDtoCoordinate(myCurrentRoom.getID());
+//
+//        for (int i = 0; i < 8; i++){
+//            if (theXPos - dx[i] == currentPlayerPos[0] && theYPos - dy[i] == currentPlayerPos[1])
+//                return true;
+//        }
+
+        return false;
+    }
+
 }

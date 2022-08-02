@@ -3,6 +3,8 @@
  * Summer 2022
  * Professor Tom Capaul
  */
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +18,7 @@ import java.util.ArrayList;
  * @version 07 20 2022
  */
 
-public class Room {
+public class Room implements Serializable {
     private final int id;
     private ArrayList<Object> myContents;
     private byte myAccessCode ; //Bit 0th for North, 1st for East, 2nd for South, 3rd for West
