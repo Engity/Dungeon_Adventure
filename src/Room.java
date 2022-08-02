@@ -34,6 +34,11 @@ public class Room {
         //myGuardian = null;
         id = theID;
     }
+
+    /**
+     * Set @link Room#myAccessCode
+     * @param theNewAccessCode new data for {@link Room#myAccessCode}
+     */
     void setAccessCode(final byte theNewAccessCode){
         byte mask = 0xf;//15 in Dec, 0000 1111 in Bin
 
@@ -41,23 +46,41 @@ public class Room {
         myAccessCode &= theNewAccessCode & mask;
     }
 
+    /**
+     *
+     * @return @link Room#myAccessCode
+     */
+
     byte getAccessCode(){
         return myAccessCode;
     }
+
+    /**
+     *
+     * @return @link Room#id
+     */
     int getID(){
         return id;
     }
 
-    boolean getAccess(final int direction){//0 for North, 1 for East, 2 for South, 3 for West
+    /**
+     * return whether the corresponding direction can be accessed
+     * @param theDirection direction wishes to return, 0 for North, 1 for East, 2 for South, 3 for West
+     */
+    boolean getAccess(final int theDirection){
         //Get bit corresponding to the direction
-        if (((myAccessCode >> direction) & 1) == 1){
+        if (((myAccessCode >> theDirection) & 1) == 1){
             return true;
         }
         return false;
     }
 
-    void openAccess(final int direction){//0 for North, 1 for East, 2 for South, 3 for West
-        myAccessCode |= 1 << direction;
+    /**
+     * Set the corresponding direction can be accessed
+     * @param theDirection direction wishes to set, 0 for North, 1 for East, 2 for South, 3 for West
+     */
+    void openAccess(final int theDirection){
+        myAccessCode |= 1 << theDirection;
     }
 
 }
