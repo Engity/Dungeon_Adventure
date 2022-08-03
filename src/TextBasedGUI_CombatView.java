@@ -23,7 +23,6 @@ public class TextBasedGUI_CombatView {
      * Default is System.out
      */
     private static final PrintStream OUTPUT_DESTINATION = System.out;
-    private DungeonAdventure myGameController;
 
     private static final TextBasedGUI_CombatView myCombatViewInstance = new TextBasedGUI_CombatView();
 
@@ -31,9 +30,7 @@ public class TextBasedGUI_CombatView {
         return myCombatViewInstance;
     }
 
-    void attachController(final DungeonAdventure theGameController){
-        myGameController = theGameController;
-    }
+    
     private TextBasedGUI_CombatView(){
 
     }

@@ -36,11 +36,11 @@ public class TextBasedGUI_MainDisplay {
 
     private final static TextBasedGUI_MainDisplay myMainDisplayInstance = new TextBasedGUI_MainDisplay();
 
-    private DungeonAdventure myGameController;
+    private static DungeonAdventure myGameController;
     private TextBasedGUI_MainDisplay(){
     }
 
-    void attachController(final DungeonAdventure theGameController){
+    static void attachController(final DungeonAdventure theGameController){
         myGameController = theGameController;
     }
 
@@ -230,27 +230,27 @@ public class TextBasedGUI_MainDisplay {
      */
 
     void saveGame(){
-         try{
-             //Obtain the date
-             LocalDateTime myDateObj = LocalDateTime.now();
-             DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
-             //Format it
-             String fileName = myDateObj.format(myFormatObj);
-             System.out.println("After formatting: " + fileName);
+        try{
+            //Obtain the date
+            LocalDateTime myDateObj = LocalDateTime.now();
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
+            //Format it
+            String fileName = myDateObj.format(myFormatObj);
+            System.out.println("After formatting: " + fileName);
 
-              //Creating the object
-              //Creating stream and writing the object
-              FileOutputStream fOut = new FileOutputStream("save\\" + fileName + ".ser");
-              ObjectOutputStream out = new ObjectOutputStream(fOut);
-              out.writeObject(myGameController);
-              out.flush();
-              //closing the stream
-              out.close();
-              System.out.println("success");
-          }
-         catch(Exception e){
-             System.out.println(e);
-         }
+            //Creating the object
+            //Creating stream and writing the object
+            FileOutputStream fOut = new FileOutputStream("save\\" + fileName + ".ser");
+            ObjectOutputStream out = new ObjectOutputStream(fOut);
+            out.writeObject(myGameController);
+            out.flush();
+            //closing the stream
+            out.close();
+            System.out.println("success");
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
     }
 
 }

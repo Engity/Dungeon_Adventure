@@ -24,13 +24,11 @@ public class TextBasedGUI_NavigationView {
      * Default is System.out
      */
     private static final PrintStream OUTPUT_DESTINATION = System.out;
-    private DungeonAdventure myGameController;
+    
     private TextBasedGUI_NavigationView(){
 
     }
-    void attachController(final DungeonAdventure theGameController){
-        myGameController = theGameController;
-    }
+    
     private static final TextBasedGUI_NavigationView myNavigationViewInstance = new TextBasedGUI_NavigationView();
 
     public static TextBasedGUI_NavigationView getInstance(){
@@ -38,7 +36,7 @@ public class TextBasedGUI_NavigationView {
     }
 
     public int promptUserForDirection(){
-        int theCurrentRoomAccess = myGameController.getCurrentRoomAccessCode();
+        int theCurrentRoomAccess = DungeonAdventure.getInstance().getCurrentRoomAccessCode();
 
         int userChoice;
         InputChecker directionChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
@@ -54,7 +52,7 @@ public class TextBasedGUI_NavigationView {
 
         //Add the map to repeating prompt
         StringBuilder repeatingPrompt = new StringBuilder("Current Location: \n");
-        repeatingPrompt.append(myGameController.parseWorldMapWithVisibility());
+        repeatingPrompt.append(DungeonAdventure.getInstance().parseWorldMapWithVisibility());
 
         //Name of the direction
         final String[] directionName = {"North ^", "East ->", "South v", "West <-"};

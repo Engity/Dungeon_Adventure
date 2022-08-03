@@ -39,10 +39,6 @@ public class DungeonAdventure implements Serializable {
     //Used in Serialization
     private static final long serialVersionUID = 11L;
 
-    private final transient TextBasedGUI_MainDisplay myMainDisplayView = TextBasedGUI_MainDisplay.getInstance();
-    private final transient TextBasedGUI_NavigationView myNavigationView = TextBasedGUI_NavigationView.getInstance();
-    private final transient TextBasedGUI_CombatView myCombatView = TextBasedGUI_CombatView.getInstance();
-
     //Used to track the state of the game
     private boolean myGameOverStatus;//Is false if the player has not lost yet
     private boolean myVictoryStatus;//Is false if the player has not won yet
@@ -54,11 +50,9 @@ public class DungeonAdventure implements Serializable {
      * Attach controller to the views
      * Init the components
      */
-    private DungeonAdventure(){
-        myMainDisplayView.attachController(this);
-        myNavigationView.attachController(this);
-        myCombatView.attachController(this);
+    private DungeonAdventure(){       
         init();
+        TextBasedGUI_MainDisplay.attachController(this);
     }
 
     /**
@@ -451,19 +445,19 @@ public class DungeonAdventure implements Serializable {
     /**
      * Looping until the player die or have achieved victory
      */
-    void gameLoop(){
-        while (!myGameOverStatus || !myVictoryStatus){
+    static void gameLoop(){
+        while (!DungeonAdventure.getInstance().myGameOverStatus || !DungeonAdventure.getInstance().myVictoryStatus){
             //moving
-            int userInputDirection = myNavigationView.promptUserForDirection();
+            int userInputDirection = TextBasedGUI_NavigationView.getInstance().promptUserForDirection();
             if (userInputDirection > 0 && userInputDirection <= 4){
-                movePlayer(userInputDirection - 1);
+                DungeonAdventure.getInstance().movePlayer(userInputDirection - 1);
             }
 
             if (userInputDirection == 5){
 
                 System.out.println("As we are loading the game, this game loop wil end or the status can be changed here");
 
-                return;
+                //return;
             }
 
         }
