@@ -4,6 +4,8 @@
  * Professor Tom Capaul
  */
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -45,7 +47,7 @@ public class DungeonAdventure implements Serializable {
     private boolean myGameOverStatus;//Is false if the player has not lost yet
     private boolean myVictoryStatus;//Is false if the player has not won yet
 
-    private static final DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
+    private static DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
 
     /**
      * Default constructor
@@ -203,11 +205,11 @@ public class DungeonAdventure implements Serializable {
      * P is current location of player
      * Full visibility is only used for testing purposes
      */
-     private String getWorldMapFullVisibility(){
+     String getWorldMapFullVisibility(){
         StringBuilder res = new StringBuilder();
         res.append("Width: " + MAP_SIZE_WIDTH + " Height: " + MAP_SIZE_HEIGHT + "\n");
         res.append("X means no access, ' ' means there is a way\n");
-        res.append("S is the entrance\n");
+        res.append("E is the entrance\n");
 
 
         for (int i = 0; i < MAP_SIZE_HEIGHT; i++) {
@@ -229,7 +231,7 @@ public class DungeonAdventure implements Serializable {
                     res.append('P');
                 }
                 else if (i == myEntranceY && j == myEntranceX) {
-                    res.append("S");
+                    res.append("E");
                 }
                 else if (myRoomVisitedStatus[i][j]){
                     res.append('.');
@@ -488,6 +490,19 @@ public class DungeonAdventure implements Serializable {
 //        }
 
         return false;
+    }
+
+    /**
+     * Used for loading save game
+     */
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        myDungeonAdventureInstance = this;
+    }
+
+    private Object readResolve()  {
+        return myDungeonAdventureInstance;
     }
 
 }

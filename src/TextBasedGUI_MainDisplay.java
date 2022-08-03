@@ -169,22 +169,20 @@ public class TextBasedGUI_MainDisplay {
         OUTPUT_DESTINATION.println("Loading save file " + theSaveGame.getName());
         OUTPUT_DESTINATION.println();//Add extra line for readability
 
-        //Scanner use to read save file
-        Scanner saveFileReader;
-
         //Reading data
         try {
-            saveFileReader = new Scanner (theSaveGame);
+            FileInputStream saveFileInput = new FileInputStream(theSaveGame);
+            ObjectInputStream objectIS = new ObjectInputStream(saveFileInput);
 
-            //Assuming the first line of the save game is always the character name
-            String characterName = saveFileReader.nextLine();
+            //Doing actual deserialization to load the game
+            myGameController = (DungeonAdventure) objectIS.readObject();
 
-            OUTPUT_DESTINATION.println("Welcome back great hero, " + characterName);
-            //Call Dungeon adventure constructor to create a new state of the game with state in the save file
+            OUTPUT_DESTINATION.println("Successfully load the game");
 
+            OUTPUT_DESTINATION.println("Here is the map " + myGameController.getWorldMapFullVisibility());
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            OUTPUT_DESTINATION.println(e.getMessage());
         }
     }
 

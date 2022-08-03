@@ -134,6 +134,7 @@ public class TextBasedGUI_NavigationView {
                 OUTPUT_DESTINATION.println("\nLoading the game\n");
                 //Call the load game function
                 System.out.println("CALL THE LOAD GAME FUNCTION HERE");
+                TextBasedGUI_MainDisplay.getInstance().loadGame();
                 return 2;
             }
             //Return to main menu
