@@ -153,7 +153,6 @@ public class TextBasedGUI_MainDisplay {
         }
 
         //Starting new game here
-
         myGameController.createANewGame(nameCharacter, classChoice);
     }
 
@@ -177,9 +176,9 @@ public class TextBasedGUI_MainDisplay {
             //Doing actual deserialization to load the game
             myGameController = (DungeonAdventure) objectIS.readObject();
 
-            OUTPUT_DESTINATION.println("Successfully load the game");
+            OUTPUT_DESTINATION.println("\nSuccessfully load the game\n");
 
-            OUTPUT_DESTINATION.println("Here is the map " + myGameController.getWorldMapFullVisibility());
+            //OUTPUT_DESTINATION.println("Here is the map " + myGameController.getWorldMapFullVisibility());
 
         } catch (Exception e) {
             OUTPUT_DESTINATION.println(e.getMessage());
@@ -250,6 +249,134 @@ public class TextBasedGUI_MainDisplay {
         }
         catch(Exception e){
             System.out.println(e);
+        }
+    }
+
+    /**
+     * Display the menu when the player has won
+     */
+    void displayVictoryMenu(){
+        InputChecker victoryMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        victoryMenuChecker.setMyInitialPrompt("""
+                                    .-'''-.                                                    ___  \s
+                                   '   _    \\                                               .'/   \\ \s
+                                 /   /` '.   \\                              .--.   _..._   / /     \\\s
+                 .-.          .-.   |     \\  '                       _     _|__| .'     '. | |     |\s
+                  \\ \\        / /|   '      |  '                /\\    \\\\   //.--..   .-.   .| |     |\s
+                   \\ \\      / / \\    \\     / /                 `\\\\  //\\\\ // |  ||  '   '  ||/`.   .'\s
+                    \\ \\    / /   `.   ` ..' /_    _              \\`//  \\'/  |  ||  |   |  | `.|   | \s
+                     \\ \\  / /       '-...-'`| '  / |              \\|   |/   |  ||  |   |  |  ||___| \s
+                      \\ `  /               .' | .' |               '        |  ||  |   |  |  |/___/ \s
+                       \\  /                /  | /  |                        |__||  |   |  |  .'.--. \s
+                       / /                |   `'.  |                            |  |   |  | | |    |\s
+                   |`-' /                 '   .'|  '/                           |  |   |  | \\_\\    /\s
+                    '..'                   `-'  `--'                            '--'   '--'  `''--'\s
+                Congratulation! You have won the game!!!!""");
+
+        StringBuilder optionPrompt = new StringBuilder("Please enter your selection: ");
+        String [] optionName = {"Start a new game!", "Return to main menu", "Exit"};
+
+        //Attach option names to the prompt
+        for (int i = 0; i < optionName.length; i++){
+            optionPrompt.append("\n\t");
+            optionPrompt.append(i).append(". ");
+            optionPrompt.append(optionName[i]);
+        }
+
+        victoryMenuChecker.setMyWrongRangePrompt("There is no the option corresponding to the index you just inputted, please try again");
+        victoryMenuChecker.setMyErrorPrompt("Wrong format, please input numbers only!");
+        victoryMenuChecker.setBound(0, optionName.length - 1);
+        victoryMenuChecker.setMyRepeatingPrompt(optionPrompt.toString());
+
+        int userChoice = victoryMenuChecker.inputCheckForNumber();
+
+        switch (userChoice){
+            //Creating a new game
+            case (0)->{
+                startNewGame();
+            }
+            //Return to main menu
+            case(1)->{
+                TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
+            }
+
+            //Exit
+            case (2) ->{
+                OUTPUT_DESTINATION.println("Exiting the game!");
+                System.exit(0);
+            }
+        }
+
+    }
+
+    /**
+     * Display the menu when the player has died
+     */
+    void displayGameOverMenu(){
+        InputChecker gameOverMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        gameOverMenuChecker.setMyInitialPrompt("""
+                                 ...
+                               ;::::;
+                             ;::::; :;
+                           ;:::::'   :;
+                          ;:::::;     ;.
+                         ,:::::'       ;           OOO\\
+                         ::::::;       ;          OOOOO\\
+                         ;:::::;       ;         OOOOOOOO
+                        ,;::::::;     ;'         / OOOOOOO
+                      ;:::::::::`. ,,,;.        /  / DOOOOOO
+                    .';:::::::::::::::::;,     /  /     DOOOO
+                   ,::::::;::::::;;;;::::;,   /  /        DOOO
+                  ;`::::::`'::::::;;;::::: ,#/  /          DOOO
+                  :`:::::::`;::::::;;::: ;::#  /            DOOO
+                  ::`:::::::`;:::::::: ;::::# /              DOO
+                  `:`:::::::`;:::::: ;::::::#/               DOO
+                   :::`:::::::`;; ;:::::::::##                OO
+                   ::::`:::::::`;::::::::;:::#                OO
+                   `:::::`::::::::::::;'`:;::#                O
+                    `:::::`::::::::;' /  / `:#
+                     ::::::`:::::;'  /  /   `#
+                                                                                ,---.\s
+                ,--.   ,--.,-----. ,--. ,--.    ,------.  ,--.,------.,------.  |   |\s
+                 \\  `.'  /'  .-.  '|  | |  |    |  .-.  \\ |  ||  .---'|  .-.  \\ |  .'\s
+                  '.    / |  | |  ||  | |  |    |  |  \\  :|  ||  `--, |  |  \\  :|  | \s
+                    |  |  '  '-'  ''  '-'  '    |  '--'  /|  ||  `---.|  '--'  /`--' \s
+                    `--'   `-----'  `-----'     `-------' `--'`------'`-------' .--. \s
+                                                                                '--' \s
+                """);
+
+        StringBuilder optionPrompt = new StringBuilder("Please enter your selection!");
+        String [] optionName = {"Load a save game", "Return to main menu", "Exit"};
+
+        //Attach option names to the prompt
+        for (int i = 0; i < optionName.length; i++){
+            optionPrompt.append("\n\t");
+            optionPrompt.append(i).append(". ");
+            optionPrompt.append(optionName[i]);
+        }
+
+        gameOverMenuChecker.setMyWrongRangePrompt("There is no the option corresponding to the index you just inputted, please try again");
+        gameOverMenuChecker.setMyErrorPrompt("Wrong format, please input numbers only!");
+        gameOverMenuChecker.setBound(0, optionName.length - 1);
+        gameOverMenuChecker.setMyRepeatingPrompt(optionPrompt.toString());
+
+        int userChoice = gameOverMenuChecker.inputCheckForNumber();
+
+        switch (userChoice){
+            //Loading a new game
+            case (0)->{
+                loadGame();
+            }
+            //Return to main menu
+            case(1)->{
+                TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
+            }
+
+            //Exit
+            case (2) ->{
+                OUTPUT_DESTINATION.println("Exiting the game!");
+                System.exit(0);
+            }
         }
     }
 
