@@ -273,22 +273,13 @@ public class TextBasedGUI_MainDisplay {
                     '..'                   `-'  `--'                            '--'   '--'  `''--'\s
                 Congratulation! You have won the game!!!!""");
 
-        StringBuilder optionPrompt = new StringBuilder("Please enter your selection: ");
+        victoryMenuChecker.setMyRepeatingPrompt("Please enter your selection: ");
         String [] optionName = {"Start a new game!", "Return to main menu", "Exit"};
-
-        //Attach option names to the prompt
-        for (int i = 0; i < optionName.length; i++){
-            optionPrompt.append("\n\t");
-            optionPrompt.append(i).append(". ");
-            optionPrompt.append(optionName[i]);
-        }
 
         victoryMenuChecker.setMyWrongRangePrompt("There is no the option corresponding to the index you just inputted, please try again");
         victoryMenuChecker.setMyErrorPrompt("Wrong format, please input numbers only!");
-        victoryMenuChecker.setBound(0, optionName.length - 1);
-        victoryMenuChecker.setMyRepeatingPrompt(optionPrompt.toString());
 
-        int userChoice = victoryMenuChecker.inputCheckForNumber();
+        int userChoice = victoryMenuChecker.inputCheckForNumber(optionName);
 
         switch (userChoice){
             //Creating a new game
@@ -341,22 +332,14 @@ public class TextBasedGUI_MainDisplay {
                                                                                 '--' \s
                 """);
 
-        StringBuilder optionPrompt = new StringBuilder("Please enter your selection!");
+        gameOverMenuChecker.setMyRepeatingPrompt("Please enter your selection!");
         String [] optionName = {"Load a save game", "Return to main menu", "Exit"};
-
-        //Attach option names to the prompt
-        for (int i = 0; i < optionName.length; i++){
-            optionPrompt.append("\n\t");
-            optionPrompt.append(i).append(". ");
-            optionPrompt.append(optionName[i]);
-        }
 
         gameOverMenuChecker.setMyWrongRangePrompt("There is no the option corresponding to the index you just inputted, please try again");
         gameOverMenuChecker.setMyErrorPrompt("Wrong format, please input numbers only!");
         gameOverMenuChecker.setBound(0, optionName.length - 1);
-        gameOverMenuChecker.setMyRepeatingPrompt(optionPrompt.toString());
 
-        int userChoice = gameOverMenuChecker.inputCheckForNumber();
+        int userChoice = gameOverMenuChecker.inputCheckForNumber(optionName);
 
         switch (userChoice){
             //Loading a new game
