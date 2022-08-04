@@ -5,8 +5,8 @@ public class Main {
 //        TextBasedGUI_MainDisplay.getInstance();
 //        DungeonAdventure.getInstance();
 //        TextBasedGUI_MainDisplay.getInstance().displayGameOverMenu();
-        TextBasedGUI_MainDisplay.getInstance().displayVictoryMenu();
-        //TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
+//        TextBasedGUI_MainDisplay.getInstance().displayVictoryMenu();
+        TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
 
     }
 
