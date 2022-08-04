@@ -12,6 +12,7 @@ import java.util.HashMap;
  * {@code @author:} Toan Nguyen
  * @version 07 29 2022
  */
+@SuppressWarnings("GrazieInspection")
 public class TextBasedGUI_NavigationView {
     /**
      * The source to input from.
@@ -59,7 +60,6 @@ public class TextBasedGUI_NavigationView {
 
         //Create a list of available direction to go and attach it the prompt
         repeatingPrompt.append("Please choose the direction you wishes to go: (0 to go back to pause menu)");
-        HashMap<Integer, Integer> availableDirections = new HashMap<>();
         for (int direction = 0; direction < 4; direction++){
             //If the room has access to the corresponding direction, add it to the map
             if (((theCurrentRoomAccess >> direction) & 1) == 1){

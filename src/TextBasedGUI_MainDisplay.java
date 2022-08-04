@@ -79,7 +79,7 @@ public class TextBasedGUI_MainDisplay {
         );
 
         mainMenuChecker.setMyRepeatingPrompt("""
-                        Please select using your keyboard: 
+                        Please select using your keyboard:
                         \t1. New Game
                         \t2. Load Game
                         \t3. Exit"""
@@ -207,7 +207,7 @@ public class TextBasedGUI_MainDisplay {
             StringBuilder saveGameListString = new StringBuilder("PLease select what save game you would like to load");
             for (int saveGameOrder = 0; saveGameOrder < saveGameList.length; saveGameOrder++) {
                 saveGameListString.append("\n");
-                saveGameListString.append(saveGameOrder + ". " + saveGameList[saveGameOrder]);
+                saveGameListString.append(saveGameOrder).append(". ").append(saveGameList[saveGameOrder]);
             }
 
             InputChecker saveGameChoiceChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
@@ -248,7 +248,7 @@ public class TextBasedGUI_MainDisplay {
             System.out.println("success");
         }
         catch(Exception e){
-            System.out.println(e);
+            OUTPUT_DESTINATION.println(e.getMessage());
         }
     }
 
@@ -292,13 +292,9 @@ public class TextBasedGUI_MainDisplay {
 
         switch (userChoice){
             //Creating a new game
-            case (0)->{
-                startNewGame();
-            }
+            case (0)-> startNewGame();
             //Return to main menu
-            case(1)->{
-                TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
-            }
+            case(1)-> TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
 
             //Exit
             case (2) ->{
@@ -364,13 +360,9 @@ public class TextBasedGUI_MainDisplay {
 
         switch (userChoice){
             //Loading a new game
-            case (0)->{
-                loadGame();
-            }
+            case (0)-> loadGame();
             //Return to main menu
-            case(1)->{
-                TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
-            }
+            case(1)-> TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
 
             //Exit
             case (2) ->{
