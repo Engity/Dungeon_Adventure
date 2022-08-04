@@ -3,6 +3,8 @@
  * Summer 2022
  * Professor Tom Capaul
  */
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -16,8 +18,8 @@ import java.util.ArrayList;
  * @version 07 20 2022
  */
 
-public class Room {
-    private int id;
+public class Room implements Serializable {
+    private final int id;
     private ArrayList<Object> myContents;
     private byte myAccessCode ; //Bit 0th for North, 1st for East, 2nd for South, 3rd for West
 
@@ -68,11 +70,8 @@ public class Room {
      * @param theDirection direction wishes to return, 0 for North, 1 for East, 2 for South, 3 for West
      */
     boolean getAccess(final int theDirection){
-        //Get bit corresponding to the direction
-        if (((myAccessCode >> theDirection) & 1) == 1){
-            return true;
-        }
-        return false;
+        //Get bits corresponding to the direction
+        return ((myAccessCode >> theDirection) & 1) == 1;
     }
 
     /**
@@ -83,4 +82,35 @@ public class Room {
         myAccessCode |= 1 << theDirection;
     }
 
+    /**
+     * Compare the rooms
+     * @param theRoom the room to be compared
+     * @return true if the room id is equal, false otherwise
+     */
+    boolean equals(final Room theRoom){
+        return id == theRoom.getID();
+    }
+
+    /**
+     * Convert ID to Coordinate
+     * @param theID the ID to be converted
+     * @return an array with the first element is the x coordinate, second is the y coordinate
+     */
+    static int[] convertIDtoCoordinate(final int theID){
+        int[] res = new int[2];
+        res[0] = theID / DungeonAdventure.getInstance().getMapSizeWidth();
+        res[1] = theID % DungeonAdventure.getInstance().getMapSizeWidth();
+        return res;
+    }
+
+    /**
+     * Convert Coordinate to ID
+     * @param theXPos the x position
+     * @param theYPos the y position
+     * @return an int, the ID retrieve from these coordinate
+     */
+
+    static int convertCoordinateToID(final int theXPos, final int theYPos){
+        return DungeonAdventure.getInstance().getMapSizeWidth() * theXPos + theYPos;
+    }
 }
