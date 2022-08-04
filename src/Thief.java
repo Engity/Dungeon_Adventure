@@ -1,9 +1,9 @@
 import java.util.Random;
 
 public class Thief extends Hero{
-    String mySpecialSkill;
-    double mySpecialDamage;
-    double mySpecialSkillChance;
+    private String mySpecialSkill;
+    private double mySpecialDamage;
+    private double mySpecialSkillChance;
 
     public Thief(String theSpecialSkill, double theSpecialSkillChance, double theSpecialSkillDamage) {
         super(60, 7, "Thief", 15, 40, 0.4, 0.9);

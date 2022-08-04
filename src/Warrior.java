@@ -1,9 +1,9 @@
 import java.util.Random;
 
 public class Warrior extends Hero{
-    String mySpecialSkill;
-    double mySpecialDamage;
-    double mySpecialSkillChance;
+    private String mySpecialSkill;
+    private double mySpecialDamage;
+    private double mySpecialSkillChance;
 
     public Warrior(String theSpecialSkill, double theSpecialSkillChance, double theSpecialSkillDamage) {
         super(180, 4, "Warrior", 60, 80, 0.6, 0.5);

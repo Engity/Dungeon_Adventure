@@ -16,7 +16,7 @@ public class Hero extends DungeonCharacter{
      * @param theBlock
      * @param theCritChance
      */
-    public Hero(final double theHit, final int theAttack, final String theName, final double theMin, final double theMax, final double theBlock, final double theCritChance) {
+    protected Hero(final double theHit, final int theAttack, final String theName, final double theMin, final double theMax, final double theBlock, final double theCritChance) {
         super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
         myBlockChance = theBlock;
     }
@@ -29,7 +29,7 @@ public class Hero extends DungeonCharacter{
     /**
      * this is the attack behavior and other battle behavior
      */
-    public void attackBehavior() {
+    protected void attackBehavior() {
 
     }
 

@@ -1,8 +1,8 @@
 import java.util.Random;
 
 public class Priestess extends Hero{
-    String mySpecialSkill;
-    double myHealPoints;
+    private String mySpecialSkill;
+    private double myHealPoints;
 
     public Priestess(String theSpecialSkill, double theHeal) {
         super(80, 5, "Priestess", 20, 50, 0.2, 0.7);

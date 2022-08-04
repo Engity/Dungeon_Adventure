@@ -25,7 +25,7 @@ public class DungeonCharacter {
      * @param theBlock
      * @param theCritChance
      */
-    public DungeonCharacter(final double theHit, final int theAttack, final String theName, final double theMin, final double theMax, final double theBlock, final double theCritChance) {
+    protected DungeonCharacter(final double theHit, final int theAttack, final String theName, final double theMin, final double theMax, final double theBlock, final double theCritChance) {
         myHitpoints = theHit;
         myAttackSpeed = theAttack;
         myCharacterName = theName;
@@ -40,17 +40,17 @@ public class DungeonCharacter {
      * Returns myHitPoints
      * @return
      */
-    public double getMyHitpoints() {
+    protected double getMyHitpoints() {
         return myHitpoints;
     }
-    public double getMyDamageMin() { return myDamageMin; }
-    public double getMyDamageMax() { return myDamageMax; }
+    protected double getMyDamageMin() { return myDamageMin; }
+    protected double getMyDamageMax() { return myDamageMax; }
 
     /**
      * parameters for myHitpoints
      * @param myHitpoints
      */
-    public void setMyHitpoints(double myHitpoints) {
+    protected void setMyHitpoints(double myHitpoints) {
         this.myHitpoints = myHitpoints;
     }
 
@@ -58,7 +58,7 @@ public class DungeonCharacter {
      * parameters for fighting an enemy
      * @param theEnemy
      */
-    public String attack(final DungeonCharacter theEnemy) {
+    protected String attack(final DungeonCharacter theEnemy) {
 
         double damage = (myDamageMin + (myDamageMin + myDamageMax) * RANDOM_SEED.nextDouble());
 
@@ -67,7 +67,7 @@ public class DungeonCharacter {
         return "Player hit the enemy and dealt " + damage + "amount of damage";
     }
 
-    public void defend(final double theIncomingDamage) {
+    protected void defend(final double theIncomingDamage) {
         Random rand = new Random();
         if((rand.nextDouble() * 100) < myBlockChance) {
             myHitpoints -= theIncomingDamage;
@@ -75,12 +75,10 @@ public class DungeonCharacter {
         }
         //check players Hitpoints and return whether they are alive or dead
     }
-    public boolean isDeath() {
+    protected boolean isDeath() {
 
-        if ((myHitpoints <= 0))
-            return true;
-        else
-            return false;
+        return ((myHitpoints <= 0));
+
     }
 
 }
