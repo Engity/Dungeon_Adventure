@@ -10,10 +10,11 @@ public class Priestess extends Hero{
         myHealPoints = theHeal;
     }
 
-    public void specialSkill() {
+
+    @Override
+    protected void specialSkill(DungeonCharacter theEnemy) {
         Random rand = new Random();
         super.setMyHitpoints(super.getMyHitpoints()+(10 + (50-10) * rand.nextDouble()));
-
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.Stack;
 /**
  * Is the main logic of the game, similar to Controller in MVC.
  * {@code @author:} Toan Nguyen
- * @version 08 02 2022
+ * @version 08 07 2022
  */
 
 public class DungeonAdventure implements Serializable {
@@ -53,6 +53,7 @@ public class DungeonAdventure implements Serializable {
     private DungeonAdventure(){
         init();
         TextBasedGUI_MainDisplay.attachController(this);
+        CombatController.attachController(this);
     }
 
     /**
@@ -473,15 +474,15 @@ public class DungeonAdventure implements Serializable {
         //Add an if statement here to check whether healing potion is on or off
 
         //THis code works but don't merge yet because we don't have buff/debuff
-//        //offset to track surrounding
-//        final int[] dx = {-1,  0,  1, 1, 1, 0, -1, -1};
-//        final int[] dy = {-1, -1, -1, 0, 1, 1, 1,   0};
-//        int[] currentPlayerPos = Room.convertIDtoCoordinate(myCurrentRoom.getID());
-//
-//        for (int i = 0; i < 8; i++){
-//            if (theXPos - dx[i] == currentPlayerPos[0] && theYPos - dy[i] == currentPlayerPos[1])
-//                return true;
-//        }
+        //offset to track surrounding
+        final int[] dx = {-1,  0,  1, 1, 1, 0, -1, -1};
+        final int[] dy = {-1, -1, -1, 0, 1, 1, 1,   0};
+        int[] currentPlayerPos = Room.convertIDtoCoordinate(myCurrentRoom.getID());
+
+        for (int i = 0; i < 8; i++){
+            if (theXPos - dx[i] == currentPlayerPos[0] && theYPos - dy[i] == currentPlayerPos[1])
+                return true;
+        }
 
         return false;
     }

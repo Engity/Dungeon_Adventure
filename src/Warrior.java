@@ -12,14 +12,15 @@ public class Warrior extends Hero{
         mySpecialDamage = theSpecialSkillDamage;
     }
 
-    public double specialSkill() {
+    @Override
+    protected void specialSkill(DungeonCharacter theEnemy) {
+
         Random rand = new Random();
         double attackChance = super.getMyDamageMin() + (super.getMyDamageMax() - super.getMyDamageMin()) * rand.nextDouble();
         mySpecialDamage = 100 + (200-100) * rand.nextDouble();
         if(attackChance > mySpecialSkillChance) {
-            return mySpecialDamage;
+            theEnemy.setHealth(theEnemy.getHealth() - mySpecialDamage);
         }
-        return 0;
     }
 
 }

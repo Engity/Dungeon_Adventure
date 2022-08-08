@@ -4,7 +4,7 @@ import java.util.Random;
  * @author Justin Noel
  *
  */
-public class DungeonCharacter {
+public abstract class DungeonCharacter {
 
     private double myHitpoints;
     private int myAttackSpeed;
@@ -32,7 +32,7 @@ public class DungeonCharacter {
         myDamageMin = theMin;
         myDamageMax = theMax;
         myBlockChance = theBlock;
-        myCritChance =theCritChance;
+        myCritChance = theCritChance;
         RANDOM_SEED = new Random();
     }
 
@@ -45,6 +45,15 @@ public class DungeonCharacter {
     }
     protected double getMyDamageMin() { return myDamageMin; }
     protected double getMyDamageMax() { return myDamageMax; }
+    protected double getHealth() {
+        return myHitpoints;
+    }
+
+    protected void setHealth(double theHealth) {
+        myHitpoints = theHealth;
+    }
+
+
 
     /**
      * parameters for myHitpoints
@@ -58,27 +67,17 @@ public class DungeonCharacter {
      * parameters for fighting an enemy
      * @param theEnemy
      */
-    protected String attack(final DungeonCharacter theEnemy) {
+    protected void attack(final DungeonCharacter theEnemy) {
 
-        double damage = (myDamageMin + (myDamageMin + myDamageMax) * RANDOM_SEED.nextDouble());
-
-        theEnemy.setMyHitpoints(theEnemy.getMyHitpoints() - damage);
-
-        return "Player hit the enemy and dealt " + damage + "amount of damage";
-    }
-
-    protected void defend(final double theIncomingDamage) {
         Random rand = new Random();
-        if((rand.nextDouble() * 100) < myBlockChance) {
-            myHitpoints -= theIncomingDamage;
 
+        double attackHit = 100 * rand.nextDouble();
+        double damage = myDamageMin + (myDamageMax - myDamageMin) * rand.nextDouble();
+
+        // The Warrior hit the enemy
+        if(attackHit > myCritChance) {
+            theEnemy.setHealth(theEnemy.getHealth() - damage);
         }
-        //check players Hitpoints and return whether they are alive or dead
-    }
-    protected boolean isDeath() {
-
-        return ((myHitpoints <= 0));
-
     }
 
 }

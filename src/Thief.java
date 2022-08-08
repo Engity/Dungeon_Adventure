@@ -19,6 +19,18 @@ public class Thief extends Hero{
             return 2;
         }
         return 1;
+
+
+    }
+
+    @Override
+    protected void specialSkill(DungeonCharacter theEnemy) {
+        Random rand = new Random();
+        double chance = rand.nextDouble();
+        if(mySpecialSkillChance / 2.0 < chance) {
+        } else if(mySpecialSkillChance > chance) {
+            super.attack(theEnemy);
+        }
     }
 
 }

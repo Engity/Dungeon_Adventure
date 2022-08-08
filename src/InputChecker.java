@@ -213,6 +213,33 @@ public class InputChecker {
         }
     }
 
+    /**
+     * Display the prompts and ask the user for input
+     * The order of outputting prompt are:
+     *     1. Initial
+     *     2. Repeat prompt (Loop begin here) With Custom options as appeared in order from the theOptionPrompt
+     *          2.1 Error (If there is) or Wrong format
+     *          2.2 Go back to 2.
+     *     3. Success Prompt
+     * Will repeating until the user type in the correct number within the range
+     * @param theOptionPrompt contains the name of the options
+     * @return an int representing the user's choice
+     */
+    int inputCheckForNumber(final String[] theOptionPrompt){
+        StringBuilder optionPrompt = new StringBuilder(myRepeatingPrompt);
+
+        //Attach option names to the prompt
+        for (int i = 0; i < theOptionPrompt.length; i++){
+            optionPrompt.append("\n\t");
+            optionPrompt.append(i).append(". ");
+            optionPrompt.append(theOptionPrompt[i]);
+        }
+
+        setMyRepeatingPrompt(optionPrompt.toString());
+        setBound(0, theOptionPrompt.length - 1);
+
+        return inputCheckForNumber();
+    }
 
 
 

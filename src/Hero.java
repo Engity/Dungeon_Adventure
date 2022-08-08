@@ -1,8 +1,10 @@
+import java.util.Random;
+
 /**
  * @author Justin Noel
  *
  */
-public class Hero extends DungeonCharacter{
+public abstract class Hero extends DungeonCharacter{
 
     private double myBlockChance;
 
@@ -41,4 +43,16 @@ public class Hero extends DungeonCharacter{
         myBlockChance = theBlock;
     }
 
+    // This is the method for the player to use the special skill
+    protected abstract void specialSkill(final DungeonCharacter theEnemy);
+
+    // This method will have a character defend against another
+    protected boolean defend() {
+        Random rand = new Random();
+        if( (100 * rand.nextDouble())< myBlockChance) {
+            return true;
+        }
+        return false;
+    }
 }
+
