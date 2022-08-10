@@ -51,7 +51,7 @@ public class TextBasedGUI_MainDisplay {
     /**
      * Displaying the whole menu including function
      * 1. Start a new game {@link TextBasedGUI_MainDisplay#startNewGame()}
-     * 2. Load a save game {@link TextBasedGUI_MainDisplay#loadGame()}
+     * 2. Load a save game {@link TextBasedGUI_MainDisplay#loadGame(boolean)})}
      * 3. Exit
      */
     void displayMainMenu(){

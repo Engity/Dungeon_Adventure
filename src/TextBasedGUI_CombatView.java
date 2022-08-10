@@ -36,6 +36,10 @@ public class TextBasedGUI_CombatView {
 
     }
 
+    /**
+     * Prompt the user for what to do in the fight
+     * @return the user choice
+     */
     int promptUserForFightAction(){
         InputChecker fightInputChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
@@ -136,6 +140,12 @@ public class TextBasedGUI_CombatView {
 
         return 0;
     }
+
+    /**
+     * Display the pre-fight menu to let user save the game or choose not to fight
+     * @param theMonsterName containing the monster's stat
+     * @return the user's choice of action
+     */
 
     int displayPreFightMenu(final String theMonsterName){
         InputChecker preFightMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);

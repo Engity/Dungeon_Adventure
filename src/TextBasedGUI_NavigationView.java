@@ -36,6 +36,10 @@ public class TextBasedGUI_NavigationView {
         return myNavigationViewInstance;
     }
 
+    /**
+     * Prompt the user for what to do while navigating, mainly direction they wish to go and access to the pause menu
+     * @return the user choice
+     */
     public int promptUserForDirection(){
         int theCurrentRoomAccess = DungeonAdventure.getInstance().getCurrentRoomAccessCode();
 
@@ -87,13 +91,26 @@ public class TextBasedGUI_NavigationView {
         //Launch pause menu
         if (userChoice == 0){
             int pauseMenuChoice = displayPauseMenu();
-            if (pauseMenuChoice == 2){
-                return 5;
+
+            switch (pauseMenuChoice){
+                //Load
+                case (2) -> {
+                    return 5;
+                }
+                //Return to main menu
+                case (3) -> {
+                    return 6;
+                }
             }
         }
 
         return userChoice;
     }
+
+    /**
+     * Display the pause menu that let the user load\save the game or go back to the main menu
+     * @return the user choice
+     */
 
     public int displayPauseMenu(){
         InputChecker pauseMenuSelection = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
@@ -142,8 +159,7 @@ public class TextBasedGUI_NavigationView {
 
                 if (userConfirm){
                     //return to the main menu
-                    TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
-                    return 0;
+                    return 3;
                 }
             }
 

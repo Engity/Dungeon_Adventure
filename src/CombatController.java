@@ -45,6 +45,7 @@ public class CombatController {
             switch (userChoice) {
                 case (0) -> {
                     myCombatView.promptUserForFightAction();
+                    System.out.println("You have obtained some loot but since we have not implemented game objs...");
                     return 0;
                 }
                 case (1) -> {
@@ -55,6 +56,8 @@ public class CombatController {
                 }
             }
         }
+
+
     }
 
     /**

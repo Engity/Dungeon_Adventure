@@ -55,7 +55,6 @@ public class DungeonAdventure implements Serializable {
         init();
         TextBasedGUI_MainDisplay.attachController(this);
         CombatController.attachController(this);
-        TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
     }
 
     /**
@@ -469,6 +468,7 @@ public class DungeonAdventure implements Serializable {
      * Looping until the player die or have achieved victory
      */
     static void gameLoop(){
+        boolean returnToMain = false;
         while (!DungeonAdventure.getInstance().myGameOverStatus || !DungeonAdventure.getInstance().myVictoryStatus){
             //Checking if there is a monster in a room
             if (false){
@@ -484,12 +484,18 @@ public class DungeonAdventure implements Serializable {
             }
 
             if (userInputDirection == 5){
-
                 System.out.println("As we are loading the game, this game loop wil end or the status can be changed here");
-
                 //return;
             }
 
+            if (userInputDirection == 6){
+                returnToMain = true;
+                break;
+            }
+        }
+        //Launch main menu
+        if (returnToMain){
+            TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
         }
     }
 
