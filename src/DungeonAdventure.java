@@ -14,7 +14,7 @@ import java.util.Stack;
 /**
  * Is the main logic of the game, similar to Controller in MVC.
  * {@code @author:} Toan Nguyen
- * @version 08 07 2022
+ * @version 08 09 2022
  */
 
 public class DungeonAdventure implements Serializable {
@@ -32,6 +32,7 @@ public class DungeonAdventure implements Serializable {
     private int myEntranceX;
 
     private Room myCurrentRoom;
+    private Room myPreviousRoom;
     private boolean[][] myRoomVisitedStatus;//True if the room has been visited, false otherwise
 
     private final static Random RANDOM_SEED = new Random();
@@ -54,6 +55,7 @@ public class DungeonAdventure implements Serializable {
         init();
         TextBasedGUI_MainDisplay.attachController(this);
         CombatController.attachController(this);
+        TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
     }
 
     /**
@@ -74,7 +76,7 @@ public class DungeonAdventure implements Serializable {
                 ++id;
             }
         }
-
+        myPreviousRoom = null;
         myCurrentRoom = myMap[myEntranceY][myEntranceX];
     }
 
@@ -95,11 +97,11 @@ public class DungeonAdventure implements Serializable {
     void createANewGame(final String theHeroName,final int theHeroClass){
         init();
         randomizeMap();
-        //Testing outputting world map
-        System.out.println(getWorldMapFullVisibility());
-
-        //Testing visibility world map
-        System.out.println(parseWorldMapWithVisibility());
+//        //Testing outputting world map
+//        System.out.println(getWorldMapFullVisibility());
+//
+//        //Testing visibility world map
+//        System.out.println(parseWorldMapWithVisibility());
 
         gameLoop();
     }
@@ -365,10 +367,29 @@ public class DungeonAdventure implements Serializable {
         int newLocationY = currentCoordinate[1] + DY[theDirection];
         //If it is a valid location then move the player
         if (checkValid(newLocationX, newLocationY)){
+            myPreviousRoom = myCurrentRoom;
             myCurrentRoom = myMap[newLocationX][newLocationY];
             //Unlocking visited status
             myRoomVisitedStatus[newLocationX][newLocationY] = true;
         }
+    }
+
+    /**
+     * Move the player back into the previous location.
+     * Won't move if it is the start of the game (Previous room is null)
+     * Used only for the fleeing function
+     */
+
+    void returnPlayerToPreviousPos(){
+        if (myPreviousRoom == null){
+            return;
+        }
+        //Get the currentCoordinate
+        int[] currentCoordinate = Room.convertIDtoCoordinate(myCurrentRoom.getID());
+
+        myCurrentRoom = myPreviousRoom;
+        //Locking visited status
+        myRoomVisitedStatus[currentCoordinate[0]][currentCoordinate[1]] = false;
     }
 
     /**
@@ -438,6 +459,7 @@ public class DungeonAdventure implements Serializable {
             //Set the visited status of the current location to false
             myRoomVisitedStatus[currentCoordinate[0]][ currentCoordinate[1]] = false;
             //Move to the new place
+            myPreviousRoom = myCurrentRoom;
             myCurrentRoom = myMap[theXPos][theYPos];
             myRoomVisitedStatus[theXPos][theYPos] = true;
         }
@@ -448,6 +470,13 @@ public class DungeonAdventure implements Serializable {
      */
     static void gameLoop(){
         while (!DungeonAdventure.getInstance().myGameOverStatus || !DungeonAdventure.getInstance().myVictoryStatus){
+            //Checking if there is a monster in a room
+            if (false){
+                int userReady = CombatController.getInstance().initiateFight();
+                if (userReady == 2){
+                    DungeonAdventure.getInstance().returnPlayerToPreviousPos();
+                }
+            }
             //moving
             int userInputDirection = TextBasedGUI_NavigationView.getInstance().promptUserForDirection();
             if (userInputDirection > 0 && userInputDirection <= 4){
@@ -471,18 +500,18 @@ public class DungeonAdventure implements Serializable {
     //These fields will be brought up if tested and implemented
 
     private boolean canBeSeenByVisionPotion(final int theXPos, final int theYPos){
-        //Add an if statement here to check whether healing potion is on or off
-
-            //THis code works but don't merge yet because we don't have buff/debuff
-        //offset to track surrounding
-        final int[] dx = {-1,  0,  1, 1, 1, 0, -1, -1};
-        final int[] dy = {-1, -1, -1, 0, 1, 1, 1,   0};
-        int[] currentPlayerPos = Room.convertIDtoCoordinate(myCurrentRoom.getID());
-
-        for (int i = 0; i < 8; i++){
-            if (theXPos - dx[i] == currentPlayerPos[0] && theYPos - dy[i] == currentPlayerPos[1])
-                return true;
-        }
+//        //Add an if statement here to check whether healing potion is on or off
+//
+//            //THis code works but don't merge yet because we don't have buff/debuff
+//        //offset to track surrounding
+//        final int[] dx = {-1,  0,  1, 1, 1, 0, -1, -1};
+//        final int[] dy = {-1, -1, -1, 0, 1, 1, 1,   0};
+//        int[] currentPlayerPos = Room.convertIDtoCoordinate(myCurrentRoom.getID());
+//
+//        for (int i = 0; i < 8; i++){
+//            if (theXPos - dx[i] == currentPlayerPos[0] && theYPos - dy[i] == currentPlayerPos[1])
+//                return true;
+//        }
 
         return false;
     }
@@ -495,6 +524,10 @@ public class DungeonAdventure implements Serializable {
         ois.defaultReadObject();
         myDungeonAdventureInstance = this;
     }
+
+    /**
+     * Used for loading save game
+     */
 
     private Object readResolve()  {
         return myDungeonAdventureInstance;

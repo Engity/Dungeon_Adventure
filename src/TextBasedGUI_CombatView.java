@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Text based GUI for combat
  * {@code @author:} Toan Nguyen
- * @version 08 07 2022
+ * @version 08 09 2022
  */
 public class TextBasedGUI_CombatView {
     /**
@@ -36,7 +36,7 @@ public class TextBasedGUI_CombatView {
 
     }
 
-    int promptUserForAction(){
+    int promptUserForFightAction(){
         InputChecker fightInputChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         //Get the player's stat
@@ -105,7 +105,7 @@ public class TextBasedGUI_CombatView {
 
         myRepeatingPrompt.append("Please enter your choice: ");
 
-        String [] optionName = {"Attack", "Defend", "Use Potion", "Flee"};
+        String [] optionName = {"Attack", "Defend", "Use Potion", "Special attack (Will fail if mana is not 100)"};
 
         fightInputChecker.setMyRepeatingPrompt(myRepeatingPrompt.toString());
 
@@ -132,14 +132,24 @@ public class TextBasedGUI_CombatView {
                 System.out.println("It suppose to be a function but there it has not been developed");
             }
 
-            //Flee
-            case (3) ->{
-                System.out.println("I ran");
-                System.out.println("It suppose to be a function but there it has not been developed");
-            }
         }
 
         return 0;
+    }
+
+    int displayPreFightMenu(final String theMonsterName){
+        InputChecker preFightMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        int userChoice = 0;
+        StringBuilder repeatingPrompt = new StringBuilder("You have encounter ").append(theMonsterName);
+        repeatingPrompt.append("\nGet ready to fight!");
+
+        String [] optionName = {"Ready!", "Save the game", "Flee"};
+
+        preFightMenuChecker.setMyRepeatingPrompt(repeatingPrompt.toString());
+
+        userChoice = preFightMenuChecker.inputCheckForNumber(optionName);
+
+        return userChoice;
     }
 
 

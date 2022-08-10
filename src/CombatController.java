@@ -11,7 +11,7 @@ import java.util.Scanner;
  * Keep the current status in a fight
  * Control the player and monster during the fight
  * {@code @author:} Toan Nguyen
- * @version 08 07 2022
+ * @version 08 09 2022
  */
 public class CombatController {
     private TextBasedGUI_CombatView myCombatView;
@@ -38,8 +38,23 @@ public class CombatController {
      * Take in 2 dungeon characters, if one of them is hero, will ask the player for control
      */
     //Need other classes
-    void fight(){
-
+    int initiateFight(){
+        int userChoice;
+        while (true) {
+            userChoice = myCombatView.displayPreFightMenu("Will replace this with actual monster name");
+            switch (userChoice) {
+                case (0) -> {
+                    myCombatView.promptUserForFightAction();
+                    return 0;
+                }
+                case (1) -> {
+                    TextBasedGUI_MainDisplay.getInstance().saveGame();
+                }
+                case (2) -> {
+                    return 2;
+                }
+            }
+        }
     }
 
     /**

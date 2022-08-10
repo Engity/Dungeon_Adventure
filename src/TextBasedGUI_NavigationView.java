@@ -10,7 +10,7 @@ import java.util.HashMap;
 /**
  * Text based GUI for navigating the rooms
  * {@code @author:} Toan Nguyen
- * @version 07 29 2022
+ * @version 08 09 2022
  */
 @SuppressWarnings("GrazieInspection")
 public class TextBasedGUI_NavigationView {
@@ -124,15 +124,13 @@ public class TextBasedGUI_NavigationView {
             case(1)->{
                 OUTPUT_DESTINATION.println("\nSaving the game\n");
                 //Call the save game function
-                System.out.println("CALL THE SAVE GAME FUNCTION HERE");
                 TextBasedGUI_MainDisplay.getInstance().saveGame();
             }
             //Load
             case(2)->{
                 OUTPUT_DESTINATION.println("\nLoading the game\n");
                 //Call the load game function
-                System.out.println("CALL THE LOAD GAME FUNCTION HERE");
-                TextBasedGUI_MainDisplay.getInstance().loadGame();
+                TextBasedGUI_MainDisplay.getInstance().loadGame(false);
                 return 2;
             }
             //Return to main menu
@@ -158,6 +156,4 @@ public class TextBasedGUI_NavigationView {
         //Display the pause menu again
         return displayPauseMenu();
     }
-
-
 }

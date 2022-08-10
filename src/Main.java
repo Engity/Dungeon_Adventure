@@ -17,24 +17,7 @@ public class Main {
 //        }
         TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
 
-
-//        StringBuilder swordDecorationStB = new StringBuilder("""
-//                                __
-//                                   \\  /
-//                                     \\\\
-//                                       \\\\
-//                     ___________________||/\\_
-//                    (___________________()| _||||||||||||||||||||||||||||||||||||||||||>
-//                                        ||\\/
-//                                       //
-//                                     //
-//                                   /__\\
-//                """);
-//        String[] swordDecoration = swordDecorationStB.toString().split("\n");
-//        for (int i = 0 ; i < swordDecoration.length;i++)
-//            System.out.println(swordDecoration[i]);
-
-        TextBasedGUI_CombatView.getInstance().promptUserForAction();
+        //TextBasedGUI_CombatView.getInstance().promptUserForFightAction();
     }
 
 }

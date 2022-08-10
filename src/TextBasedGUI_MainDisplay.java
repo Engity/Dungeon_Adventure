@@ -91,7 +91,7 @@ public class TextBasedGUI_MainDisplay {
         int userChoice = mainMenuChecker.inputCheckForNumber();
         switch (userChoice) {
             case 1 -> startNewGame();
-            case 2 -> loadGame();
+            case 2 -> loadGame(true);
             case 3 -> {
                 OUTPUT_DESTINATION.println("Exit now!");
                 System.exit(0);
@@ -188,8 +188,10 @@ public class TextBasedGUI_MainDisplay {
     /**
      * Load a save game
      * List available save game with character name + create date or playtime
+     * @param theOriginFromMainMenu true if the origin is from main menu, false otherwise. To keep track whether gameLoop has initiated or not
+     *
      */
-    void loadGame(){
+    void loadGame(final boolean theOriginFromMainMenu){
         //Creating a File object for directory
         File directorySaves = new File(System.getProperty("user.dir") +"\\save\\");
 
@@ -220,6 +222,10 @@ public class TextBasedGUI_MainDisplay {
 
             File saveFile = new File(directorySaves.getAbsolutePath() + "\\" + saveGameList[saveGameChoice]);
             loadASaveGame(saveFile);
+
+            if (theOriginFromMainMenu){
+                DungeonAdventure.gameLoop();
+            }
         }
     }
 
@@ -343,7 +349,7 @@ public class TextBasedGUI_MainDisplay {
 
         switch (userChoice){
             //Loading a new game
-            case (0)-> loadGame();
+            case (0)-> loadGame(false);
             //Return to main menu
             case(1)-> TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
 
