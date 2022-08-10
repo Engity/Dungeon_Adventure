@@ -116,7 +116,7 @@ public class TextBasedGUI_NavigationView {
         InputChecker pauseMenuSelection = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         StringBuilder optionPrompt = new StringBuilder("Please enter your selection: ");
-        String [] optionName = {"Resume", "Save game", "Load game", "Return to main menu", "Exit"};
+        String [] optionName = {"Resume", "Save game", "Load game", "Return to main menu", "Tutorial", "About", "Exit"};
 
         //Attach option names to the prompt
         for (int i = 0; i < optionName.length; i++){
@@ -163,8 +163,19 @@ public class TextBasedGUI_NavigationView {
                 }
             }
 
+            case (4) -> {
+                TextBasedGUI_MainDisplay.getInstance().displayTutorial();
+                //Recursive call to loop
+                return displayPauseMenu();
+            }
+            case (5) -> {
+                TextBasedGUI_MainDisplay.getInstance().displayAboutInfo();
+                //Recursive call to loop
+                return displayPauseMenu();
+            }
+
             //Exit
-            case (4) ->{
+            case (6) ->{
                 OUTPUT_DESTINATION.println("Exiting the game!");
                 System.exit(0);
             }

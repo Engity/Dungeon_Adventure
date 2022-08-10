@@ -63,7 +63,7 @@ public class TextBasedGUI_MainDisplay {
 
         InputChecker mainMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
         mainMenuChecker.setMyDefaultChoice(1);
-        mainMenuChecker.setBound(1,3);
+        mainMenuChecker.setBound(1,5);
 
         mainMenuChecker.setMyInitialPrompt("""
                 ______                                       ___      _                 _
@@ -82,7 +82,9 @@ public class TextBasedGUI_MainDisplay {
                         Please select using your keyboard:
                         \t1. New Game
                         \t2. Load Game
-                        \t3. Exit"""
+                        \t3. Tutorial
+                        \t4. About
+                        \t5. Exit"""
         );
 
         mainMenuChecker.setMyWrongRangePrompt("Incorrect format or range, please input again");
@@ -93,6 +95,16 @@ public class TextBasedGUI_MainDisplay {
             case 1 -> startNewGame();
             case 2 -> loadGame(true);
             case 3 -> {
+                displayTutorial();
+                //Recursive call to get back to the main menu
+                displayMainMenu();
+            }
+            case 4 -> {
+                displayAboutInfo();
+                //Recursive call to get back to the main menu
+                displayMainMenu();
+            }
+            case 5 -> {
                 OUTPUT_DESTINATION.println("Exit now!");
                 System.exit(0);
             }
@@ -358,6 +370,43 @@ public class TextBasedGUI_MainDisplay {
                 OUTPUT_DESTINATION.println("Exiting the game!");
                 System.exit(0);
             }
+        }
+    }
+
+    void displayAboutInfo(){
+        InputChecker aboutCheck = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        StringBuilder repeatingPrompt = new StringBuilder("""
+                Game created by Group 8: Toan Nguyen, Thao Nguyen, Justin Noel
+                For the class T CSS 360 Summer 2022, Professor Tom Capaul
+                """);
+        repeatingPrompt.append("""
+        Continue? (Y/N)
+            1. Yes
+            2. No""");
+
+        aboutCheck.setMyRepeatingPrompt(repeatingPrompt.toString());
+
+        if (!aboutCheck.inputCheckForYNConfirmation()){
+            displayAboutInfo();
+        }
+    }
+
+    void displayTutorial(){
+        InputChecker tutorialCheck = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+
+        StringBuilder repeatingPrompt = new StringBuilder("""
+                Use the number key to navigate the maze and give your commands in combat
+                Survive and win the fight with the vile monsters 
+                Collect 4 pillars to win the game
+                """);
+        repeatingPrompt.append("""
+        Continue? (Y/N)
+            1. Yes
+            2. No""");
+
+        tutorialCheck.setMyRepeatingPrompt(repeatingPrompt.toString());
+        if (!tutorialCheck.inputCheckForYNConfirmation()){
+            displayTutorial();
         }
     }
 
