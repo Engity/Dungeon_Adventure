@@ -2,91 +2,80 @@ import java.util.Random;
 import java.io.Serializable;
 public class DungeonCharacter implements Serializable {
     private String myCharacterName;
-
-    double myHitPoints;
+    private int myHitPoints;
     private int myAttackSpeed;
-
     private double myChangeToHit;
+    private int myDamageMin;
+    private int myDamageMax;
 
-    private double myDamageMin;
-    private double myDamageMax;
-// Getter and Setter for the var
+    final static Random RANDOM_SEED = new Random();
+
+
+
+    public DungeonCharacter(final String theName, final int theHit, final int theAttack,
+                            final double theChance, final int theMin, final int theMax) {
+        this.setName(theName);
+        this.setHitPoint(theHit);
+        this.setAttackSpeed(theAttack);
+        this.setChanceToHit(theChance);
+        this.setDamageMin(theMin);
+        this.setDamageMax(theMax);
+
+    }
+
+    private void setDamageMax(final int theMax) {
+    }
+
+    private void setDamageMin(final int theMin) {
+
+    }
+
+    private void setChanceToHit(final double theChance) {
+
+    }
+
+    private void setAttackSpeed(final int theAttack) {
+
+    }
+
+    private void setHitPoint(final int theHit) {
+
+    }
+
+    private void setName(final String theName) {
+        this.myCharacterName = theName;
+    }
+
     public String getMyCharacterName() {
         return myCharacterName;
     }
 
-    public void setMyCharacterName(String myCharacterName) {
-        this.myCharacterName = myCharacterName;
-    }
-
-    public double getMyHitPoints() {
+    public int getMyHitPoints() {
         return myHitPoints;
-    }
-
-    public void setMyHitPoints(double myHitPoints) {
-        this.myHitPoints = myHitPoints;
     }
 
     public int getMyAttackSpeed() {
         return myAttackSpeed;
     }
 
-    public void setMyAttackSpeed(int myAttackSpeed) {
-        this.myAttackSpeed = myAttackSpeed;
-    }
-
     public double getMyChangeToHit() {
         return myChangeToHit;
     }
 
-    public void setMyChangeToHit(double myChangeToHit) {
-        this.myChangeToHit = myChangeToHit;
-    }
-
-    public double getMyDamageMin() {
+    public int getMyDamageMin() {
         return myDamageMin;
     }
 
-    public void setMyDamageMin(double myDamageMin) {
-        this.myDamageMin = myDamageMin;
-    }
-
-    public double getMyDamageMax() {
+    public int getMyDamageMax() {
         return myDamageMax;
     }
 
-    public void setMyDamageMax(double myDamageMax) {
-        this.myDamageMax = myDamageMax;
-    }
-
-    Random RANDOM_SEED;
-
-
-    public DungeonCharacter(final String theName, final double theHit, final int theAttack,
-                            final double theChance, final double theMin, final double theMax) {
-        myCharacterName = theName;
-        myHitPoints = theHit;
-        myAttackSpeed = theAttack;
-        myChangeToHit = theChance;
-        myDamageMin = theMin;
-        myDamageMax = theMax;
-        RANDOM_SEED = new Random();
-    }
-// Increment the hitpoints of the character
-    public void addHitPoints(int myHitPoints) {
-        if (myHitPoints > 0) {
-            this.myHitPoints += myHitPoints;
-        }
-    }
-// Decrement the hitpoints of the character
-    public void minusHitPoints (int myHitPoints){
-        if (myHitPoints > 0)
-            this.myHitPoints -= myHitPoints;
-    }
-
-// Check if the character is death or not
+    // Check if the character is death or not
     public boolean isDeath() {
 
         return ((myHitPoints <= 0));
     }
 }
+
+
+
