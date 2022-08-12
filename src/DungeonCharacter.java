@@ -24,25 +24,32 @@ public class DungeonCharacter implements Serializable {
     }
 
     private void setDamageMax(final int theMax) {
+        this.myDamageMax = theMax;
+
     }
 
     private void setDamageMin(final int theMin) {
+        this.myDamageMin = theMin;
 
     }
 
     private void setChanceToHit(final double theChance) {
+        this.myChangeToHit = theChance;
 
     }
 
     private void setAttackSpeed(final int theAttack) {
+        this.myAttackSpeed = theAttack;
 
     }
 
     private void setHitPoint(final int theHit) {
+        this.myHitPoints = theHit;
 
     }
 
     private void setName(final String theName) {
+
         this.myCharacterName = theName;
     }
 
@@ -75,6 +82,19 @@ public class DungeonCharacter implements Serializable {
 
         return ((myHitPoints <= 0));
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder ();
+        sb.append ("Name: ").append(myCharacterName).append("\n");
+        sb.append ("Hit Points: ").append(myHitPoints).append("\n");
+        sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
+        sb.append ("Chance to hit: ").append(myChangeToHit).append("\n");
+        sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
+        sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");
+        return sb.toString();
+    }
+
 }
 
 

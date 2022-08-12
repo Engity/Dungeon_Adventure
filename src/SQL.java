@@ -41,9 +41,9 @@ public class SQL {
 
 
         //now create a table
-        String query = "CREATE TABLE IF NOT EXISTS questions ( " +
-                "QUESTION TEXT NOT NULL, " +
-                "ANSWER TEXT NOT NULL )";
+        String query = "CREATE TABLE IF NOT EXISTS Monster ( " +
+                "C1 TEXT NOT NULL, " +
+                "C2 TEXT NOT NULL )";
         try ( Connection conn = ds.getConnection();
               Statement stmt = conn.createStatement(); ) {
             int rv = stmt.executeUpdate( query );
@@ -60,6 +60,7 @@ public class SQL {
         String query1 = "INSERT INTO Monster ( C1, C2 ) VALUES ( 'Orge', '200 2 0.6 30 60 0.1 30 60' )";
         String query2 = "INSERT INTO Monster ( C1, C2 ) VALUES ( 'Skeleton', '100 3 0.8 30 50 0.3 30 50' )";
         String query3 = "INSERT INTO Monster ( C1, C2 ) VALUES ( 'Gremlin', '70 5 0.8 15 30 0.4 20 40' )";
+
 
         try ( Connection conn = ds.getConnection();
               Statement stmt = conn.createStatement(); ) {
@@ -93,8 +94,8 @@ public class SQL {
                 String question = rs.getString( "C1" );
                 String answer = rs.getString( "C2" );
 
-                System.out.println( "Result: Question = " + question +
-                        ", Answer = " + answer );
+                System.out.println( "Result: Monster = " + question +
+                        ", Stats = " + answer );
             }
         } catch ( SQLException e ) {
             e.printStackTrace();
