@@ -50,6 +50,7 @@ public class TextBasedGUI_MainDisplay {
 
     /**
      * Displaying the whole menu including function
+     * Should be called as the Entry Point of the game
      * 1. Start a new game {@link TextBasedGUI_MainDisplay#startNewGame()}
      * 2. Load a save game {@link TextBasedGUI_MainDisplay#loadGame(boolean)})}
      * 3. Exit
@@ -148,6 +149,16 @@ public class TextBasedGUI_MainDisplay {
             case 3 -> className = "notorious thief";
         }
 
+        //Ask player for difficulty level
+
+        InputChecker difficultyChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        difficultyChecker.setMyRepeatingPrompt("Difficulty of the game: ");
+        String [] optionName = {"Easy", "Medium", "Hard"};
+        difficultyChecker.setMyWrongRangePrompt("There is no the option corresponding to the index you just inputted, please try again");
+        difficultyChecker.setMyErrorPrompt("Wrong format, please input numbers only!");
+
+        int difficultyLevel = difficultyChecker.inputCheckForNumber(optionName);
+
         OUTPUT_DESTINATION.println("Welcome, " + nameCharacter + ", the " + className + ", to Dungeon Adventure");
 
         //Just a test to see if anyone read the code and question this
@@ -165,7 +176,7 @@ public class TextBasedGUI_MainDisplay {
         }
 
         //Starting new game here
-        myGameController.createANewGame(nameCharacter, classChoice);
+        myGameController.createANewGame(nameCharacter, classChoice, difficultyLevel + 1);
     }
 
     /**

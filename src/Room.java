@@ -23,7 +23,7 @@ public class Room implements Serializable {
     private ArrayList<Object> myContents;
     private byte myAccessCode ; //Bit 0th for North, 1st for East, 2nd for South, 3rd for West
 
-    //private Monster myGuardian; //Comment out because monster has not yet been implemented
+    private Object myGuardian; //Comment out because monster has not yet been implemented
 
     //Default constructor, creating an empty room with no guardian
     public Room(){
@@ -112,5 +112,40 @@ public class Room implements Serializable {
 
     static int convertCoordinateToID(final int theXPos, final int theYPos){
         return DungeonAdventure.getInstance().getMapSizeWidth() * theXPos + theYPos;
+    }
+
+    /**
+     * Put a monster in this room
+     * @param theMonster the monster that is put in this room
+     */
+    void setMyGuardian(final Object theMonster){
+        myGuardian = theMonster;
+    }
+
+    /**
+     * Get the guaridan
+     * @return the guaridan in this room
+     */
+    Object getMyGuardian(){
+        return myGuardian;
+    }
+
+    /**
+     * Add loot content to the room
+     */
+    void addRoomContent(final Object theContent){
+        myContents.add(theContent);
+    }
+
+
+    /**
+     * Retrieve the loot, called when guardian is defeated
+     * @return all the loot in this room
+     * Erase the content in this room
+     */
+    ArrayList<Object> retrieveLoot(){//final Monster theMonster){
+        ArrayList<Object> res = myContents;
+        myContents = new ArrayList<>();
+        return res;
     }
 }

@@ -45,8 +45,6 @@ public class CombatController {
             switch (userChoice) {
                 case (0) -> {
                     myCombatView.promptUserForFightAction();
-                    System.out.println("You have obtained some loot but since we have not implemented game objs...");
-                    return 0;
                 }
                 case (1) -> {
                     TextBasedGUI_MainDisplay.getInstance().saveGame();
@@ -55,6 +53,12 @@ public class CombatController {
                     return 2;
                 }
             }
+            //If the monster is dead show this
+            System.out.println("You have obtained some loot but since we have not implemented game objs...");
+            //
+            return 0;
+
+            //If the player has died return a different value to let the DungeonAdventure it is game over
         }
 
 
@@ -66,11 +70,11 @@ public class CombatController {
      * Return a list of string with equal length
      */
 
-    ArrayList<StringBuilder> parseDungeonCharacter(){
+    ArrayList<StringBuilder> parseDungeonCharacter(final Object theDungeonCharacter){
         ArrayList<StringBuilder> res = new ArrayList<>();
         int k = 0, longestWidth = 0;
 
-        //Basic example
+        //Basic example should be replace with theDungeonCharacter.toString()
         String characterToSTR = """
                 Name: asDLK:l;asdlk;
                 Health: 90

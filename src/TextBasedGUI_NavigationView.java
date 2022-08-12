@@ -183,4 +183,19 @@ public class TextBasedGUI_NavigationView {
         //Display the pause menu again
         return displayPauseMenu();
     }
+
+    /**
+     * Asking the player whether they would like to drop off the pillars
+     * @return the player's decision
+     */
+    boolean displayDropOffPillarMenu(){
+        InputChecker yesNoChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        yesNoChecker.setMyInitialPrompt("You are at the Entrance, would you like to drop off the pillars?");
+        boolean userChoice = yesNoChecker.inputCheckForYNConfirmation();
+
+        if (userChoice) {
+            OUTPUT_DESTINATION.println("\n~Dropping the pillar~\n");
+        }
+        return userChoice;
+    }
 }

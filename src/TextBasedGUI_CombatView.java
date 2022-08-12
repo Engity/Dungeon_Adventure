@@ -44,9 +44,9 @@ public class TextBasedGUI_CombatView {
         InputChecker fightInputChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         //Get the player's stat
-        ArrayList<StringBuilder> playerStat = CombatController.getInstance().parseDungeonCharacter();
+        ArrayList<StringBuilder> playerStat = CombatController.getInstance().parseDungeonCharacter(null);
         //Get the monster's stat
-        ArrayList<StringBuilder> monsterStat = CombatController.getInstance().parseDungeonCharacter();
+        ArrayList<StringBuilder> monsterStat = CombatController.getInstance().parseDungeonCharacter(null);
 
         //Get the height of the string
         int myRepeatingPromptHeight = Math.max(playerStat.size(), monsterStat.size());
@@ -138,7 +138,7 @@ public class TextBasedGUI_CombatView {
 
         }
 
-        return 0;
+        return userChoice;
     }
 
     /**
