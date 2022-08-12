@@ -6,6 +6,7 @@
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -566,6 +567,7 @@ public class DungeonAdventure implements Serializable {
      * Used for loading save game
      */
 
+    @Serial
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
         myDungeonAdventureInstance = this;
@@ -575,6 +577,7 @@ public class DungeonAdventure implements Serializable {
      * Used for loading save game
      */
 
+    @Serial
     private Object readResolve()  {
         return myDungeonAdventureInstance;
     }
