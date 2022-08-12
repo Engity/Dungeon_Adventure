@@ -5,14 +5,13 @@
  */
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.HashMap;
 
 /**
  * Text based GUI for navigating the rooms
  * {@code @author:} Toan Nguyen
  * @version 08 09 2022
  */
-@SuppressWarnings("GrazieInspection")
+
 public class TextBasedGUI_NavigationView {
     /**
      * The source to input from.

@@ -13,7 +13,7 @@ class PopulationController {
     private int myEntranceID;
 
     ArrayList<Monster> myMonsterPool;//Monster spawn pool
-    private static PopulationController myPopulationControllerInstance = new PopulationController();
+    private static final PopulationController myPopulationControllerInstance = new PopulationController();
 
     /**
      * Private for Singleton design

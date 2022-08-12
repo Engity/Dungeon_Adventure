@@ -220,13 +220,12 @@ public class TextBasedGUI_MainDisplay {
 
         //List of all files and directories
         String[] saveGameList = directorySaves.list();
-        Arrays.sort(saveGameList, Collections.reverseOrder());
-
         //Check whether the save directory is empty or not
         if (saveGameList == null){
             OUTPUT_DESTINATION.println("There is no save game to load");
         }
         else {
+            Arrays.sort(saveGameList, Collections.reverseOrder());
             int saveGameChoice = 0;
 
             StringBuilder saveGameListString = new StringBuilder("PLease select what save game you would like to load");
@@ -328,6 +327,7 @@ public class TextBasedGUI_MainDisplay {
     /**
      * Display the menu when the player has died
      */
+    @SuppressWarnings("SpellCheckingInspection")
     void displayGameOverMenu(){
         InputChecker gameOverMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
         gameOverMenuChecker.setMyInitialPrompt("""
@@ -407,7 +407,7 @@ public class TextBasedGUI_MainDisplay {
 
         StringBuilder repeatingPrompt = new StringBuilder("""
                 Use the number key to navigate the maze and give your commands in combat
-                Survive and win the fight with the vile monsters 
+                Survive and win the fight with the vile monsters
                 Collect 4 pillars to win the game
                 """);
         repeatingPrompt.append("""

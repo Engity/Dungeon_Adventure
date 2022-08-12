@@ -15,8 +15,8 @@ import java.util.Scanner;
  */
 public class InputChecker {
 
-    private InputStream myInputStream;
-    private PrintStream myOutputStream;
+    private final InputStream myInputStream;
+    private final PrintStream myOutputStream;
     private String myInitialPrompt;
     private String myRepeatingPrompt;
     private String myErrorPrompt;
@@ -198,9 +198,7 @@ public class InputChecker {
                     case "2", "n", "no" ->{
                         return false;
                     }
-                    default -> {
-                        myOutputStream.println(myWrongRangePrompt);
-                    }
+                    default -> myOutputStream.println(myWrongRangePrompt);
                 }
             } catch (final Exception theException) {
                 if (!myErrorPrompt.isBlank()){

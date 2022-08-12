@@ -83,15 +83,9 @@ class PopulationControllerTest {
                 //Check to see if there is a monster in the room
                 if (guardian != null){
                     switch (guardian.getMyCharacterName()){
-                        case "Gremlin"->{
-                            amountOfMonster[0]++;
-                        }
-                        case "Skeleton"->{
-                            amountOfMonster[1]++;
-                        }
-                        case "Ogre"->{
-                            amountOfMonster[2]++;
-                        }
+                        case "Gremlin"-> amountOfMonster[0]++;
+                        case "Skeleton"-> amountOfMonster[1]++;
+                        case "Ogre"-> amountOfMonster[2]++;
                     }
                     ++totalAmountOfMonster;
                 }
@@ -120,15 +114,9 @@ class PopulationControllerTest {
                 //Check to see if there is a monster in the room
                 if (guardian != null){
                     switch (guardian.getMyCharacterName()){
-                        case "Gremlin"->{
-                            amountOfMonster[0]++;
-                        }
-                        case "Skeleton"->{
-                            amountOfMonster[1]++;
-                        }
-                        case "Ogre"->{
-                            amountOfMonster[2]++;
-                        }
+                        case "Gremlin"-> amountOfMonster[0]++;
+                        case "Skeleton"-> amountOfMonster[1]++;
+                        case "Ogre"-> amountOfMonster[2]++;
                     }
                     ++totalAmountOfMonster;
                 }
@@ -157,15 +145,9 @@ class PopulationControllerTest {
                 //Check to see if there is a monster in the room
                 if (guardian != null){
                     switch (guardian.getMyCharacterName()){
-                        case "Gremlin"->{
-                            amountOfMonster[0]++;
-                        }
-                        case "Skeleton"->{
-                            amountOfMonster[1]++;
-                        }
-                        case "Ogre"->{
-                            amountOfMonster[2]++;
-                        }
+                        case "Gremlin"-> amountOfMonster[0]++;
+                        case "Skeleton"-> amountOfMonster[1]++;
+                        case "Ogre"-> amountOfMonster[2]++;
                     }
                     ++totalAmountOfMonster;
                 }

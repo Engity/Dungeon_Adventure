@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PillarFactoryTest {
@@ -9,9 +11,9 @@ class PillarFactoryTest {
      */
     @Test
     void testCreatOgre() {
-        Monster myMonster = new Monster("Orge", 200, 2, .6, 30, 60, 0.1, 30, 60);
+        Monster myMonster = new Monster("Ogre", 200, 2, .6, 30, 60, 0.1, 30, 60);
         Monster myMonster2 = MonsterFactory.createMonster(1);
-        assertEquals(myMonster.toString(), myMonster2.toString());
+        assertEquals(myMonster.toString(), Objects.requireNonNull(myMonster2).toString());
     }
 
 }

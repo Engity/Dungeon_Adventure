@@ -18,6 +18,6 @@ public class GameObjects implements Serializable {
 
 
     public String toString() {
-        return toString();
+        return "Object name " + getMyItemName();
     }
 }

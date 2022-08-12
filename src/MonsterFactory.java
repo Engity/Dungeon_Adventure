@@ -2,22 +2,18 @@ public class MonsterFactory {
     /**
      *
      * @param theChoice if 1 create the ogre, if 2 create the gremlin, if 3 create the skeleton
-     * @return
      */
     public static Monster createMonster(final int theChoice) {
 
-        switch (theChoice) {
-            case 1:
-                return createGremlin();
-            case 2:
-                return createSkeleton();
-            case 3:
-                return createOgre();
+        return switch (theChoice) {
+            case 1 -> createGremlin();
+            case 2 -> createSkeleton();
+            case 3 -> createOgre();
+            default ->//end switch
 
+                    null;
+        };
 
-        }//end switch
-
-        return null;
     }//end createMonster()
 
 

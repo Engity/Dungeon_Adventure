@@ -6,12 +6,13 @@
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 /**
  * Text based GUI for combat
  * {@code @author:} Toan Nguyen
  * @version 08 09 2022
  */
+@SuppressWarnings("GrazieInspection")
 public class TextBasedGUI_CombatView {
     /**
      * The source to input from.
@@ -53,13 +54,13 @@ public class TextBasedGUI_CombatView {
         int myRepeatingPromptHeight = Math.max(playerStat.size(), monsterStat.size());
 
         //Parse the decoration
-        String decorationStB ="""
+        String decorationStB = """
                                      __
                                    \\   /
                                      \\\\
                                        \\\\
                      ___________________||/\\_
-                    (___________________()| _||||||||||||||||||||||||||||||||||||||||||> 
+                    (___________________()| _||||||||||||||||||||||||||||||||||||||||||>
                                         ||\\/
                                        //
                                      //
@@ -68,8 +69,8 @@ public class TextBasedGUI_CombatView {
         String[] decorationStr = decorationStB.split("\n");
         StringBuilder[] repeatingPromptDecoration = new StringBuilder [decorationStr.length];
         int decorationStrWidth = 0;
-        for (int i = 0 ; i < decorationStr.length;i++) {
-            decorationStrWidth = Math.max(decorationStr[i].length() + 3, decorationStrWidth);
+        for (String s : decorationStr) {
+            decorationStrWidth = Math.max(s.length() + 3, decorationStrWidth);
         }
 
         //Attach it to the string builder

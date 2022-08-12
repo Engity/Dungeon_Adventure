@@ -14,7 +14,7 @@ import java.util.Scanner;
  * @version 08 09 2022
  */
 public class CombatController {
-    private TextBasedGUI_CombatView myCombatView;
+    private final TextBasedGUI_CombatView myCombatView;
     private int myCurrentTurnAmount;
 
     private static DungeonAdventure myGameController;
@@ -57,9 +57,7 @@ public class CombatController {
                     }
                 }
             }
-            case (1) -> {
-                TextBasedGUI_MainDisplay.getInstance().saveGame();
-            }
+            case (1) -> TextBasedGUI_MainDisplay.getInstance().saveGame();
             case (2) -> {
                 //return 3 to tell DungeonAdventure to flee
                 return 3;
@@ -74,7 +72,6 @@ public class CombatController {
     /**
      * Start the fighting
      * @param theMonster the monster the player supposed to fight
-     * @return
      */
 
     int fighting(final Monster theMonster){
@@ -118,8 +115,8 @@ public class CombatController {
         }
 
         //Add space to make every string has equal length
-        for (int i = 0 ; i < res.size(); i++){
-            res.get(i).append(" ".repeat(longestWidth - res.get(i).length()));
+        for (StringBuilder re : res) {
+            re.append(" ".repeat(longestWidth - re.length()));
         }
 
 

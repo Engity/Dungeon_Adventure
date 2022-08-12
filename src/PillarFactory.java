@@ -2,26 +2,19 @@ public class PillarFactory {
     /**
      *
      * @param theChoice if 1 create the pillar abstraction, if 2 create the pillar encapsulation, if 3 create the pillar inheritance, if 4 create the pillar Polymorphism
-     * @return
      */
     public static Pillar createPillar (final int theChoice) {
 
-        switch (theChoice) {
-            case 1:
-                return createPillarOfAbstraction();
+        return switch (theChoice) {
+            case 1 -> createPillarOfAbstraction();
+            case 2 -> createPillarOfEncapsulation();
+            case 3 -> createPillarOfInheritance();
+            case 4 -> createPillarOfPolymorphism();
+            default ->//end switch
 
-            case 2:
-                return createPillarOfEncapsulation();
+                    null;
+        };
 
-            case 3:
-                return createPillarOfInheritance();
-
-            case 4:
-                return createPillarOfPolymorphism();
-
-        }//end switch
-
-        return null;
     }//end createPillar()
 
 

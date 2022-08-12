@@ -41,6 +41,7 @@ public class DungeonAdventure implements Serializable {
     final static Random RANDOM_SEED = new Random();
 
     //Used in Serialization
+    @Serial
     private static final long serialVersionUID = 11L;
 
     //Used to track the state of the game
@@ -483,7 +484,7 @@ public class DungeonAdventure implements Serializable {
         boolean returnToMain = false;
         while (!DungeonAdventure.getInstance().myGameOverStatus || !DungeonAdventure.getInstance().myVictoryStatus){
             //Check player is at the entrance to ask whether they would like drop off pillar
-                //Only ask if there is pillar in the player's inventory and they are at the entrance
+                //Only ask if there is pillar in the player's inventory, and they are at the entrance
             if (DungeonAdventure.getInstance().isPlayerAtTheEntrance()){
                 boolean dropOffConfirm = TextBasedGUI_NavigationView.getInstance().displayDropOffPillarMenu();
                 if (dropOffConfirm){

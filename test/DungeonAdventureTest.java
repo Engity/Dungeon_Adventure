@@ -46,12 +46,9 @@ public class DungeonAdventureTest {
         GAME_CONTROLLER.setPlayerPosition(myStartingPositionX, myStartingPositionY);
         myPlayerCurrentRoom = GAME_CONTROLLER.getMyCurrentRoom();
 
-        int currentPosX = myStartingPositionX;
-        int currentPosY = myStartingPositionY;
-
         for (int direction = 0 ; direction < 4; direction++) {
-            int mySupposedX = currentPosX + DX[direction];
-            int mySupposedY = currentPosY + DY[direction];
+            int mySupposedX = myStartingPositionX + DX[direction];
+            int mySupposedY = myStartingPositionY + DY[direction];
 
             //Check the visited status
             assertFalse(GAME_CONTROLLER.getRoomVisitedStatus(mySupposedX, mySupposedY));

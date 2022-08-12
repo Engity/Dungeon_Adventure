@@ -1,13 +1,11 @@
-import java.util.Random;
-
 /**
- * This Monster class contains all addtional instance methods the monster characters
+ * This Monster class contains all additional instance methods the monster characters
  */
 
 
 
 public class Monster extends DungeonCharacter{
-    private double myChancetoHeal;
+    private double myChanceToHeal;
     private int myMinHealPoints;
     private int myMaxHealPoints;
 
@@ -33,7 +31,7 @@ public class Monster extends DungeonCharacter{
         this.setMaxHealPoints(theMaxHeal);
     }
     private void setChanceToHeal(final double theHealthChance) {
-        this.myChancetoHeal = theHealthChance;
+        this.myChanceToHeal = theHealthChance;
     }
     private void setMinHealPoints(final int theMinHeal) {
         this.myMinHealPoints = theMinHeal;
@@ -45,7 +43,7 @@ public class Monster extends DungeonCharacter{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder (super.toString());
-        sb.append ("Chance to heal: ").append(myChancetoHeal).append("\n");
+        sb.append ("Chance to heal: ").append(myChanceToHeal).append("\n");
         sb.append ("Minimum Health Points: ").append(myMinHealPoints).append("\n");
         sb.append ("Maximum Health Points: ").append(myMaxHealPoints).append("\n");
 
