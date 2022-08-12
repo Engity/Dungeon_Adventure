@@ -8,13 +8,12 @@ public class MonsterFactory {
 
         switch (theChoice) {
             case 1:
+                return createGremlin();
+            case 2:
+                return createSkeleton();
+            case 3:
                 return createOgre();
 
-            case 2:
-                return createGremlin();
-
-            case 3:
-                return createSkeleton();
 
         }//end switch
 
@@ -25,7 +24,7 @@ public class MonsterFactory {
 
     private static Monster createOgre() {
 
-        return new Monster("Orge", 200, 2, .6, 30, 60,0.1, 30, 60);
+        return new Monster("Ogre", 200, 2, .6, 30, 60,0.1, 30, 60);
     }//end createOgre()
 
     private static Monster createGremlin() {

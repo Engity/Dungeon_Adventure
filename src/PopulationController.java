@@ -47,9 +47,9 @@ class PopulationController {
     /**
      * Fill the monsters spawn pool
      * @param theDifficultyLevel the level of difficulty
-     * Level 1: the pool will contain 60% level 1 Monster (Gremlin), 40% Level 2 Monster (Skeleton), 10% level 3 Monster (Ogre); Total monster is 50% the size of the map
-     * Level 2: the pool will contain 50% level 1 Monster (Gremlin), 30% Level 2 Monster (Skeleton), 20% level 3 Monster (Ogre); Total monster is 75% the size of the map
-     * Level 3: the pool will contain 25% level 1 Monster (Gremlin), 35% Level 2 Monster (Skeleton), 40% level 3 Monster (Ogre); Total monster is 100% the size of the map
+     * Level 1 (Easy): the pool will contain 60% level 1 Monster (Gremlin), 40% Level 2 Monster (Skeleton), 10% level 3 Monster (Ogre); Total monster is nearly 50% the size of the map
+     * Level 2 (Medium): the pool will contain 50% level 1 Monster (Gremlin), 30% Level 2 Monster (Skeleton), 20% level 3 Monster (Ogre); Total monster is nearly 75% the size of the map
+     * Level 3 (Hard): the pool will contain 25% level 1 Monster (Gremlin), 35% Level 2 Monster (Skeleton), 40% level 3 Monster (Ogre); Total monster is nearly 100% the size of the map
      */
 
     private void loadTheMonster(final int theDifficultyLevel){
@@ -100,6 +100,11 @@ class PopulationController {
      */
 
     Room[][] populaceMaze(final int theDifficultyLevel){
+        //Map is too small to generate anything
+        if (myMapHeight * myMapWidth - 1 < 6){
+            return null;
+        }
+
         loadTheMonster(theDifficultyLevel);
 
         ArrayList<Integer> randomRoomPool = new ArrayList<>();
