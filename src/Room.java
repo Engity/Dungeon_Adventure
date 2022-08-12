@@ -23,7 +23,7 @@ public class Room implements Serializable {
     private ArrayList<Object> myContents;
     private byte myAccessCode ; //Bit 0th for North, 1st for East, 2nd for South, 3rd for West
 
-    private Object myGuardian; //Comment out because monster has not yet been implemented
+    private Monster myGuardian;
 
     //Default constructor, creating an empty room with no guardian
     public Room(){
@@ -33,7 +33,7 @@ public class Room implements Serializable {
     public Room(final int theID){
         myContents = new ArrayList<>();
         myAccessCode = 0;//Every door is closed
-        //myGuardian = null;
+        myGuardian = null;
         id = theID;
     }
 
@@ -118,7 +118,7 @@ public class Room implements Serializable {
      * Put a monster in this room
      * @param theMonster the monster that is put in this room
      */
-    void setMyGuardian(final Object theMonster){
+    void setMyGuardian(final Monster theMonster){
         myGuardian = theMonster;
     }
 
@@ -126,7 +126,7 @@ public class Room implements Serializable {
      * Get the guaridan
      * @return the guaridan in this room
      */
-    Object getMyGuardian(){
+    Monster getMyGuardian(){
         return myGuardian;
     }
 

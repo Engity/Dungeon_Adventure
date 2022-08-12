@@ -38,30 +38,54 @@ public class CombatController {
      * Take in 2 dungeon characters, if one of them is hero, will ask the player for control
      */
     //Need other classes
-    int initiateFight(){
-        int userChoice;
-        while (true) {
-            userChoice = myCombatView.displayPreFightMenu("Will replace this with actual monster name");
-            switch (userChoice) {
-                case (0) -> {
-                    myCombatView.promptUserForFightAction();
-                }
-                case (1) -> {
-                    TextBasedGUI_MainDisplay.getInstance().saveGame();
-                }
-                case (2) -> {
-                    return 2;
+    int initiateFight(final Room theRoom){
+        int userChoice = myCombatView.displayPreFightMenu(theRoom.getMyGuardian().getMyCharacterName());
+        switch (userChoice) {
+            case (0) -> {
+                int fightResult = fighting(theRoom.getMyGuardian());
+                switch (fightResult){
+                    case 0 -> {
+                        //Return 0 to let DungeonAdventure know that the player lost the fight and died
+                        return 0;
+                    }
+                    case 1 -> {
+                        //Win the fight get the loot
+                        var loot = theRoom.retrieveLoot();
+
+                        //Return 2 to let DungeonAdventure know that the player win the fight
+                        return 2;
+                    }
                 }
             }
-            //If the monster is dead show this
-            System.out.println("You have obtained some loot but since we have not implemented game objs...");
-            //
-            return 0;
-
-            //If the player has died return a different value to let the DungeonAdventure it is game over
+            case (1) -> {
+                TextBasedGUI_MainDisplay.getInstance().saveGame();
+            }
+            case (2) -> {
+                //return 3 to tell DungeonAdventure to flee
+                return 3;
+            }
         }
 
+        //If the player has died return a different value to let the DungeonAdventure it is game over
 
+        return 0;
+    }
+
+    /**
+     * Start the fighting
+     * @param theMonster the monster the player supposed to fight
+     * @return
+     */
+
+    int fighting(final Monster theMonster){
+        myCombatView.promptUserForFightAction(null, theMonster);
+//        while (!theMonster.isDeath()){
+//
+//        }
+
+        if (theMonster.isDeath())
+            return 1;
+        return 0;
     }
 
     /**
@@ -70,19 +94,16 @@ public class CombatController {
      * Return a list of string with equal length
      */
 
-    ArrayList<StringBuilder> parseDungeonCharacter(final Object theDungeonCharacter){
+    ArrayList<StringBuilder> parseDungeonCharacter(final DungeonCharacter theDungeonCharacter){
         ArrayList<StringBuilder> res = new ArrayList<>();
-        int k = 0, longestWidth = 0;
 
-        //Basic example should be replace with theDungeonCharacter.toString()
-        String characterToSTR = """
-                Name: asDLK:l;asdlk;
-                Health: 90
-                Attack speed: 50
-                Dodge chance: 20
-                dsadasddsaasd
-                asdasdasddddddddddddddddddddddd
-                """;
+        if (theDungeonCharacter == null){
+            return res;
+        }
+
+        int longestWidth = 0;
+
+        String characterToSTR = theDungeonCharacter.toString();
 
         Scanner scanline = new Scanner(characterToSTR);
         
@@ -94,7 +115,6 @@ public class CombatController {
             //Increase the number of rows
             longestWidth = Math.max(longestWidth, line.length());
             res.add(line);
-            ++k;
         }
 
         //Add space to make every string has equal length

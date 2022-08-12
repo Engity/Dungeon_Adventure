@@ -502,10 +502,15 @@ public class DungeonAdventure implements Serializable {
             }
             //Checking if there is a monster in a room
             if (DungeonAdventure.getInstance().myCurrentRoom.getMyGuardian() != null){
-                int userFightingStatus = CombatController.getInstance().initiateFight();
+                int userFightingStatus = CombatController.getInstance().initiateFight(DungeonAdventure.getInstance().myCurrentRoom);
                 //User chose to chicken out
-                if (userFightingStatus == 2){
+                if (userFightingStatus == 3){
                     DungeonAdventure.getInstance().returnPlayerToPreviousPos();
+                }
+                //Player is dead
+                if (userFightingStatus == 0){
+                    DungeonAdventure.getInstance().myGameOverStatus = true;
+                    break;
                 }
             }
             //moving

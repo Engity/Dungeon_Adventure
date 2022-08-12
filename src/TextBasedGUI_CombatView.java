@@ -38,15 +38,16 @@ public class TextBasedGUI_CombatView {
 
     /**
      * Prompt the user for what to do in the fight
+     * @param theMessage containing status of the fight like what happen in the last turn
      * @return the user choice
      */
-    int promptUserForFightAction(){
+    int promptUserForFightAction(String theMessage, Monster theMonster){
         InputChecker fightInputChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         //Get the player's stat
         ArrayList<StringBuilder> playerStat = CombatController.getInstance().parseDungeonCharacter(null);
         //Get the monster's stat
-        ArrayList<StringBuilder> monsterStat = CombatController.getInstance().parseDungeonCharacter(null);
+        ArrayList<StringBuilder> monsterStat = CombatController.getInstance().parseDungeonCharacter(theMonster);
 
         //Get the height of the string
         int myRepeatingPromptHeight = Math.max(playerStat.size(), monsterStat.size());
@@ -58,7 +59,7 @@ public class TextBasedGUI_CombatView {
                                      \\\\
                                        \\\\
                      ___________________||/\\_
-                    (___________________()| _||||||||||||||||||||||||||||||||||||||||||>\t
+                    (___________________()| _||||||||||||||||||||||||||||||||||||||||||> 
                                         ||\\/
                                        //
                                      //
@@ -68,8 +69,9 @@ public class TextBasedGUI_CombatView {
         StringBuilder[] repeatingPromptDecoration = new StringBuilder [decorationStr.length];
         int decorationStrWidth = 0;
         for (int i = 0 ; i < decorationStr.length;i++) {
-            decorationStrWidth = Math.max(decorationStr[i].length(), decorationStrWidth);
+            decorationStrWidth = Math.max(decorationStr[i].length() + 3, decorationStrWidth);
         }
+
         //Attach it to the string builder
         for (int i = 0 ; i < decorationStr.length;i++) {
             repeatingPromptDecoration[i] = new StringBuilder();
@@ -94,7 +96,8 @@ public class TextBasedGUI_CombatView {
             if (i < playerStat.size())
                 myRepeatingPrompt.append(playerStat.get(i));
             else{
-                myRepeatingPrompt.append(" ".repeat(playerStat.get(0).length()));
+                if (playerStat.size() > 0)
+                    myRepeatingPrompt.append(" ".repeat(playerStat.get(0).length()));
             }
             if (i < repeatingPromptDecoration.length)
                 myRepeatingPrompt.append(repeatingPromptDecoration[i]);
@@ -105,9 +108,10 @@ public class TextBasedGUI_CombatView {
             }
         }
         //outputting out the notification
-        myRepeatingPrompt.append("\nNotification: There is a huge monster here....\n");
+        if (theMessage != null)
+            myRepeatingPrompt.append("\nNotification: ").append(theMessage);
 
-        myRepeatingPrompt.append("Please enter your choice: ");
+        myRepeatingPrompt.append("\nPlease enter your choice: ");
 
         String [] optionName = {"Attack", "Defend", "Use Potion", "Special attack (Will fail if mana is not 100)"};
 
@@ -122,18 +126,18 @@ public class TextBasedGUI_CombatView {
             //attack
             case (0)-> {
                 System.out.println("I attack");
-                System.out.println("It suppose to be a function but there it has not been developed");
+                System.out.println("It suppose to be a function but there it has not been developed so you win, for now");
             }
             //Defend
             case(1)-> {
                 System.out.println("I defend");
-                System.out.println("It suppose to be a function but there it has not been developed");
+                System.out.println("It suppose to be a function but there it has not been developed so you win, for now");
             }
 
             //Use potion
             case (2) ->{
                 System.out.println("I use a potion");
-                System.out.println("It suppose to be a function but there it has not been developed");
+                System.out.println("It suppose to be a function but there it has not been developed so you win, for now");
             }
 
         }
@@ -150,7 +154,7 @@ public class TextBasedGUI_CombatView {
     int displayPreFightMenu(final String theMonsterName){
         InputChecker preFightMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
         int userChoice = 0;
-        StringBuilder repeatingPrompt = new StringBuilder("You have encounter ").append(theMonsterName);
+        StringBuilder repeatingPrompt = new StringBuilder("You have encounter a/an ").append(theMonsterName);
         repeatingPrompt.append("\nGet ready to fight!");
 
         String [] optionName = {"Ready!", "Save the game", "Flee"};
