@@ -45,7 +45,7 @@ public class Monster extends DungeonCharacter{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder (super.toString());
-        sb.append ("Chance to heal: ").append(myChancetoHeal).append("\n");
+        sb.append ("Chance to heal: ").append(String.format("%.2f",myChancetoHeal)).append("\n");
         sb.append ("Minimum Health Points: ").append(myMinHealPoints).append("\n");
         sb.append ("Maximum Health Points: ").append(myMaxHealPoints).append("\n");
 
