@@ -17,7 +17,7 @@ class MonsterFactoryTest {
     }
     /**
      * Test method for {@link MonsterFactory# createGremlin ()}.
-     * Test the value of the Monster Ogre
+     * Test the value of the Monster Gremlin
      */
     @Test
     void testCreatGremlin() {
@@ -27,7 +27,7 @@ class MonsterFactoryTest {
     }
     /**
      * Test method for {@link MonsterFactory# createSkeleton ()}.
-     * Test the value of the Monster Ogre
+     * Test the value of the Monster Skeleton
      */
     @Test
     void testCreatSkeleton() {
