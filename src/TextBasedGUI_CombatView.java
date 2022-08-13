@@ -42,11 +42,11 @@ public class TextBasedGUI_CombatView {
      * @param theMessage containing status of the fight like what happen in the last turn
      * @return the user choice
      */
-    int promptUserForFightAction(String theMessage, Monster theMonster){
+    int promptUserForFightAction(String theMessage, final DungeonCharacter theHero, final Monster theMonster){
         InputChecker fightInputChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         //Get the player's stat
-        ArrayList<StringBuilder> playerStat = CombatController.getInstance().parseDungeonCharacter(null);
+        ArrayList<StringBuilder> playerStat = CombatController.getInstance().parseDungeonCharacter(theHero);
         //Get the monster's stat
         ArrayList<StringBuilder> monsterStat = CombatController.getInstance().parseDungeonCharacter(theMonster);
 
@@ -114,36 +114,14 @@ public class TextBasedGUI_CombatView {
 
         myRepeatingPrompt.append("\nPlease enter your choice: ");
 
-        String [] optionName = {"Attack", "Defend", "Use Potion", "Special attack (Will fail if mana is not 100)"};
+        String [] optionName = {"Attack", "Special attack (Will fail if mana is not 100)", "Use Potion"};
 
         fightInputChecker.setMyRepeatingPrompt(myRepeatingPrompt.toString());
 
         fightInputChecker.setMyWrongRangePrompt("There is no the option corresponding to the index you just inputted, please try again");
         fightInputChecker.setMyErrorPrompt("Wrong format, please input numbers only!");
 
-        int userChoice = fightInputChecker.inputCheckForNumber(optionName);
-
-        switch (userChoice){
-            //attack
-            case (0)-> {
-                System.out.println("I attack");
-                System.out.println("It suppose to be a function but there it has not been developed so you win, for now");
-            }
-            //Defend
-            case(1)-> {
-                System.out.println("I defend");
-                System.out.println("It suppose to be a function but there it has not been developed so you win, for now");
-            }
-
-            //Use potion
-            case (2) ->{
-                System.out.println("I use a potion");
-                System.out.println("It suppose to be a function but there it has not been developed so you win, for now");
-            }
-
-        }
-
-        return userChoice;
+        return fightInputChecker.inputCheckForNumber(optionName);
     }
 
     /**
@@ -155,7 +133,7 @@ public class TextBasedGUI_CombatView {
     int displayPreFightMenu(final String theMonsterName){
         InputChecker preFightMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
         int userChoice = 0;
-        StringBuilder repeatingPrompt = new StringBuilder("You have encounter a/an ").append(theMonsterName);
+        StringBuilder repeatingPrompt = new StringBuilder("You have encounter a ").append(theMonsterName);
         repeatingPrompt.append("\nGet ready to fight!");
 
         String [] optionName = {"Ready!", "Save the game", "Flee"};
@@ -166,6 +144,30 @@ public class TextBasedGUI_CombatView {
 
         return userChoice;
     }
+
+    boolean displayPostFightMenu(ArrayList<Object> theLoot){
+        InputChecker postFightMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        StringBuilder repeatingPrompt = new StringBuilder("\nCongratulation, you have emerged victorious!\n");
+
+        if (theLoot.isEmpty()){
+            repeatingPrompt.append("You have obtained nothing\n");
+        } else {
+            //Loot to get every object
+            for (var item : theLoot) {
+                //If it is pillar
+                if (item.getClass() == Pillar.class) {
+                    repeatingPrompt.append("You have obtained the pillar ").append(((Pillar) item).getMyItemName());
+                    repeatingPrompt.append("\n");
+                }
+            }
+        }
+
+        repeatingPrompt.append("Press Enter key to continue.");
+
+        postFightMenuChecker.setMyRepeatingPrompt(repeatingPrompt.toString());
+        return postFightMenuChecker.inputAnyKeyToContinue();
+    }
+
 
 
 

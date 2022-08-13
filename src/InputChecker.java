@@ -175,15 +175,13 @@ public class InputChecker {
 
         //Start looping until user getting the prompt right
         Scanner input = new Scanner(myInputStream);
-        int choice = 0;
 
         //Default repeating prompt for YN question
         if (myRepeatingPrompt.isBlank()){
             myRepeatingPrompt = "1. Yes\n2. No";
         }
 
-        //Loop till the user get it
-        // right
+        //Loop till the user get it right
         while (true){
             myOutputStream.println(myRepeatingPrompt);
 
@@ -239,10 +237,35 @@ public class InputChecker {
         return inputCheckForNumber();
     }
 
+    boolean inputAnyKeyToContinue(){
+        //Only print if the prompt is not blank
+        if (!myInitialPrompt.isBlank()){
+            myOutputStream.println(myInitialPrompt);
+        }
 
+        //Start looping until user getting the prompt right
+        Scanner input = new Scanner(myInputStream);
 
+        //Default repeating prompt for YN question
+        if (myRepeatingPrompt.isBlank()){
+            myRepeatingPrompt = "Press Enter key to continue";
+        }
 
+        //Loop till the user press anything
+        while (true) {
+            myOutputStream.println(myRepeatingPrompt);
 
-
-
+            //Input check
+            try {
+                myInputStream.read();
+                return true;
+            } catch (final Exception theException) {
+                if (!myErrorPrompt.isBlank()) {
+                    myOutputStream.println(myErrorPrompt);
+                } else {
+                    myOutputStream.println(theException.getMessage());
+                }
+            }
+        }
+    }
 }

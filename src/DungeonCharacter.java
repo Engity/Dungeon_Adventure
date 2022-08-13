@@ -10,13 +10,6 @@ public class DungeonCharacter implements Serializable {
     private double myBlockChance;
     private int myDamageMin;
     private int myDamageMax;
-
-
-
-    final static Random RANDOM_SEED = new Random();
-
-
-
     public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
         this.setName(theName);
@@ -116,24 +109,33 @@ public class DungeonCharacter implements Serializable {
      */
 
     boolean isDead(){
-        return (myHitPoints > 0);
+        return (myHitPoints <= 0);
     }
 
     /**
      * Apply damage to this character
      * Won't go over 0
      * @param theDamage Damage this character should receive
+     * @return the damage it actually applied
      */
-    void applyDamage(final double theDamage){
+    double applyDamage(final double theDamage){
         double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
+        double theActualDamage = theDamage;
+
         //Fail to block case
-        if (rollTheDice > myBlockChance){
-            myHitPoints = Math.max(0, myHitPoints - theDamage);
-            return;
+        if (rollTheDice <= myBlockChance){
+            //Reduce damage if manage to block
+            double reducedDamage = rollTheDice * theDamage;
+            theActualDamage = reducedDamage;
         }
-        //Reduce damage if manage to block
-        double reducedDamage = rollTheDice * theDamage;
-        myHitPoints = Math.max(0, myHitPoints - reducedDamage);
+
+        if (myHitPoints - theActualDamage < 0){
+            theActualDamage = myHitPoints;
+            myHitPoints = 0;
+        }
+
+        myHitPoints -= theActualDamage;
+        return theActualDamage;
 
     }
 

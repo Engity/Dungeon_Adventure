@@ -37,12 +37,11 @@ public class CombatController {
      * Initiate the fight
      * Take in 2 dungeon characters, if one of them is hero, will ask the player for control
      */
-    //Need other classes
-    int initiateFight(final Room theRoom){
+    int initiateFight(final DungeonCharacter theHero, final Room theRoom){
         int userChoice = myCombatView.displayPreFightMenu(theRoom.getMyGuardian().getMyCharacterName());
         switch (userChoice) {
             case (0) -> {
-                int fightResult = fighting(theRoom.getMyGuardian());
+                int fightResult = fighting(theHero, theRoom.getMyGuardian());
                 switch (fightResult){
                     case 0 -> {
                         //Return 0 to let DungeonAdventure know that the player lost the fight and died
@@ -51,6 +50,10 @@ public class CombatController {
                     case 1 -> {
                         //Win the fight get the loot
                         var loot = theRoom.retrieveLoot();
+                        boolean tmp = TextBasedGUI_CombatView.getInstance().displayPostFightMenu(loot);
+                        //Add the loot to theHero
+
+                        //If it is buff or de-buff then use different stuffs
 
                         //Return 2 to let DungeonAdventure know that the player win the fight
                         return 2;
@@ -74,11 +77,57 @@ public class CombatController {
      * @param theMonster the monster the player supposed to fight
      */
 
-    int fighting(final Monster theMonster){
-        myCombatView.promptUserForFightAction(null, theMonster);
-//        while (!theMonster.isDeath()){
-//
-//        }
+    int fighting(final DungeonCharacter theHero, final Monster theMonster){
+        StringBuilder message = new StringBuilder("Turn 1\nFight!");
+
+        int turnNumber = 1;
+
+        while (!theMonster.isDead() && !theHero.isDead()){
+
+            //Player's turn
+            int userChoice = myCombatView.promptUserForFightAction(message.toString(), theHero, theMonster);
+            message = new StringBuilder("Turn ").append(++turnNumber);
+
+            double playerInflictDamage;
+            switch (userChoice){
+                //attack
+                case (0)-> {
+                    playerInflictDamage = theHero.normalAttackMove();
+                    double playerActualInflictDamage = theMonster.applyDamage(playerInflictDamage);
+                    if (playerInflictDamage != 0){
+                        message.append("\nYou have inflicted ").append(String.format("%.2f", playerActualInflictDamage)).append(" damage.");
+                    }
+                    else{
+                        message.append("\nMonster managed to block your attack");
+                    }
+                }
+                //Special attack
+                case(1)-> {
+                    System.out.println("I use special attack");
+                    System.out.println("It suppose to be a function but there it has not been developed so you just lost a turn, for now");
+                }
+
+                //Use potion
+                case (2) ->{
+                    System.out.println("I use a potion");
+                    System.out.println("It suppose to be a function but there it has not been developed so you just lost a turn, for now");
+                }
+            }
+
+            //Monster's turn
+            //just attack for now
+            double monsterInflictDamage = theMonster.normalAttackMove();
+            double monsterActualInflictDamage = theHero.applyDamage(monsterInflictDamage);
+
+            //Update notification
+            //if the monster chose to attack
+            if (monsterActualInflictDamage != 0){
+                message.append("\nThe monster has attacked you, inflicted ").append(String.format("%.2f", monsterActualInflictDamage)).append(" damage.");
+            }
+            else{
+                message.append("\nYou managed to block the monster's attack");
+            }
+        }
 
         if (theMonster.isDead())
             return 1;
