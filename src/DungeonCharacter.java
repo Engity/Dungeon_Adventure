@@ -2,17 +2,22 @@ import java.util.Random;
 import java.io.Serializable;
 public class DungeonCharacter implements Serializable {
     private String myCharacterName;
-    private int myHitPoints;
+    private double myHitPoints;
+    private double myMaxHitPoints;
     private int myAttackSpeed;
-    private double myChangeToHit;
+    private double myHitChance;
+
+    private double myBlockChance;
     private int myDamageMin;
     private int myDamageMax;
+
+
 
     final static Random RANDOM_SEED = new Random();
 
 
 
-    public DungeonCharacter(final String theName, final int theHit, final int theAttack,
+    public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
         this.setName(theName);
         this.setHitPoint(theHit);
@@ -34,7 +39,7 @@ public class DungeonCharacter implements Serializable {
     }
 
     private void setChanceToHit(final double theChance) {
-        this.myChangeToHit = theChance;
+        this.myHitChance = theChance;
 
     }
 
@@ -43,7 +48,7 @@ public class DungeonCharacter implements Serializable {
 
     }
 
-    private void setHitPoint(final int theHit) {
+    private void setHitPoint(final double theHit) {
         this.myHitPoints = theHit;
 
     }
@@ -57,7 +62,7 @@ public class DungeonCharacter implements Serializable {
         return myCharacterName;
     }
 
-    public int getMyHitPoints() {
+    public double getMyHitPoints() {
         return myHitPoints;
     }
 
@@ -65,8 +70,8 @@ public class DungeonCharacter implements Serializable {
         return myAttackSpeed;
     }
 
-    public double getMyChangeToHit() {
-        return myChangeToHit;
+    public double getMyHitChance() {
+        return myHitChance;
     }
 
     public int getMyDamageMin() {
@@ -77,10 +82,20 @@ public class DungeonCharacter implements Serializable {
         return myDamageMax;
     }
 
-    // Check if the character is death or not
-    public boolean isDeath() {
+    public double getMyMaxHitPoints() {
+        return myMaxHitPoints;
+    }
 
-        return ((myHitPoints <= 0));
+    public void setMyMaxHitPoints(final double theMaxHitPoints) {
+        this.myMaxHitPoints = theMaxHitPoints;
+    }
+
+    public double getMyBlockChance() {
+        return myBlockChance;
+    }
+
+    public void setMyBlockChance(final double theBlockChance) {
+        this.myBlockChance = theBlockChance;
     }
 
     @Override
@@ -89,10 +104,51 @@ public class DungeonCharacter implements Serializable {
         sb.append ("Name: ").append(myCharacterName).append("\n");
         sb.append ("Hit Points: ").append(myHitPoints).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
-        sb.append ("Chance to hit: ").append(myChangeToHit).append("\n");
+        sb.append ("Chance to hit: ").append(myHitChance).append("\n");
         sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
         sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");
         return sb.toString();
+    }
+
+    /**
+     * Apply damage to this character
+     * Won't go over 0
+     * @param theDamage Damage this character should receive
+     */
+    void applyDamage(final double theDamage){
+        double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
+        //Fail to block case
+        if (rollTheDice > myBlockChance){
+            myHitPoints = Math.max(0, myHitPoints - theDamage);
+            return;
+        }
+        //Reduce damage if manage to block
+        double reducedDamage = rollTheDice * theDamage;
+        myHitPoints = Math.max(0, myHitPoints - reducedDamage);
+
+    }
+
+    /**
+     * Increase health to this character
+     * Won't go over myMaxHitPoints
+     * @param theHealingAmount Health this character should receive
+     */
+    void increaseHP(final double theHealingAmount){
+        myHitPoints = Math.min(myMaxHitPoints, myHitPoints + theHealingAmount);
+    }
+
+    /**
+     * Return a random number between the range [myDamageMin, myDamageMax)
+     * Will based on myHitChance if fails, return 0
+     */
+    double normalAttackMove(){
+        double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
+        //Randomize based on hit chance
+        if (rollTheDice > myHitChance){
+            return 0;
+        }
+        //Random the damage this character would inflict
+        return DungeonAdventure.RANDOM_SEED.nextDouble(myDamageMin, myDamageMax);
     }
 
 }
