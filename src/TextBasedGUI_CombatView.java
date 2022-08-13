@@ -145,9 +145,23 @@ public class TextBasedGUI_CombatView {
         return userChoice;
     }
 
+    /**
+     * Display the post-fight notification showing what loot the player has gained
+     * @param theLoot containing the room's loot
+     * @return whether the player's choose to continue or not
+     */
+
     boolean displayPostFightMenu(ArrayList<Object> theLoot){
         InputChecker postFightMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
-        StringBuilder repeatingPrompt = new StringBuilder("\nCongratulation, you have emerged victorious!\n");
+
+        StringBuilder repeatingPrompt = new StringBuilder("""
+                 ____   ____  _____   ______  _________    ___   _______     _____   ___   _____  _____   ______  \s
+                |_  _| |_  _||_   _|.' ___  ||  _   _  | .'   `.|_   __ \\   |_   _|.'   `.|_   _||_   _|.' ____ \\ \s
+                  \\ \\   / /    | | / .'   \\_||_/ | | \\_|/  .-.  \\ | |__) |    | | /  .-.  \\ | |    | |  | (___ \\_|\s
+                   \\ \\ / /     | | | |           | |    | |   | | |  __ /     | | | |   | | | '    ' |   _.____`. \s
+                    \\ ' /     _| |_\\ `.___.'\\   _| |_   \\  `-'  /_| |  \\ \\_  _| |_\\  `-'  /  \\ \\__/ /   | \\____) |\s
+                     \\_/     |_____|`.____ .'  |_____|   `.___.'|____| |___||_____|`.___.'    `.__.'     \\______.'
+                """);
 
         if (theLoot.isEmpty()){
             repeatingPrompt.append("You have obtained nothing\n");
