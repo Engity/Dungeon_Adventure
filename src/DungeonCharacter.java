@@ -111,6 +111,15 @@ public class DungeonCharacter implements Serializable {
     }
 
     /**
+     * Check to see if this character is still alive
+     * @return true if hit point > 0, false otherwise
+     */
+
+    boolean isDead(){
+        return (myHitPoints > 0);
+    }
+
+    /**
      * Apply damage to this character
      * Won't go over 0
      * @param theDamage Damage this character should receive

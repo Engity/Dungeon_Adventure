@@ -80,7 +80,7 @@ public class CombatController {
 //
 //        }
 
-        if (theMonster.isDeath())
+        if (theMonster.isDead())
             return 1;
         return 0;
     }
