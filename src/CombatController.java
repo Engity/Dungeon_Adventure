@@ -37,11 +37,11 @@ public class CombatController {
      * Initiate the fight
      * Take in 2 dungeon characters, if one of them is hero, will ask the player for control
      */
-    int initiateFight(final DungeonCharacter theHero, final Room theRoom){
-        int userChoice = myCombatView.displayPreFightMenu(theRoom.getMyGuardian().getMyCharacterName());
+    int initiateFight(final Hero theHero, final Room theRoom){
+        int userChoice = myCombatView.displayPreFightMenu(theRoom.getGuardian().getCharacterName());
         switch (userChoice) {
             case (0) -> {
-                int fightResult = fighting(theHero, theRoom.getMyGuardian());
+                int fightResult = fighting(theHero, theRoom.getGuardian());
                 switch (fightResult){
                     case 0 -> {
                         //Return 0 to let DungeonAdventure know that the player lost the fight and died
@@ -52,6 +52,12 @@ public class CombatController {
                         var loot = theRoom.retrieveLoot();
                         boolean tmp = TextBasedGUI_CombatView.getInstance().displayPostFightMenu(loot);
                         //Add the loot to theHero
+                        for (var item: loot){
+                            //Add to the pillar loot if it is player's
+                            if (item.getClass() == Pillar.class){
+                                theHero.addPillarsToStorage((Pillar)item);
+                            }
+                        }
 
                         //If it is buff or de-buff then use different stuffs
 
@@ -77,28 +83,27 @@ public class CombatController {
      * @param theMonster the monster the player supposed to fight
      */
 
-    int fighting(final DungeonCharacter theHero, final Monster theMonster){
+    int fighting(final Hero theHero, final Monster theMonster){
         StringBuilder message = new StringBuilder("Turn 1\nFight!");
-
         int turnNumber = 1;
-
         while (!theMonster.isDead() && !theHero.isDead()){
-
             //Player's turn
             int userChoice = myCombatView.promptUserForFightAction(message.toString(), theHero, theMonster);
             message = new StringBuilder("Turn ").append(++turnNumber);
 
-            double playerInflictDamage;
             switch (userChoice){
                 //attack
                 case (0)-> {
-                    playerInflictDamage = theHero.normalAttackMove();
-                    double playerActualInflictDamage = theMonster.applyDamage(playerInflictDamage);
-                    if (playerInflictDamage != 0){
-                        message.append("\nYou have inflicted ").append(String.format("%.2f", playerActualInflictDamage)).append(" damage.");
-                    }
-                    else{
-                        message.append("\nMonster managed to block your attack");
+                    message.append("\nYour attack: ");
+                    double [] playerInflictDamage = theHero.normalAttackMove();
+                    for (int i = 0; i < playerInflictDamage.length; ++i) {
+                        double playerActualInflictDamage = theMonster.applyDamage(playerInflictDamage[i]);
+                        message.append("\n\tIn strike ").append(i + 1).append(":\n");
+                        if (playerActualInflictDamage != 0) {
+                            message.append("\t\tYou have inflicted ").append(String.format("%.2f", playerActualInflictDamage)).append(" damage.");
+                        } else {
+                            message.append("\t\tMonster managed to block your attack");
+                        }
                     }
                 }
                 //Special attack
@@ -114,18 +119,31 @@ public class CombatController {
                 }
             }
 
+            //If the monster dies, it cannot attack
+            if (theMonster.isDead()) {
+                TextBasedGUI_CombatView.getInstance().displayNotificationForTheLastCombatTurn(message.toString(), true);
+                return 1;
+            }
+
             //Monster's turn
             //just attack for now
-            double monsterInflictDamage = theMonster.normalAttackMove();
-            double monsterActualInflictDamage = theHero.applyDamage(monsterInflictDamage);
-
-            //Update notification
-            //if the monster chose to attack
-            if (monsterActualInflictDamage != 0){
-                message.append("\nThe monster has attacked you, inflicted ").append(String.format("%.2f", monsterActualInflictDamage)).append(" damage.");
+            message.append("\nThe monster's attack: ");
+            double[] monsterInflictDamage = theMonster.normalAttackMove();
+            for (int i = 0; i < monsterInflictDamage.length; ++i) {
+                double monsterActualInflictDamage = theHero.applyDamage(monsterInflictDamage[i]);
+                message.append("\n\tIn strike ").append(i + 1).append(":\n");
+                //Update notification
+                //if the monster chose to attack
+                if (monsterActualInflictDamage != 0) {
+                    message.append("\t\tThe monster has attacked you, inflicted ").append(String.format("%.2f", monsterActualInflictDamage)).append(" damage.");
+                } else {
+                    message.append("\t\tYou managed to block the monster's attack");
+                }
             }
-            else{
-                message.append("\nYou managed to block the monster's attack");
+
+            if (theHero.isDead()) {
+                TextBasedGUI_CombatView.getInstance().displayNotificationForTheLastCombatTurn(message.toString(), false);
+                return 0;
             }
         }
 
@@ -173,4 +191,3 @@ public class CombatController {
     }
 
 }
-

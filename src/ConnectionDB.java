@@ -27,15 +27,17 @@ public class ConnectionDB {
 //    public static void main(String[] args) {
 //        try {
 //            ConnectionDB con = new ConnectionDB();
+//            Hero theHero = con.getHero("WARRIOR");
+//            theHero.setMyHealingPotion(5);
 //        } catch(Exception e) {
-//            System.out.println("error");
+//            System.out.println(e.getMessage());
 //        }
 //    }
 
 
     private SQLiteDataSource myMonsters;
     private String myQueryM;
-    private SQLiteDataSource myHeros;
+    private SQLiteDataSource myHeroes;
     private String myQueryH;
 
 
@@ -51,7 +53,7 @@ public class ConnectionDB {
     }
 
 
-    // Makes the mosnter table
+    // Makes the monster table
     private void monsterTable() {
 
         // Properties
@@ -68,6 +70,17 @@ public class ConnectionDB {
             // There was an error
             System.out.println("ERROR creating monster data from table: " + e);
             System.exit(0);
+        }
+
+        //Drop the table if it has existed and create it again
+        myQueryM = "DROP TABLE IF EXISTS myMonsters";
+
+        try(Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
+
+            int rv = stmt.executeUpdate(myQueryM);
+
+        } catch(Exception e) {
+            System.out.println("Error: " + e);
         }
 
         // Set up table statement
@@ -172,19 +185,28 @@ public class ConnectionDB {
     private void heroTable() {
 
         // Properties
-        myHeros = null;
+        myHeroes = null;
 
         try {
-
             // Get the DB connection and create the table/statement
-            myHeros = new SQLiteDataSource();
-            myHeros.setUrl("jdbc:sqlite:myHeros.db");
+            myHeroes = new SQLiteDataSource();
+            myHeroes.setUrl("jdbc:sqlite:myHeros.db");
 
         } catch (Exception e) {
 
             // There was an error
-            System.out.println("ERROR creating hero table: " + e);
             System.exit(0);
+        }
+
+        //Drop the table if it has existed and create it again
+        myQueryH = "DROP TABLE IF EXISTS myHeros";
+
+        try(Connection conn = myHeroes.getConnection();
+            Statement stmt = conn.createStatement(); ) {
+
+            int rv = stmt.executeUpdate(myQueryH);
+
+        } catch(Exception e) {
         }
 
         // Set up table statement
@@ -197,13 +219,12 @@ public class ConnectionDB {
                 "theCritChance TEXT NOT NULL, " +
                 "theBlock TEXT NOT NULL) ";
 
-        try(Connection conn = myHeros.getConnection();
+        try(Connection conn = myHeroes.getConnection();
             Statement stmt = conn.createStatement(); ) {
 
             int rv = stmt.executeUpdate(myQueryH);
 
         } catch(Exception e) {
-            System.out.println("Error: " + e);
         }
 
 
@@ -217,9 +238,12 @@ public class ConnectionDB {
         //System.out.println( "Attempting to insert two rows into hero table" );
 
         // Query the data
-        myQueryH = "INSERT INTO myHeros (theName, theHit, theMin, theMax, theAttack, theCritChance, theBlock) VALUES ( 'Warrior', '180', '60', '80', '4', '0.5', '0.6'), ('Priestess', '80', '20', '50', '5', '0.7', '0.2'), ('Thief', '60', '15', '40', '4', '0.9', '0.4')";
+        myQueryH = "INSERT INTO myHeros (theName, theHit, theMin, theMax, theAttack, theCritChance, theBlock) " +
+                "VALUES ( 'Warrior', '680', '60', '80', '4', '0.5', '0.6'), " +
+                "('Priestess', '380', '20', '50', '5', '0.7', '0.2'), " +
+                "('Thief', '460', '15', '40', '4', '0.9', '0.4')";
 
-        try (Connection conn = myHeros.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement(); ) {
             int rv = stmt.executeUpdate(myQueryH);
         } catch ( SQLException e ) {
             e.printStackTrace();
@@ -256,7 +280,7 @@ public class ConnectionDB {
 
         }
 
-        try (Connection conn = myHeros.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement(); ) {
 
             ResultSet rs = stmt.executeQuery(query);
 
@@ -265,10 +289,8 @@ public class ConnectionDB {
             Integer theMin = Integer.parseInt(rs.getString( "theMin" ));
             Integer theMax = Integer.parseInt(rs.getString( "theMax" ));
             Integer theAttack =Integer.parseInt(rs.getString( "theAttack" ));
-            Integer theCritChance = Integer.parseInt(rs.getString( "theCritChance" ));
-            Integer theBlock = Integer.parseInt(rs.getString( "theBlock" ));
-
-            System.out.println(theHit);
+            Double theCritChance = Double.parseDouble(rs.getString( "theCritChance" ));
+            Double theBlock = Double.parseDouble(rs.getString( "theBlock" ));
 
             switch (theHero.toUpperCase()) {
                 case "WARRIOR":

@@ -1,5 +1,3 @@
-import java.util.Random;
-
 /**
  * this is the complete Priestess class that extends the Hero class
  */
@@ -15,7 +13,7 @@ public class Priestess extends Hero{
      * @param theBlock
      * @param theCritChance
      */
-    public Priestess(Double theHit, int theAttack, String theName, int theMin, int theMax, int theBlock, int theCritChance) {
+    public Priestess(Double theHit, int theAttack, String theName, int theMin, int theMax, Double theBlock, double theCritChance) {
         super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
     }
 
@@ -32,7 +30,7 @@ public class Priestess extends Hero{
         }
 
         double healAmount = super.getMyHitPoints()+(10 + (50-10) * DungeonCharacter.MY_RANDOM_SEED.nextDouble());
-        super.setMyMaxHitPoints(healAmount);
+        super.setMaxHitPoints(healAmount);
         setMyMana(0);//Reset the mana to 0
         return healAmount;
     }

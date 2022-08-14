@@ -20,7 +20,7 @@ class PillarFactoryTest {
      * Test the value of the Pillar Encapsulation
      */
     @Test
-    void testCreatePillarOfEnscapsulation() {
+    void testCreatePillarOfEncapsulation() {
         Pillar myPillar = new Pillar("Encapsulation","Remember to collect this item");
         Pillar myPillar2 = PillarFactory.createPillar(2);
         assertEquals(myPillar.toString(), Objects.requireNonNull(myPillar2).toString());

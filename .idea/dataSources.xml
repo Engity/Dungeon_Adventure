@@ -8,11 +8,23 @@
       <jdbc-url>jdbc:sqlite:identifier.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="myHeros" uuid="37b056c5-b896-4bc4-80a0-aa403f60ff70">
+    <data-source source="LOCAL" name="myHeros" uuid="aeca3132-d3b3-4d0a-8d23-115148920181">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\thanh\Documents\GitHub\Dungeon_Adventure\myHeros.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:D:\Academic_Materials\UW\OneDrive - UW\Summer_2022\TCSS_360_A_Software_Development_And_Quality_Assurance_Techniques\Dungeon_Adventure\myHeros.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.38.0/sqlite-jdbc-3.38.0.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="myMonsters" uuid="48fae3a9-0583-4023-9864-fb4f9b3db87c">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\Academic_Materials\UW\OneDrive - UW\Summer_2022\TCSS_360_A_Software_Development_And_Quality_Assurance_Techniques\Dungeon_Adventure\myMonsters.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

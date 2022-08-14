@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Justin Noel
@@ -8,10 +10,11 @@ import java.util.Random;
 public abstract class Hero extends DungeonCharacter{
 
     private double myBlockChance;
-    private ArrayList<String> myInventory;
+    private Set<Pillar> myPillarStorage;
     private double myMana;
 
-
+    private int myHealingPotions;
+    private double myHealByPotionAmount;
     private int myHealingPotion;
 
     /**
@@ -23,54 +26,27 @@ public abstract class Hero extends DungeonCharacter{
      * @param theMax
      * @param theBlock
      */
-    protected Hero(final double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final int theBlock, final int theChance) {
+    protected Hero(final double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final Double theBlock, final Double theChance) {
         super(theName, theHit, theAttack, theChance, theMin, theMax);
         myBlockChance = theBlock;
         myMana = 0;
         myHealingPotion = 0;
-        myInventory = new ArrayList<>();
+        myPillarStorage = new HashSet<>();
+        myHealByPotionAmount = 75;
     }
 
     /**
      * this method gets the number of pillars in your inventory
      * @return
      */
-    public int getNumberOfPillars() {
-        return myInventory.size();
-    }
-
-    /**
-     * this method gets what is currently in your inventory
-     * @return
-     */
-    public String getMyInventory() {
-        return myInventory.toString();
-    }
-
-    /**
-     * adds pillar to inventory
-     * @param thePillar
-     */
-    public void addToInventory(final String thePillar) {
-        myInventory.add(thePillar);
+    int getNumberOfPillars() {
+        return myPillarStorage.size();
     }
 
     @Override
     public String toString() {
         return super.toString();
     }
-
-    /**
-     * this is the method for using the healing potion
-     */
-    protected boolean useHealingPotion() {
-        if(myHealingPotion > 0) {
-            myHealingPotion--;
-            return true;
-        }
-        return false;
-    }
-
 
     /**
      * Attack method
@@ -122,6 +98,49 @@ public abstract class Hero extends DungeonCharacter{
     double getMyMana(){
         return myMana;
     }
+
+    /**
+     * Use the healing potion, heal hero and decrease the amount by 1
+     * @return true if successfully use a potion
+     */
+
+    boolean useHealingPotion(){
+        if (myHealByPotionAmount <= 0)
+            return false;
+        --myHealingPotions;
+        super.increaseHP(myHealByPotionAmount);
+        return true;
+    }
+
+    /**
+     * Increase the amount of healing potions
+     */
+    void addHealingPotion(){
+        ++myHealingPotions;
+    }
+
+    /**
+     * Add the pillar to the storage
+     * @param thePillar to be added
+     */
+    void addPillarsToStorage(final Pillar thePillar){
+        myPillarStorage.add(thePillar);
+    }
+
+    /**
+     * Use to retrieve the pillar and clear the storage
+     * @return An array containing all pillars the hero has
+     */
+    ArrayList<Pillar> retrievePillars(){
+        ArrayList<Pillar> res = new ArrayList<>();
+        for (var item: myPillarStorage){
+            res.add(item);
+        }
+        myPillarStorage.clear();
+        return res;
+    }
+
+
 }
 
 

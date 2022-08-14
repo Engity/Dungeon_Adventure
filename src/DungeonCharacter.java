@@ -11,6 +11,8 @@ public class DungeonCharacter implements Serializable {
     private double myHitPoints;
     private double myMaxHitPoints;
     private int myAttackSpeed;
+    private int myOriginalAttackSpeed;
+    private double myOriginalHitChance;
     private double myHitChance;
 
     private double myBlockChance;
@@ -31,18 +33,22 @@ public class DungeonCharacter implements Serializable {
     public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
         this.setName(theName);
-        this.setHitPoint(theHit);
+
         this.setAttackSpeed(theAttack);
         this.setChanceToHit(theChance);
         this.setDamageMin(theMin);
         this.setDamageMax(theMax);
 
-        setMyMaxHitPoints(theHit);
+        setMaxHitPoints(theHit);
+        setHitPoint(theHit);
+
+        myOriginalHitChance = myHitChance;
+        myOriginalAttackSpeed = myAttackSpeed;
 
 
     }
 
-    private void setDamageMax(final int theMax) {
+    void setDamageMax(final int theMax) {
         this.myDamageMax = theMax;
 
     }
@@ -73,8 +79,8 @@ public class DungeonCharacter implements Serializable {
     protected void setHitPoint(final double theHit) {
         if(theHit < 0) {
             this.myHitPoints = 0;
-        } else if(theHit > 100) {
-            this.myHitPoints = 100;
+        } else if(theHit > myMaxHitPoints) {
+            this.myHitPoints = myMaxHitPoints;
         } else {
             myHitPoints = theHit;
         }
@@ -88,7 +94,7 @@ public class DungeonCharacter implements Serializable {
     }
 
 
-    protected String getMyCharacterName() {
+    protected String getCharacterName() {
         return myCharacterName;
     }
 
@@ -116,7 +122,7 @@ public class DungeonCharacter implements Serializable {
         return myMaxHitPoints;
     }
 
-    protected void setMyMaxHitPoints(final double theMaxHitPoints) {
+    protected void setMaxHitPoints(final double theMaxHitPoints) {
         this.myMaxHitPoints = theMaxHitPoints;
     }
 
@@ -148,9 +154,9 @@ public class DungeonCharacter implements Serializable {
         StringBuilder sb = new StringBuilder ();
         sb.append ("Name: ").append(myCharacterName).append("\n");
 
-        sb.append ("Hit Points: ").append(myHitPoints).append("\n");
+        sb.append ("Hit Points: ").append((String.format("%.2f", myHitPoints))).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
-        sb.append ("Chance to hit: ").append(myHitChance).append("\n");
+        sb.append ("Chance to hit: ").append(String.format("%.2f", myHitChance)).append("\n");
 
         sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
         sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");
@@ -185,7 +191,6 @@ public class DungeonCharacter implements Serializable {
 
         if (myHitPoints - theActualDamage < 0){
             theActualDamage = myHitPoints;
-            myHitPoints = 0;
         }
 
         myHitPoints -= theActualDamage;
@@ -206,7 +211,7 @@ public class DungeonCharacter implements Serializable {
      * Return a random number between the range [myDamageMin, myDamageMax)
      * Will based on myHitChance if fails, return 0
      */
-    double normalAttackMove(){
+    double normalAttackStrike(){
         double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
         //Randomize based on hit chance
         if (rollTheDice > myHitChance){
@@ -214,6 +219,19 @@ public class DungeonCharacter implements Serializable {
         }
         //Random the damage this character would inflict
         return DungeonAdventure.RANDOM_SEED.nextDouble(myDamageMin, myDamageMax);
+    }
+
+    /**
+     * Loop reflecting attack speed (how many times this character can strike in a turn)
+     * Call the singular attack methods to represent a strike
+     * @return an array, showing the damage for each strike
+     */
+    double[] normalAttackMove(){
+        double[] res = new double[myAttackSpeed];
+        for (int i = 0 ; i < myAttackSpeed; i++){
+            res[i] = Math.abs(Math.round(normalAttackStrike() * 100.0) / 100.0);
+        }
+        return res;
     }
 
 }
