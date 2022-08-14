@@ -130,7 +130,7 @@ public class DungeonCharacter implements Serializable {
         return myBlockChance;
     }
 
-    protected void setMyBlockChance(final double theBlockChance) {
+    protected void setBlockChance(final double theBlockChance) {
         this.myBlockChance = theBlockChance;
     }
 
@@ -157,6 +157,7 @@ public class DungeonCharacter implements Serializable {
         sb.append ("Hit Points: ").append((String.format("%.2f", myHitPoints))).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
         sb.append ("Chance to hit: ").append(String.format("%.2f", myHitChance)).append("\n");
+        sb.append ("Chance to block: ").append(String.format("%.2f", myBlockChance)).append("\n");
 
         sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
         sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");
@@ -182,11 +183,11 @@ public class DungeonCharacter implements Serializable {
         double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
         double theActualDamage = theDamage;
 
-        //Fail to block case
+        //Success to block case
         if (rollTheDice <= myBlockChance){
             //Reduce damage if manage to block
-            double reducedDamage = rollTheDice * theDamage;
-            theActualDamage = reducedDamage;
+            double reducedDamagePortion = Math.abs(1 - myBlockChance);
+            theActualDamage = reducedDamagePortion * theDamage;
         }
 
         if (myHitPoints - theActualDamage < 0){
