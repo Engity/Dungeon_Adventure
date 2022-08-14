@@ -18,6 +18,7 @@ public class PillarFactory {
     }//end createPillar()
 
 
+
     /**
      *
      * @return
@@ -29,9 +30,11 @@ public class PillarFactory {
     private static Pillar createPillarOfEncapsulation() {
 
         return new Pillar("Encapsulation","Remember to collect this item");
+
     }
 
     private static Pillar createPillarOfInheritance() {
+
 
         return new Pillar("Inheritance","Bring this item with you to win the game");
     }
@@ -40,3 +43,4 @@ public class PillarFactory {
         return new Pillar("Polymorphism","You are so close to win the game, take this");
     }
 }
+

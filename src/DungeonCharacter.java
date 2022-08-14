@@ -1,5 +1,11 @@
 import java.util.Random;
 import java.io.Serializable;
+
+
+/**
+ *
+ */
+
 public class DungeonCharacter implements Serializable {
     private String myCharacterName;
     private double myHitPoints;
@@ -10,6 +16,18 @@ public class DungeonCharacter implements Serializable {
     private double myBlockChance;
     private int myDamageMin;
     private int myDamageMax;
+    static Random MY_RANDOM_SEED;
+
+    /**
+     *
+     * @param theName
+     * @param theHit
+     * @param theAttack
+     * @param theChance
+     * @param theMin
+     * @param theMax
+     */
+
     public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
         this.setName(theName);
@@ -19,6 +37,9 @@ public class DungeonCharacter implements Serializable {
         this.setDamageMin(theMin);
         this.setDamageMax(theMax);
 
+        setMyMaxHitPoints(theHit);
+
+
     }
 
     private void setDamageMax(final int theMax) {
@@ -26,78 +47,111 @@ public class DungeonCharacter implements Serializable {
 
     }
 
-    private void setDamageMin(final int theMin) {
+
+    protected void setDamageMin(final int theMin) {
+
         this.myDamageMin = theMin;
 
     }
 
-    private void setChanceToHit(final double theChance) {
+
+    protected void setChanceToHit(final double theChance) {
+
         this.myHitChance = theChance;
 
     }
 
-    private void setAttackSpeed(final int theAttack) {
+
+    protected void setAttackSpeed(final int theAttack) {
+
+    
         this.myAttackSpeed = theAttack;
 
     }
 
-    private void setHitPoint(final double theHit) {
-        this.myHitPoints = theHit;
+
+    protected void setHitPoint(final double theHit) {
+        if(theHit < 0) {
+            this.myHitPoints = 0;
+        } else if(theHit > 100) {
+            this.myHitPoints = 100;
+        } else {
+            myHitPoints = theHit;
+        }
 
     }
 
-    private void setName(final String theName) {
+    protected void setName(final String theName) {
+
 
         this.myCharacterName = theName;
     }
 
-    public String getMyCharacterName() {
+
+    protected String getMyCharacterName() {
         return myCharacterName;
     }
 
-    public double getMyHitPoints() {
+    protected double getMyHitPoints() {
         return myHitPoints;
     }
 
-    public int getMyAttackSpeed() {
+    protected int getMyAttackSpeed() {
         return myAttackSpeed;
     }
 
-    public double getMyHitChance() {
+    protected double getMyHitChance() {
         return myHitChance;
     }
 
-    public int getMyDamageMin() {
+    protected int getMyDamageMin() {
         return myDamageMin;
     }
 
-    public int getMyDamageMax() {
+    protected int getMyDamageMax() {
         return myDamageMax;
     }
 
-    public double getMyMaxHitPoints() {
+    protected double getMyMaxHitPoints() {
         return myMaxHitPoints;
     }
 
-    public void setMyMaxHitPoints(final double theMaxHitPoints) {
+    protected void setMyMaxHitPoints(final double theMaxHitPoints) {
         this.myMaxHitPoints = theMaxHitPoints;
     }
 
-    public double getMyBlockChance() {
+    protected double getMyBlockChance() {
         return myBlockChance;
     }
 
-    public void setMyBlockChance(final double theBlockChance) {
+    protected void setMyBlockChance(final double theBlockChance) {
         this.myBlockChance = theBlockChance;
     }
+
+    double attack(final DungeonCharacter theEnemy) {
+
+        Random rand = new Random();
+
+        double attackHit = 100 * rand.nextDouble();
+        double damage = myDamageMin + (myDamageMax - myDamageMin) * rand.nextDouble();
+
+        // The Warrior hit the enemy
+        if(attackHit > myHitChance) {
+            theEnemy.setHitPoint(theEnemy.getMyHitPoints() - damage);
+        }
+        return damage;
+    }
+
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder ();
         sb.append ("Name: ").append(myCharacterName).append("\n");
-        sb.append ("Hit Points: ").append(String.format("%.2f",myHitPoints)).append("\n");
+
+        sb.append ("Hit Points: ").append(myHitPoints).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
-        sb.append ("Chance to hit: ").append(String.format("%.2f",myHitChance)).append("\n");
+        sb.append ("Chance to hit: ").append(myHitChance).append("\n");
+
         sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
         sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");
         return sb.toString();
@@ -163,6 +217,5 @@ public class DungeonCharacter implements Serializable {
     }
 
 }
-
 
 

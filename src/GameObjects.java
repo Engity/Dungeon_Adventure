@@ -1,6 +1,7 @@
 import java.io.Serializable;
 public class GameObjects implements Serializable {
     private String myItemName;
+
     private String myDescription;
 
 
@@ -22,6 +23,7 @@ public class GameObjects implements Serializable {
 
 
 
+
     public void setMyDescription(String myDescription) {
         this.myDescription = myDescription;
     }
@@ -39,3 +41,4 @@ public class GameObjects implements Serializable {
         return sb.toString();
     }
 }
+
