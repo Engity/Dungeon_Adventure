@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-
 public class Main {
-    public static void main(String args[]){
+    public static void main(String[] args){
 //        TextBasedGUI_NavigationView.getInstance();
 //        TextBasedGUI_CombatView.getInstance();
 //        TextBasedGUI_MainDisplay.getInstance();
@@ -17,24 +15,7 @@ public class Main {
 //        }
         TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
 
-
-//        StringBuilder swordDecorationStB = new StringBuilder("""
-//                                __
-//                                   \\  /
-//                                     \\\\
-//                                       \\\\
-//                     ___________________||/\\_
-//                    (___________________()| _||||||||||||||||||||||||||||||||||||||||||>
-//                                        ||\\/
-//                                       //
-//                                     //
-//                                   /__\\
-//                """);
-//        String[] swordDecoration = swordDecorationStB.toString().split("\n");
-//        for (int i = 0 ; i < swordDecoration.length;i++)
-//            System.out.println(swordDecoration[i]);
-
-        TextBasedGUI_CombatView.getInstance().promptUserForAction();
+        //TextBasedGUI_CombatView.getInstance().promptUserForFightAction();
     }
 
 }

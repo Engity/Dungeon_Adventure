@@ -1,26 +1,48 @@
-import java.util.Random;
-
+import java.util.*;
+/**
+ * This is the complete Warrior class that extends Hero class
+ */
 public class Warrior extends Hero{
-    private String mySpecialSkill;
-    private double mySpecialDamage;
-    private double mySpecialSkillChance;
 
-    public Warrior(String theSpecialSkill, double theSpecialSkillChance, double theSpecialSkillDamage) {
-        super(180, 4, "Warrior", 60, 80, 0.6, 0.5);
-        mySpecialSkill = theSpecialSkill;
-        mySpecialSkillChance = theSpecialSkillChance;
-        mySpecialDamage = theSpecialSkillDamage;
+    private double mySpecialDamage;
+
+    /**
+     * makes a warrior object
+     * @param theHit
+     * @param theAttack
+     * @param theName
+     * @param theMin
+     * @param theMax
+     * @param theBlock
+     * @param theCritChance
+     */
+    public Warrior(Double theHit, int theAttack, String theName, int theMin, int theMax, int theBlock, int theCritChance) {
+        super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
+        mySpecialDamage = 0;
     }
 
     @Override
-    protected void specialSkill(DungeonCharacter theEnemy) {
+    protected boolean useHealingPotion() {
+        return super.useHealingPotion();
+    }
 
-        Random rand = new Random();
-        double attackChance = super.getMyDamageMin() + (super.getMyDamageMax() - super.getMyDamageMin()) * rand.nextDouble();
-        mySpecialDamage = 100 + (200-100) * rand.nextDouble();
-        if(attackChance > mySpecialSkillChance) {
-            theEnemy.setHealth(theEnemy.getHealth() - mySpecialDamage);
+    @Override
+    protected double specialSkill(final DungeonCharacter theEnemy) {
+
+        if (getMyMana() < 100){
+            //Do nothing if we don't have enough mana
+            return -1;
         }
+
+        double attackChance = super.getMyDamageMin() + (super.getMyDamageMax() - super.getMyDamageMin()) * DungeonCharacter.MY_RANDOM_SEED.nextDouble();
+        mySpecialDamage = 75 + (175-75) * DungeonCharacter.MY_RANDOM_SEED.nextDouble();
+        if(attackChance < 40.0) {
+            setMyMana(0);//Reset the mana to 0
+            return  mySpecialDamage;
+
+        }
+        setMyMana(0);//Reset the mana to 0
+        return 0;
     }
 
 }

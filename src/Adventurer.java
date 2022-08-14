@@ -1,56 +1,46 @@
+import java.util.ArrayList;
+
 public class Adventurer {
 
     private Hero myPlayer;
     private int myPotions;
-    private int myVisionPotions;
-    private String[] myPillars;
-    private boolean myPotionBuff;
-    private boolean myVisionBuff;
+    private boolean myBuff;
 
-    public Adventurer (Hero thePlayer){
-        myPlayer = thePlayer;
+
+
+
+    public Adventurer (String theHero){
+
+        HeroFactory fac =new HeroFactory();
+
+        myPlayer = fac.createHero(theHero);
+    myBuff = false;
         myPotions = 0;
-        myVisionPotions = 0;
-        myPillars = new String[4];
-        myPotionBuff = false;
-        myVisionBuff = false;
     }
 
     public int getPotions() {
         return myPotions;
     }
-
-    public int getVisionPotions() {
-        return myVisionPotions;
-    }
-
-    public String getPillars() {
-        return myPillars.toString();
-    }
-
     public void setPotions(int thePotions) {
         myPotions++;
     }
-    public void setVisionPotions(int thePotions) {
-        myVisionPotions++;
+
+    /**
+     * makes the buff for vision potion so that character can see rooms around them
+     * @return
+     */
+    public boolean getVisionBuff() {
+        return myBuff;
     }
 
-
-    public boolean getPotionBuff() {
-        return myPotionBuff;
-    }
-
-    public boolean getVisionPotionBuff() {
-        return myVisionBuff;
-    }
-
-    public void setPotionBuff(boolean theBuff) {
-        myPotionBuff = theBuff;
-    }
-
-    public void setVisionBuff(boolean theBuff) {
-        myVisionBuff = theBuff;
+    /**
+     * vision potion buff status
+     * @param theBuff
+     */
+    public void setVisionBuff(final boolean theBuff) {
+        myBuff = theBuff;
     }
 
 
 }
+

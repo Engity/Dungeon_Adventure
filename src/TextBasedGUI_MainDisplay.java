@@ -50,8 +50,9 @@ public class TextBasedGUI_MainDisplay {
 
     /**
      * Displaying the whole menu including function
+     * Should be called as the Entry Point of the game
      * 1. Start a new game {@link TextBasedGUI_MainDisplay#startNewGame()}
-     * 2. Load a save game {@link TextBasedGUI_MainDisplay#loadGame()}
+     * 2. Load a save game {@link TextBasedGUI_MainDisplay#loadGame(boolean)})}
      * 3. Exit
      */
     void displayMainMenu(){
@@ -63,7 +64,7 @@ public class TextBasedGUI_MainDisplay {
 
         InputChecker mainMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
         mainMenuChecker.setMyDefaultChoice(1);
-        mainMenuChecker.setBound(1,3);
+        mainMenuChecker.setBound(1,5);
 
         mainMenuChecker.setMyInitialPrompt("""
                 ______                                       ___      _                 _
@@ -82,7 +83,9 @@ public class TextBasedGUI_MainDisplay {
                         Please select using your keyboard:
                         \t1. New Game
                         \t2. Load Game
-                        \t3. Exit"""
+                        \t3. Tutorial
+                        \t4. About
+                        \t5. Exit"""
         );
 
         mainMenuChecker.setMyWrongRangePrompt("Incorrect format or range, please input again");
@@ -91,8 +94,18 @@ public class TextBasedGUI_MainDisplay {
         int userChoice = mainMenuChecker.inputCheckForNumber();
         switch (userChoice) {
             case 1 -> startNewGame();
-            case 2 -> loadGame();
+            case 2 -> loadGame(true);
             case 3 -> {
+                displayTutorial();
+                //Recursive call to get back to the main menu
+                displayMainMenu();
+            }
+            case 4 -> {
+                displayAboutInfo();
+                //Recursive call to get back to the main menu
+                displayMainMenu();
+            }
+            case 5 -> {
                 OUTPUT_DESTINATION.println("Exit now!");
                 System.exit(0);
             }
@@ -136,6 +149,16 @@ public class TextBasedGUI_MainDisplay {
             case 3 -> className = "notorious thief";
         }
 
+        //Ask player for difficulty level
+
+        InputChecker difficultyChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        difficultyChecker.setMyRepeatingPrompt("Difficulty of the game: ");
+        String [] optionName = {"Easy", "Medium", "Hard"};
+        difficultyChecker.setMyWrongRangePrompt("There is no the option corresponding to the index you just inputted, please try again");
+        difficultyChecker.setMyErrorPrompt("Wrong format, please input numbers only!");
+
+        int difficultyLevel = difficultyChecker.inputCheckForNumber(optionName);
+
         OUTPUT_DESTINATION.println("Welcome, " + nameCharacter + ", the " + className + ", to Dungeon Adventure");
 
         //Just a test to see if anyone read the code and question this
@@ -153,7 +176,7 @@ public class TextBasedGUI_MainDisplay {
         }
 
         //Starting new game here
-        myGameController.createANewGame(nameCharacter, classChoice);
+        myGameController.createANewGame(nameCharacter, classChoice, difficultyLevel + 1);
     }
 
     /**
@@ -188,20 +211,21 @@ public class TextBasedGUI_MainDisplay {
     /**
      * Load a save game
      * List available save game with character name + create date or playtime
+     * @param theOriginFromMainMenu true if the origin is from main menu, false otherwise. To keep track whether gameLoop has initiated or not
+     *
      */
-    void loadGame(){
+    void loadGame(final boolean theOriginFromMainMenu){
         //Creating a File object for directory
         File directorySaves = new File(System.getProperty("user.dir") +"\\save\\");
 
         //List of all files and directories
         String[] saveGameList = directorySaves.list();
-        Arrays.sort(saveGameList, Collections.reverseOrder());
-
         //Check whether the save directory is empty or not
         if (saveGameList == null){
             OUTPUT_DESTINATION.println("There is no save game to load");
         }
         else {
+            Arrays.sort(saveGameList, Collections.reverseOrder());
             int saveGameChoice = 0;
 
             StringBuilder saveGameListString = new StringBuilder("PLease select what save game you would like to load");
@@ -220,6 +244,10 @@ public class TextBasedGUI_MainDisplay {
 
             File saveFile = new File(directorySaves.getAbsolutePath() + "\\" + saveGameList[saveGameChoice]);
             loadASaveGame(saveFile);
+
+            if (theOriginFromMainMenu){
+                DungeonAdventure.gameLoop();
+            }
         }
     }
 
@@ -299,6 +327,7 @@ public class TextBasedGUI_MainDisplay {
     /**
      * Display the menu when the player has died
      */
+    @SuppressWarnings("SpellCheckingInspection")
     void displayGameOverMenu(){
         InputChecker gameOverMenuChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
         gameOverMenuChecker.setMyInitialPrompt("""
@@ -343,7 +372,7 @@ public class TextBasedGUI_MainDisplay {
 
         switch (userChoice){
             //Loading a new game
-            case (0)-> loadGame();
+            case (0)-> loadGame(false);
             //Return to main menu
             case(1)-> TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
 
@@ -352,6 +381,43 @@ public class TextBasedGUI_MainDisplay {
                 OUTPUT_DESTINATION.println("Exiting the game!");
                 System.exit(0);
             }
+        }
+    }
+
+    void displayAboutInfo(){
+        InputChecker aboutCheck = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        StringBuilder repeatingPrompt = new StringBuilder("""
+                Game created by Group 8: Toan Nguyen, Thao Nguyen, Justin Noel
+                For the class T CSS 360 Summer 2022, Professor Tom Capaul
+                """);
+        repeatingPrompt.append("""
+        Continue? (Y/N)
+            1. Yes
+            2. No""");
+
+        aboutCheck.setMyRepeatingPrompt(repeatingPrompt.toString());
+
+        if (!aboutCheck.inputCheckForYNConfirmation()){
+            displayAboutInfo();
+        }
+    }
+
+    void displayTutorial(){
+        InputChecker tutorialCheck = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+
+        StringBuilder repeatingPrompt = new StringBuilder("""
+                Use the number key to navigate the maze and give your commands in combat
+                Survive and win the fight with the vile monsters
+                Collect 4 pillars to win the game
+                """);
+        repeatingPrompt.append("""
+        Continue? (Y/N)
+            1. Yes
+            2. No""");
+
+        tutorialCheck.setMyRepeatingPrompt(repeatingPrompt.toString());
+        if (!tutorialCheck.inputCheckForYNConfirmation()){
+            displayTutorial();
         }
     }
 

@@ -5,13 +5,13 @@
  */
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.HashMap;
 
 /**
  * Text based GUI for navigating the rooms
  * {@code @author:} Toan Nguyen
- * @version 07 29 2022
+ * @version 08 09 2022
  */
+
 public class TextBasedGUI_NavigationView {
     /**
      * The source to input from.
@@ -35,6 +35,10 @@ public class TextBasedGUI_NavigationView {
         return myNavigationViewInstance;
     }
 
+    /**
+     * Prompt the user for what to do while navigating, mainly direction they wish to go and access to the pause menu
+     * @return the user choice
+     */
     public int promptUserForDirection(){
         int theCurrentRoomAccess = DungeonAdventure.getInstance().getCurrentRoomAccessCode();
 
@@ -59,7 +63,6 @@ public class TextBasedGUI_NavigationView {
 
         //Create a list of available direction to go and attach it the prompt
         repeatingPrompt.append("Please choose the direction you wishes to go: (0 to go back to pause menu)");
-        HashMap<Integer, Integer> availableDirections = new HashMap<>();
         for (int direction = 0; direction < 4; direction++){
             //If the room has access to the corresponding direction, add it to the map
             if (((theCurrentRoomAccess >> direction) & 1) == 1){
@@ -87,19 +90,32 @@ public class TextBasedGUI_NavigationView {
         //Launch pause menu
         if (userChoice == 0){
             int pauseMenuChoice = displayPauseMenu();
-            if (pauseMenuChoice == 2){
-                return 5;
+
+            switch (pauseMenuChoice){
+                //Load
+                case (2) -> {
+                    return 5;
+                }
+                //Return to main menu
+                case (3) -> {
+                    return 6;
+                }
             }
         }
 
         return userChoice;
     }
 
+    /**
+     * Display the pause menu that let the user load\save the game or go back to the main menu
+     * @return the user choice
+     */
+
     public int displayPauseMenu(){
         InputChecker pauseMenuSelection = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         StringBuilder optionPrompt = new StringBuilder("Please enter your selection: ");
-        String [] optionName = {"Resume", "Save game", "Load game", "Return to main menu", "Exit"};
+        String [] optionName = {"Resume", "Save game", "Load game", "Return to main menu", "Tutorial", "About", "Exit"};
 
         //Attach option names to the prompt
         for (int i = 0; i < optionName.length; i++){
@@ -124,15 +140,13 @@ public class TextBasedGUI_NavigationView {
             case(1)->{
                 OUTPUT_DESTINATION.println("\nSaving the game\n");
                 //Call the save game function
-                System.out.println("CALL THE SAVE GAME FUNCTION HERE");
                 TextBasedGUI_MainDisplay.getInstance().saveGame();
             }
             //Load
             case(2)->{
                 OUTPUT_DESTINATION.println("\nLoading the game\n");
                 //Call the load game function
-                System.out.println("CALL THE LOAD GAME FUNCTION HERE");
-                TextBasedGUI_MainDisplay.getInstance().loadGame();
+                TextBasedGUI_MainDisplay.getInstance().loadGame(false);
                 return 2;
             }
             //Return to main menu
@@ -144,13 +158,23 @@ public class TextBasedGUI_NavigationView {
 
                 if (userConfirm){
                     //return to the main menu
-                    TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
-                    return 0;
+                    return 3;
                 }
             }
 
+            case (4) -> {
+                TextBasedGUI_MainDisplay.getInstance().displayTutorial();
+                //Recursive call to loop
+                return displayPauseMenu();
+            }
+            case (5) -> {
+                TextBasedGUI_MainDisplay.getInstance().displayAboutInfo();
+                //Recursive call to loop
+                return displayPauseMenu();
+            }
+
             //Exit
-            case (4) ->{
+            case (6) ->{
                 OUTPUT_DESTINATION.println("Exiting the game!");
                 System.exit(0);
             }
@@ -159,5 +183,18 @@ public class TextBasedGUI_NavigationView {
         return displayPauseMenu();
     }
 
+    /**
+     * Asking the player whether they would like to drop off the pillars
+     * @return the player's decision
+     */
+    boolean displayDropOffPillarMenu(){
+        InputChecker yesNoChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        yesNoChecker.setMyInitialPrompt("You are at the Entrance, would you like to drop off the pillars?");
+        boolean userChoice = yesNoChecker.inputCheckForYNConfirmation();
 
+        if (userChoice) {
+            OUTPUT_DESTINATION.println("\n~Dropping the pillar~\n");
+        }
+        return userChoice;
+    }
 }

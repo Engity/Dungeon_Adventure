@@ -1,36 +1,49 @@
-import java.util.Random;
-
+import java.util.*;
+/**
+ * this is the complete Thief class that extends Hero class
+ */
 public class Thief extends Hero{
-    private String mySpecialSkill;
-    private double mySpecialDamage;
-    private double mySpecialSkillChance;
-
-    public Thief(String theSpecialSkill, double theSpecialSkillChance, double theSpecialSkillDamage) {
-        super(60, 7, "Thief", 15, 40, 0.4, 0.9);
-        mySpecialSkill = theSpecialSkill;
-        mySpecialSkillChance = theSpecialSkillChance;
-        mySpecialDamage = theSpecialSkillDamage;
-    }
-
-    public double specialSkill() {
-        Random rand = new Random();
-        double attackChance = super.getMyDamageMin() + (super.getMyDamageMax() - super.getMyDamageMin()) * rand.nextDouble();
-        if(attackChance > mySpecialSkillChance) {
-            return 2;
-        }
-        return 1;
 
 
+    /**
+     * makes a thief object
+     * @param theHit
+     * @param theAttack
+     * @param theName
+     * @param theMin
+     * @param theMax
+     * @param theBlock
+     * @param theCritChance
+     */
+    public Thief(Double theHit, int theAttack, String theName, int theMin, int theMax, int theBlock, int theCritChance) {
+        super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
     }
 
     @Override
-    protected void specialSkill(DungeonCharacter theEnemy) {
-        Random rand = new Random();
-        double chance = rand.nextDouble();
-        if(mySpecialSkillChance / 2.0 < chance) {
-        } else if(mySpecialSkillChance > chance) {
-            super.attack(theEnemy);
+    protected boolean useHealingPotion() {
+        return super.useHealingPotion();
+    }
+
+    @Override
+    public double specialSkill(final DungeonCharacter theEnemy) {
+
+        if (getMyMana() < 100){
+            //Do nothing if we don't have enough mana
+            return -1;
         }
+
+        double attackChance = super.getMyDamageMin() + (super.getMyDamageMax() - super.getMyDamageMin()) * DungeonCharacter.MY_RANDOM_SEED.nextDouble();
+        if(attackChance < 40 && attackChance > 20) {
+            setMyMana(0);//Reset the mana to 0
+            return 2;
+        } else if( attackChance < 20) {
+            setMyMana(0);//Reset the mana to 0
+            return -1;
+        }
+        setMyMana(0);//Reset the mana to 0
+        return 1;
+
+
     }
 
 }

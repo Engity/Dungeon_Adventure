@@ -1,30 +1,28 @@
 /**
- *
+ * this is the HeroFactory class for SQL
  */
 public class HeroFactory {
 
+
     /**
-     *
+     * This method is for creating your hero
      * @param theHero
-     * @param theSpecialSkill
-     * @param theSpecialSkillChance
-     * @param theSpecialSkillDamage
-     * @param theHeal
      * @return
      */
-    public Hero createHero( String theHero, String theSpecialSkill, double theSpecialSkillChance, double theSpecialSkillDamage, double theHeal) {
-        if(theHero == null || theHero.isEmpty()) {
-            return null;
+    public Hero createHero(final String theHero) {
+
+        // Properties
+        ConnectionDB sql = null;
+
+        try {
+
+            sql = new ConnectionDB();
+
+
+        } catch(Exception e) {
+            //System.out.println("Error: " + e);
         }
-        switch (theHero) {
-            case "Warrior":
-                return new Warrior(theSpecialSkill, theSpecialSkillChance, theSpecialSkillDamage);
-            case "Priestess":
-                return new Priestess(theSpecialSkill, theHeal);
-            case "Thief":
-                return new Thief(theSpecialSkill, theSpecialSkillChance, theSpecialSkillDamage);
-            default:
-                throw new IllegalArgumentException("Unknown Hero " + theHero);
-        }
+
+        return sql.getHero(theHero);
     }
 }
