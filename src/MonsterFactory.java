@@ -33,3 +33,7 @@ public class MonsterFactory {
         return new Monster("Skeleton", 100, 3, .8, 30, 50,0.3, 30, 50);
     }//end createSkeleton
 }
+
+
+
+

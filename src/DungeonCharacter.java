@@ -1,9 +1,11 @@
 import java.util.Random;
 import java.io.Serializable;
 
+
 /**
  *
  */
+
 public class DungeonCharacter implements Serializable {
     private String myCharacterName;
     private double myHitPoints;
@@ -25,6 +27,7 @@ public class DungeonCharacter implements Serializable {
      * @param theMin
      * @param theMax
      */
+
     public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
         this.setName(theName);
@@ -33,7 +36,9 @@ public class DungeonCharacter implements Serializable {
         this.setChanceToHit(theChance);
         this.setDamageMin(theMin);
         this.setDamageMax(theMax);
+
         setMyMaxHitPoints(theHit);
+
 
     }
 
@@ -42,20 +47,28 @@ public class DungeonCharacter implements Serializable {
 
     }
 
+
     protected void setDamageMin(final int theMin) {
+
         this.myDamageMin = theMin;
 
     }
 
+
     protected void setChanceToHit(final double theChance) {
+
         this.myHitChance = theChance;
 
     }
 
+
     protected void setAttackSpeed(final int theAttack) {
+
+    
         this.myAttackSpeed = theAttack;
 
     }
+
 
     protected void setHitPoint(final double theHit) {
         if(theHit < 0) {
@@ -70,8 +83,10 @@ public class DungeonCharacter implements Serializable {
 
     protected void setName(final String theName) {
 
+
         this.myCharacterName = theName;
     }
+
 
     protected String getMyCharacterName() {
         return myCharacterName;
@@ -127,13 +142,16 @@ public class DungeonCharacter implements Serializable {
         return damage;
     }
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder ();
         sb.append ("Name: ").append(myCharacterName).append("\n");
+
         sb.append ("Hit Points: ").append(myHitPoints).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
         sb.append ("Chance to hit: ").append(myHitChance).append("\n");
+
         sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
         sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");
         return sb.toString();
@@ -199,3 +217,5 @@ public class DungeonCharacter implements Serializable {
     }
 
 }
+
+

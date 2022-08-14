@@ -33,6 +33,7 @@ public class TextBasedGUI_CombatView {
     }
 
 
+    
     private TextBasedGUI_CombatView(){
 
     }
@@ -194,4 +195,6 @@ public class TextBasedGUI_CombatView {
     //|  `----.|  `--'  | |  |  |  | |  |_)  |  /  _____  \   |  |
     // \______| \______/  |__|  |__| |______/  /__/     \__\  |__|
 
+
 }
+

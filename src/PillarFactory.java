@@ -19,21 +19,28 @@ public class PillarFactory {
 
 
 
+    /**
+     *
+     * @return
+     */
     private static Pillar createPillarOfAbstraction() {
 
-        return new Pillar("Abstraction");
+        return new Pillar("Abstraction","This item is 1 in 4 object you need to collect");
     }
     private static Pillar createPillarOfEncapsulation() {
 
-        return new Pillar("Encapsulation");
+        return new Pillar("Encapsulation","Remember to collect this item");
+
     }
 
     private static Pillar createPillarOfInheritance() {
 
-        return new Pillar("Inheritance");
+
+        return new Pillar("Inheritance","Bring this item with you to win the game");
     }
     private static Pillar createPillarOfPolymorphism() {
 
-        return new Pillar("Polymorphism");
+        return new Pillar("Polymorphism","You are so close to win the game, take this");
     }
 }
+

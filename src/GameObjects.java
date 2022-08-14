@@ -1,8 +1,14 @@
 import java.io.Serializable;
 public class GameObjects implements Serializable {
     private String myItemName;
-    public GameObjects(final String theItemName) {
+
+    private String myDescription;
+
+
+
+    public GameObjects(final String theItemName, final String theDescription) {
         this.setMyItemName(theItemName);
+        this.setMyDescription(theDescription);
     }
 
 
@@ -11,13 +17,28 @@ public class GameObjects implements Serializable {
         this.myItemName = theItemName;
     }
     public String getMyItemName() {
+
         return myItemName;
     }
 
 
 
 
+    public void setMyDescription(String myDescription) {
+        this.myDescription = myDescription;
+    }
+    public String getMyDescription() {
+        return myDescription;
+    }
+
+
+
+
     public String toString() {
-        return "Object name " + getMyItemName();
+        StringBuilder sb = new StringBuilder (super.toString());
+        sb.append ("The Item Name is: ").append(myItemName).append("\n");
+        sb.append ("The Item description is: ").append(myDescription).append("\n");
+        return sb.toString();
     }
 }
+

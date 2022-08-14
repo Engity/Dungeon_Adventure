@@ -25,9 +25,11 @@ public class TextBasedGUI_NavigationView {
      */
     private static final PrintStream OUTPUT_DESTINATION = System.out;
 
+    
     private TextBasedGUI_NavigationView(){
 
     }
+    
 
     private static final TextBasedGUI_NavigationView myNavigationViewInstance = new TextBasedGUI_NavigationView();
 
@@ -197,4 +199,6 @@ public class TextBasedGUI_NavigationView {
         }
         return userChoice;
     }
+
 }
+

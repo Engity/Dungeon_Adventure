@@ -58,7 +58,8 @@ public class DungeonAdventure implements Serializable {
      * Attach controller to the views
      * Init the components
      */
-    private DungeonAdventure(){
+
+    private DungeonAdventure(){       
         init();
         TextBasedGUI_MainDisplay.attachController(this);
         CombatController.attachController(this);
@@ -204,7 +205,8 @@ public class DungeonAdventure implements Serializable {
      * P is current location of player
      * Full visibility is only used for testing purposes
      */
-    String getWorldMapFullVisibility(){
+
+     String getWorldMapFullVisibility(){
         StringBuilder res = new StringBuilder();
         res.append("Width: " + MAP_SIZE_WIDTH + " Height: " + MAP_SIZE_HEIGHT + "\n");
         res.append("X means no access, ' ' means there is a way\n");
@@ -489,7 +491,8 @@ public class DungeonAdventure implements Serializable {
         boolean returnToMain = false;
         while (!DungeonAdventure.getInstance().myGameOverStatus || !DungeonAdventure.getInstance().myVictoryStatus){
             //Check player is at the entrance to ask whether they would like drop off pillar
-            //Only ask if there is pillar in the player's inventory, and they are at the entrance
+
+                //Only ask if there is pillar in the player's inventory, and they are at the entrance
             if (DungeonAdventure.getInstance().isPlayerAtTheEntrance()){
                 boolean dropOffConfirm = TextBasedGUI_NavigationView.getInstance().displayDropOffPillarMenu();
                 if (dropOffConfirm){
@@ -560,7 +563,8 @@ public class DungeonAdventure implements Serializable {
         if (!myVisionPotionStatus){
             return false;
         }
-        //THis code works but don't merge yet because we don't have buff/debuff
+
+            //THis code works but don't merge yet because we don't have buff/debuff
         //offset to track surrounding
         final int[] dx = {-1,  0,  1, 1, 1, 0, -1, -1};
         final int[] dy = {-1, -1, -1, 0, 1, 1, 1,   0};
@@ -592,5 +596,6 @@ public class DungeonAdventure implements Serializable {
     private Object readResolve()  {
         return myDungeonAdventureInstance;
     }
+
 
 }
