@@ -152,7 +152,7 @@ public class CombatController {
         String characterToSTR = theDungeonCharacter.toString();
 
         Scanner scanline = new Scanner(characterToSTR);
-        
+
         while (scanline.hasNext()){
             //Init
             StringBuilder line = new StringBuilder();
@@ -173,3 +173,4 @@ public class CombatController {
     }
 
 }
+
