@@ -7,9 +7,24 @@ import java.util.Random;
 
 
 public class Monster extends DungeonCharacter{
-    private double myChancetoHeal;
+
+    private int myHealTime;
     private int myMinHealPoints;
     private int myMaxHealPoints;
+
+    public int getMyHealTime() {
+        return myHealTime;
+    }
+
+    public int getMyMinHealPoints() {
+        return myMinHealPoints;
+    }
+
+    public int getMyMaxHealPoints() {
+        return myMaxHealPoints;
+    }
+
+
 
     /**
      *
@@ -19,22 +34,24 @@ public class Monster extends DungeonCharacter{
      * @param theChance Chance to hit
      * @param theMin  the minimum hit point
      * @param theMax the maximum hit point
-     * @param theHealChance the chance to health
+     * @param theHealthTime the chance to health
      * @param theMinHeal the minimum heal points
      * @param theMaxHeal the maximum heal points
      */
 
     public Monster(final String theName, final int theHit, final int theAttack,
-                   final double theChance, final int theMin, final int theMax,final double theHealChance,final int theMinHeal, final int theMaxHeal) {
+                   final double theChance, final int theMin, final int theMax,final int theHealthTime,final int theMinHeal, final int theMaxHeal) {
         super(theName, theHit, theAttack, theChance, theMin, theMax);
 
-        this.setChanceToHeal(theHealChance);
+
+        this.setMyHealthTime(theHealthTime);
         this.setMinHealPoints(theMinHeal);
         this.setMaxHealPoints(theMaxHeal);
     }
-    private void setChanceToHeal(final double theHealthChance) {
-        this.myChancetoHeal = theHealthChance;
+
+    private void setMyHealthTime(int theHealthTime) {
     }
+
     private void setMinHealPoints(final int theMinHeal) {
         this.myMinHealPoints = theMinHeal;
     }
@@ -45,7 +62,7 @@ public class Monster extends DungeonCharacter{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder (super.toString());
-        sb.append ("Chance to heal: ").append(String.format("%.2f",myChancetoHeal)).append("\n");
+        sb.append ("Health Time: ").append(myHealTime).append("\n");
         sb.append ("Minimum Health Points: ").append(myMinHealPoints).append("\n");
         sb.append ("Maximum Health Points: ").append(myMaxHealPoints).append("\n");
 

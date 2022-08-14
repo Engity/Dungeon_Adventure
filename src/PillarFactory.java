@@ -28,19 +28,19 @@ public class PillarFactory {
 
     private static Pillar createPillarOfAbstraction() {
 
-        return new Pillar("Abstraction");
+        return new Pillar("Abstraction","");
     }
     private static Pillar createPillarOfEncapsulation() {
 
-        return new Pillar("Encapsulation");
+        return new Pillar("Encapsulation","");
     }
 
     private static Pillar createPillarOfInheritance() {
 
-        return new Pillar("Inheritance");
+        return new Pillar("Inheritance","");
     }
     private static Pillar createPillarOfPolymorphism() {
 
-        return new Pillar("Polymorphism");
+        return new Pillar("Polymorphism","");
     }
 }

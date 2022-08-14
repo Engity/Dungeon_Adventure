@@ -9,7 +9,7 @@ class PillarFactoryTest {
      */
     @Test
     void testCreatePillarOfAbstraction() {
-        Pillar myPillar = new Pillar("Abstraction");
+        Pillar myPillar = new Pillar("Abstraction","");
         Pillar myPillar2 = PillarFactory.createPillar(1);
         assertEquals(myPillar.toString(), myPillar2.toString());
     }
@@ -19,7 +19,7 @@ class PillarFactoryTest {
      */
     @Test
     void testCreatePillarOfEnscapsulation() {
-        Pillar myPillar = new Pillar("Encapsulation");
+        Pillar myPillar = new Pillar("Encapsulation","");
         Pillar myPillar2 = PillarFactory.createPillar(2);
         assertEquals(myPillar.toString(), myPillar2.toString());
     }
@@ -29,7 +29,7 @@ class PillarFactoryTest {
      */
     @Test
     void testCreatePillarOfInheritance() {
-        Pillar myPillar = new Pillar("Inheritance");
+        Pillar myPillar = new Pillar("Inheritance","");
         Pillar myPillar2 = PillarFactory.createPillar(3);
         assertEquals(myPillar.toString(), myPillar2.toString());
     }
@@ -39,7 +39,7 @@ class PillarFactoryTest {
      */
     @Test
     void testCreatePillarOfPolymorphism() {
-        Pillar myPillar = new Pillar("Polymorphism");
+        Pillar myPillar = new Pillar("Polymorphism","");
         Pillar myPillar2 = PillarFactory.createPillar(4);
         assertEquals(myPillar.toString(), myPillar2.toString());
     }

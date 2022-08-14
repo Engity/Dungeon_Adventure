@@ -10,7 +10,7 @@ class MonsterFactoryTest {
      */
     @Test
     void testCreatOgre() {
-        Monster myMonster = new Monster("Orge", 200, 2, .6, 30, 60, 0.1, 30, 60);
+        Monster myMonster = new Monster("Orge", 200, 2, .6, 30, 60, 5, 30, 60);
         Monster myMonster2 = MonsterFactory.createMonster(1);
         assertEquals(myMonster.toString(), myMonster2.toString());
     }
@@ -20,7 +20,7 @@ class MonsterFactoryTest {
      */
     @Test
     void testCreatGremlin() {
-        Monster myMonster = new Monster("Gremlin", 70, 5, .8, 15, 30,0.4, 20, 40);
+        Monster myMonster = new Monster("Gremlin", 70, 5, .8, 15, 30,1, 20, 40);
         Monster myMonster2 = MonsterFactory.createMonster(2);
         assertEquals(myMonster.toString(), myMonster2.toString());
     }
@@ -30,7 +30,7 @@ class MonsterFactoryTest {
      */
     @Test
     void testCreatSkeleton() {
-        Monster myMonster = new Monster("Skeleton", 100, 3, .8, 30, 50,0.3, 30, 50);
+        Monster myMonster = new Monster("Skeleton", 100, 3, .8, 30, 50,3, 30, 50);
         Monster myMonster2 = MonsterFactory.createMonster(3);
         assertEquals(myMonster.toString(), myMonster2.toString());
     }
