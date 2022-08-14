@@ -20,6 +20,8 @@ public class DungeonCharacter implements Serializable {
     private int myDamageMax;
     static Random MY_RANDOM_SEED;
 
+    private String myClassName;
+
     /**
      *
      * @param theName
@@ -44,8 +46,21 @@ public class DungeonCharacter implements Serializable {
 
         myOriginalHitChance = myHitChance;
         myOriginalAttackSpeed = myAttackSpeed;
+    }
 
+    /**
+     * Getter for myClassName
+     */
+    String getClassName(){
+        return myClassName;
+    }
 
+    /**
+     * Setter for myClassName
+     */
+
+    void setClassName(final String theClassName){
+        myClassName = theClassName;
     }
 
     void setDamageMax(final int theMax) {
@@ -143,6 +158,10 @@ public class DungeonCharacter implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder ();
         sb.append ("Name: ").append(myCharacterName).append("\n");
+
+        if (myClassName != null) {
+            sb.append("Class: ").append(myClassName).append("\n");
+        }
 
         sb.append ("Hit Points: ").append((String.format("%.2f", myHitPoints))).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");

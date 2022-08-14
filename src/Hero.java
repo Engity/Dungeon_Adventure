@@ -1,12 +1,18 @@
+/**
+ * T CSS 360 A: Software Development And Quality Assurance Techniques
+ * Summer 2022
+ * Professor Tom Capaul
+ */
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-
 /**
- * @author Justin Noel
- *
+ * Hero controller
+ * {@code @author:} Toan Nguyen, Justin Noel
+ * @version 08 14 2022
  */
+
 public abstract class Hero extends DungeonCharacter{
     private Set<Pillar> myPillarStorage;
     private double myMana;
