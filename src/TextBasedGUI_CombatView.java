@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Text based GUI for combat
  * {@code @author:} Toan Nguyen
- * @version 08 09 2022
+ * @version 08 13 2022
  */
 @SuppressWarnings("GrazieInspection")
 public class TextBasedGUI_CombatView {
@@ -33,7 +33,6 @@ public class TextBasedGUI_CombatView {
     }
 
 
-    
     private TextBasedGUI_CombatView(){
 
     }
@@ -43,7 +42,7 @@ public class TextBasedGUI_CombatView {
      * @param theMessage containing status of the fight like what happen in the last turn
      * @return the user choice
      */
-    int promptUserForFightAction(String theMessage, final DungeonCharacter theHero, final Monster theMonster){
+    int promptUserForFightAction(String theMessage, final Hero theHero, final Monster theMonster){
         InputChecker fightInputChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
 
         //Get the player's stat
@@ -126,6 +125,29 @@ public class TextBasedGUI_CombatView {
     }
 
     /**
+     * Display the notification for the last turn, either hero win or lose
+     * @param theMessage containing previous turn message
+     * @param theHeroWin whether the hero win or not
+     * @return Acknowledgement from the player
+     */
+    boolean displayNotificationForTheLastCombatTurn(final String theMessage, final boolean theHeroWin){
+        InputChecker lastTurnNotificationChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+        StringBuilder myRepeatingPrompt = new StringBuilder().append("\nNotification: ").append(theMessage);
+
+        if (theHeroWin){
+            myRepeatingPrompt.append("\nYou have defeated the monsters\n");
+        }
+        else{
+            myRepeatingPrompt.append("\nThe monster has defeated you\n");
+        }
+
+        myRepeatingPrompt.append("Press Enter key to continue.");
+
+        lastTurnNotificationChecker.setMyRepeatingPrompt(myRepeatingPrompt.toString());
+        return lastTurnNotificationChecker.inputAnyKeyToContinue();
+    }
+
+    /**
      * Display the pre-fight menu to let user save the game or choose not to fight
      * @param theMonsterName containing the monster's stat
      * @return the user's choice of action
@@ -182,19 +204,4 @@ public class TextBasedGUI_CombatView {
         postFightMenuChecker.setMyRepeatingPrompt(repeatingPrompt.toString());
         return postFightMenuChecker.inputAnyKeyToContinue();
     }
-
-
-
-
-    //Sword art used for combat (The biggest width is 68 chars)
-
-    //  ______   ______   .___  ___. .______        ___   .___________.
-    // /      | /  __  \  |   \/   | |   _  \      /   \  |           |
-    //|  ,----'|  |  |  | |  \  /  | |  |_)  |    /  ^  \ `---|  |----`
-    //|  |     |  |  |  | |  |\/|  | |   _  <    /  /_\  \    |  |
-    //|  `----.|  `--'  | |  |  |  | |  |_)  |  /  _____  \   |  |
-    // \______| \______/  |__|  |__| |______/  /__/     \__\  |__|
-
-
 }
-

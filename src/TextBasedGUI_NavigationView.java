@@ -5,6 +5,9 @@
  */
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Text based GUI for navigating the rooms
@@ -198,6 +201,39 @@ public class TextBasedGUI_NavigationView {
             OUTPUT_DESTINATION.println("\n~Dropping the pillar~\n");
         }
         return userChoice;
+    }
+
+    /**
+     * Display the remaining pillar lists
+     * @param theRemainPillars list of the name of the remaining pillars
+     * @return whether the player's choose to continue or not
+     */
+
+    boolean displayRemainPillar(HashSet<String> theRemainPillars, ArrayList<Pillar> theCurrentPillar){
+        InputChecker remainPillarChecker = new InputChecker(INPUT_SOURCE, OUTPUT_DESTINATION);
+
+        StringBuilder repeatingPrompt = new StringBuilder("""
+                Dropping off these pillars: 
+                """);
+
+        int i = 0;
+        for (var item : theCurrentPillar){
+            repeatingPrompt.append("\t").append(++i).append(". ");
+            repeatingPrompt.append(item.getMyItemName()).append("\n");
+        }
+        if (!theRemainPillars.isEmpty()) {
+            repeatingPrompt.append("The remaining pillars are:\n");
+            i = 0;
+            for (var item : theRemainPillars) {
+                repeatingPrompt.append("\t").append(++i).append(". ");
+                repeatingPrompt.append(item).append("\n");
+            }
+        }
+
+        repeatingPrompt.append("Press Enter key to continue.");
+
+        remainPillarChecker.setMyRepeatingPrompt(repeatingPrompt.toString());
+        return remainPillarChecker.inputAnyKeyToContinue();
     }
 
 }

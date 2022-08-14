@@ -126,7 +126,7 @@ public class Room implements Serializable {
      * Get the guardian
      * @return the guardian in this room
      */
-    Monster getMyGuardian(){
+    Monster getGuardian(){
         return myGuardian;
     }
 
