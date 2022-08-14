@@ -36,11 +36,13 @@ public class DungeonAdventure implements Serializable {
     private Room myPreviousRoom;
 
     private int numberOfPillarsDroppedOff;
+    private DungeonCharacter myHero;
     private boolean[][] myRoomVisitedStatus;//True if the room has been visited, false otherwise
 
     final static Random RANDOM_SEED = new Random();
 
     //Used in Serialization
+    @Serial
     private static final long serialVersionUID = 11L;
 
     //Used to track the state of the game
@@ -111,6 +113,10 @@ public class DungeonAdventure implements Serializable {
                 myMap);
 
         myMap = PopulationController.getInstance().populaceMaze(theDifficultyLevel);
+
+        //Create the hero, for now it is just display the stat of ogre
+        //Will update to use hero factory when it is implemented
+        myHero = new DungeonCharacter(theHeroName, 200, 2, .6, 30, 60);
 
         gameLoop();
     }
@@ -483,7 +489,7 @@ public class DungeonAdventure implements Serializable {
         boolean returnToMain = false;
         while (!DungeonAdventure.getInstance().myGameOverStatus || !DungeonAdventure.getInstance().myVictoryStatus){
             //Check player is at the entrance to ask whether they would like drop off pillar
-                //Only ask if there is pillar in the player's inventory and they are at the entrance
+                //Only ask if there is pillar in the player's inventory, and they are at the entrance
             if (DungeonAdventure.getInstance().isPlayerAtTheEntrance()){
                 boolean dropOffConfirm = TextBasedGUI_NavigationView.getInstance().displayDropOffPillarMenu();
                 if (dropOffConfirm){
@@ -502,10 +508,15 @@ public class DungeonAdventure implements Serializable {
             }
             //Checking if there is a monster in a room
             if (DungeonAdventure.getInstance().myCurrentRoom.getMyGuardian() != null){
-                int userFightingStatus = CombatController.getInstance().initiateFight();
+                int userFightingStatus = CombatController.getInstance().initiateFight(DungeonAdventure.getInstance().myHero, DungeonAdventure.getInstance().myCurrentRoom);
                 //User chose to chicken out
-                if (userFightingStatus == 2){
+                if (userFightingStatus == 3){
                     DungeonAdventure.getInstance().returnPlayerToPreviousPos();
+                }
+                //Player is dead
+                if (userFightingStatus == 0){
+                    DungeonAdventure.getInstance().myGameOverStatus = true;
+                    break;
                 }
             }
             //moving

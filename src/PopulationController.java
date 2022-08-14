@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Stack;
 
 /**
  * Handling populating the maze with level difficulty
@@ -13,8 +12,8 @@ class PopulationController {
     private int myMapHeight;
     private int myEntranceID;
 
-    ArrayList<Object> myMonsterPool;//Monster spawn pool
-    private static PopulationController myPopulationControllerInstance = new PopulationController();
+    ArrayList<Monster> myMonsterPool;//Monster spawn pool
+    private static final PopulationController myPopulationControllerInstance = new PopulationController();
 
     /**
      * Private for Singleton design
@@ -48,13 +47,13 @@ class PopulationController {
     /**
      * Fill the monsters spawn pool
      * @param theDifficultyLevel the level of difficulty
-     * Level 1: the pool will contain 60% level 1 Monster (Gremlin), 40% Level 2 Monster (Skeleton), 10% level 3 Monster (Ogre); Total monster is 50% the size of the map
-     * Level 2: the pool will contain 50% level 1 Monster (Gremlin), 30% Level 2 Monster (Skeleton), 20% level 3 Monster (Ogre); Total monster is 75% the size of the map
-     * Level 3: the pool will contain 25% level 1 Monster (Gremlin), 35% Level 2 Monster (Skeleton), 40% level 3 Monster (Ogre); Total monster is 100% the size of the map
+     * Level 1 (Easy): the pool will contain 60% level 1 Monster (Gremlin), 40% Level 2 Monster (Skeleton), 10% level 3 Monster (Ogre); Total monster is nearly 50% the size of the map
+     * Level 2 (Medium): the pool will contain 50% level 1 Monster (Gremlin), 30% Level 2 Monster (Skeleton), 20% level 3 Monster (Ogre); Total monster is nearly 75% the size of the map
+     * Level 3 (Hard): the pool will contain 25% level 1 Monster (Gremlin), 35% Level 2 Monster (Skeleton), 40% level 3 Monster (Ogre); Total monster is nearly 100% the size of the map
      */
 
     private void loadTheMonster(final int theDifficultyLevel){
-        int totalRoom = myMapHeight * myMapWidth;
+        int totalRoom = myMapHeight * myMapWidth - 1;//Minus entrance
         int totalMonster = 0;
         //Spawn rate of each type of monster
         double[] spawnRate = new double[3];
@@ -79,18 +78,18 @@ class PopulationController {
             }
         }
 
-        int[] numberOfMonster = new int[3];
+        int[] numberOfMonster = new int[spawnRate.length];
         //Fill the spawn pool
         for (int i = 0 ; i < numberOfMonster.length; i++){
-            numberOfMonster[i] = (int) spawnRate[i] * totalMonster;
+            numberOfMonster[i] = (int) (spawnRate[i] * totalMonster);
             //Add the monster in
             for (int j = 0; j < numberOfMonster[i]; j++){
-                //myMonsterPool.MonsterFactory.createAMonster(i + 1);
+                myMonsterPool.add(MonsterFactory.createMonster(i + 1));
             }
         }
 
         //Shuffle the pool
-        Collections.shuffle(myMonsterPool);
+        Collections.shuffle(myMonsterPool, DungeonAdventure.RANDOM_SEED);
     }
 
     /**
@@ -101,6 +100,11 @@ class PopulationController {
      */
 
     Room[][] populaceMaze(final int theDifficultyLevel){
+        //Map is too small to generate anything
+        if (myMapHeight * myMapWidth - 1 < 6){
+            return null;
+        }
+
         loadTheMonster(theDifficultyLevel);
 
         ArrayList<Integer> randomRoomPool = new ArrayList<>();
@@ -115,14 +119,13 @@ class PopulationController {
         }
 
         //Shuffle the pool
-        Collections.shuffle(randomRoomPool);
+        Collections.shuffle(randomRoomPool, DungeonAdventure.RANDOM_SEED);
 
         //Add the pillar in the first 4 rooms
-
         for (int i = 0 ; i < 4; i++){
             int[] coordinate = Room.convertIDtoCoordinate(randomRoomPool.get(i));
             //Add a pillar here
-            //myMap[coordinate[0]][coordinate[1]].addRoomContent();
+            myMap[coordinate[0]][coordinate[1]].addRoomContent(PillarFactory.createPillar(i + 1));
         }
 
         //PLug the monster into the room

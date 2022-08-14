@@ -15,8 +15,8 @@ import java.util.Scanner;
  */
 public class InputChecker {
 
-    private InputStream myInputStream;
-    private PrintStream myOutputStream;
+    private final InputStream myInputStream;
+    private final PrintStream myOutputStream;
     private String myInitialPrompt;
     private String myRepeatingPrompt;
     private String myErrorPrompt;
@@ -175,15 +175,13 @@ public class InputChecker {
 
         //Start looping until user getting the prompt right
         Scanner input = new Scanner(myInputStream);
-        int choice = 0;
 
         //Default repeating prompt for YN question
         if (myRepeatingPrompt.isBlank()){
             myRepeatingPrompt = "1. Yes\n2. No";
         }
 
-        //Loop till the user get it
-        // right
+        //Loop till the user get it right
         while (true){
             myOutputStream.println(myRepeatingPrompt);
 
@@ -198,9 +196,7 @@ public class InputChecker {
                     case "2", "n", "no" ->{
                         return false;
                     }
-                    default -> {
-                        myOutputStream.println(myWrongRangePrompt);
-                    }
+                    default -> myOutputStream.println(myWrongRangePrompt);
                 }
             } catch (final Exception theException) {
                 if (!myErrorPrompt.isBlank()){
@@ -241,10 +237,35 @@ public class InputChecker {
         return inputCheckForNumber();
     }
 
+    boolean inputAnyKeyToContinue(){
+        //Only print if the prompt is not blank
+        if (!myInitialPrompt.isBlank()){
+            myOutputStream.println(myInitialPrompt);
+        }
 
+        //Start looping until user getting the prompt right
+        Scanner input = new Scanner(myInputStream);
 
+        //Default repeating prompt for YN question
+        if (myRepeatingPrompt.isBlank()){
+            myRepeatingPrompt = "Press Enter key to continue";
+        }
 
+        //Loop till the user press anything
+        while (true) {
+            myOutputStream.println(myRepeatingPrompt);
 
-
-
+            //Input check
+            try {
+                myInputStream.read();
+                return true;
+            } catch (final Exception theException) {
+                if (!myErrorPrompt.isBlank()) {
+                    myOutputStream.println(myErrorPrompt);
+                } else {
+                    myOutputStream.println(theException.getMessage());
+                }
+            }
+        }
+    }
 }

@@ -1,30 +1,13 @@
-import java.util.Random;
-
 /**
- * This Monster class contains all addtional instance methods the monster characters
+ * This Monster class contains all additional instance methods the monster characters
  */
 
 
 
 public class Monster extends DungeonCharacter{
-
-    private int myHealTime;
+    private double myChanceToHeal;
     private int myMinHealPoints;
     private int myMaxHealPoints;
-
-    public int getMyHealTime() {
-        return myHealTime;
-    }
-
-    public int getMyMinHealPoints() {
-        return myMinHealPoints;
-    }
-
-    public int getMyMaxHealPoints() {
-        return myMaxHealPoints;
-    }
-
-
 
     /**
      *
@@ -34,24 +17,22 @@ public class Monster extends DungeonCharacter{
      * @param theChance Chance to hit
      * @param theMin  the minimum hit point
      * @param theMax the maximum hit point
-     * @param theHealthTime the chance to health
+     * @param theHealChance the chance to health
      * @param theMinHeal the minimum heal points
      * @param theMaxHeal the maximum heal points
      */
 
     public Monster(final String theName, final int theHit, final int theAttack,
-                   final double theChance, final int theMin, final int theMax,final int theHealthTime,final int theMinHeal, final int theMaxHeal) {
+                   final double theChance, final int theMin, final int theMax,final double theHealChance,final int theMinHeal, final int theMaxHeal) {
         super(theName, theHit, theAttack, theChance, theMin, theMax);
 
-
-        this.setMyHealthTime(theHealthTime);
+        this.setChanceToHeal(theHealChance);
         this.setMinHealPoints(theMinHeal);
         this.setMaxHealPoints(theMaxHeal);
     }
-
-    private void setMyHealthTime(int theHealthTime) {
+    private void setChanceToHeal(final double theHealthChance) {
+        this.myChanceToHeal = theHealthChance;
     }
-
     private void setMinHealPoints(final int theMinHeal) {
         this.myMinHealPoints = theMinHeal;
     }
@@ -62,7 +43,8 @@ public class Monster extends DungeonCharacter{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder (super.toString());
-        sb.append ("Health Time: ").append(myHealTime).append("\n");
+
+        sb.append ("Chance to heal: ").append(String.format("%.2f",myChanceToHeal)).append("\n");
         sb.append ("Minimum Health Points: ").append(myMinHealPoints).append("\n");
         sb.append ("Maximum Health Points: ").append(myMaxHealPoints).append("\n");
 

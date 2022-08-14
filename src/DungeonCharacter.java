@@ -95,9 +95,9 @@ public class DungeonCharacter implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder ();
         sb.append ("Name: ").append(myCharacterName).append("\n");
-        sb.append ("Hit Points: ").append(myHitPoints).append("\n");
+        sb.append ("Hit Points: ").append(String.format("%.2f",myHitPoints)).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
-        sb.append ("Chance to hit: ").append(myHitChance).append("\n");
+        sb.append ("Chance to hit: ").append(String.format("%.2f",myHitChance)).append("\n");
         sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
         sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");
         return sb.toString();
@@ -163,3 +163,6 @@ public class DungeonCharacter implements Serializable {
     }
 
 }
+
+
+
