@@ -32,7 +32,7 @@ public abstract class Hero extends DungeonCharacter{
         myMana = 0;
         myHealingPotion = 0;
         myPillarStorage = new HashSet<>();
-        myHealByPotionAmount = 75;
+        myHealByPotionAmount = theHit / 2;//50%
     }
 
     /**
@@ -62,16 +62,6 @@ public abstract class Hero extends DungeonCharacter{
     // Gets the healing potions
     protected int getMyHealingPotion() {
         return myHealingPotion;
-    }
-
-    // Gets the healing potions
-    protected double getBlockChance() {
-        return myBlockChance;
-    }
-
-    // Sets the block chance
-    protected void setMyBlockChance(final double theBlock) {
-        myBlockChance = theBlock;
     }
 
     // Sets the Healing potions

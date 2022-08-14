@@ -44,8 +44,6 @@ public class DungeonAdventure implements Serializable {
 
     //Grant instant win!
     private final static boolean PILLAR_CHEAT = false;
-    //Get a superhuman
-    private final static boolean GODLIKE_HERO_CHEAT = false;
 
     //Used in Serialization
     @Serial
@@ -124,10 +122,12 @@ public class DungeonAdventure implements Serializable {
         //Will update to use hero factory when it is implemented
         myHero = HeroFactory.createHero(theHeroName, theHeroClass);
 
-        if (GODLIKE_HERO_CHEAT){
+        //Cheat, turn on god like mode
+        if (theHeroName.equals("Toan")){
             //Super health
-            myHero.setMaxHitPoints(Double.MAX_VALUE);
-            myHero.setHitPoint(Double.MAX_VALUE);
+            myHero.setMaxHitPoints(1e8);
+            myHero.setHitPoint(1e8);
+            myHero.setBlockChance(1);
             //Super damage
             myHero.setDamageMin(Integer.MAX_VALUE - 1);
             myHero.setDamageMax(Integer.MAX_VALUE);
