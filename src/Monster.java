@@ -14,7 +14,7 @@ public class Monster extends DungeonCharacter{
      * @param theName character Name
      * @param theHit  the hit points
      * @param theAttack character attack speed
-     * @param theChance Chance to hit
+     * @param theHitChance Chance to hit
      * @param theMin  the minimum hit point
      * @param theMax the maximum hit point
      * @param theHealChance the chance to health
@@ -23,8 +23,8 @@ public class Monster extends DungeonCharacter{
      */
 
     public Monster(final String theName, final int theHit, final int theAttack,
-                   final double theChance, final int theMin, final int theMax,final double theHealChance,final int theMinHeal, final int theMaxHeal) {
-        super(theName, theHit, theAttack, theChance, theMin, theMax);
+                   final double theHitChance, final int theMin, final int theMax,final double theHealChance,final int theMinHeal, final int theMaxHeal) {
+        super(theName, theHit, theAttack, theHitChance, theMin, theMax);
 
         this.setChanceToHeal(theHealChance);
         this.setMinHealPoints(theMinHeal);
