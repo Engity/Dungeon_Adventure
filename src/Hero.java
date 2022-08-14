@@ -8,14 +8,10 @@ import java.util.Set;
  *
  */
 public abstract class Hero extends DungeonCharacter{
-
-    private double myBlockChance;
     private Set<Pillar> myPillarStorage;
     private double myMana;
-
-    private int myHealingPotions;
-    private double myHealByPotionAmount;
     private int myHealingPotion;
+    private double myHealByPotionAmount;
 
     /**
      *
@@ -28,9 +24,9 @@ public abstract class Hero extends DungeonCharacter{
      */
     protected Hero(final double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final Double theBlock, final Double theChance) {
         super(theName, theHit, theAttack, theChance, theMin, theMax);
-        myBlockChance = theBlock;
+        setBlockChance(theBlock);
         myMana = 0;
-        myHealingPotion = 0;
+        myHealingPotion = 5;
         myPillarStorage = new HashSet<>();
         myHealByPotionAmount = theHit / 2;//50%
     }
@@ -41,11 +37,6 @@ public abstract class Hero extends DungeonCharacter{
      */
     int getNumberOfPillars() {
         return myPillarStorage.size();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 
     /**
@@ -75,7 +66,7 @@ public abstract class Hero extends DungeonCharacter{
     // This method will have a character defend against another
     protected boolean defend() {
         Random rand = new Random();
-        if( (100 * rand.nextDouble())< myBlockChance) {
+        if( (100 * rand.nextDouble())< getBlockChance()) {
             return true;
         }
         return false;
@@ -95,9 +86,9 @@ public abstract class Hero extends DungeonCharacter{
      */
 
     boolean useHealingPotion(){
-        if (myHealByPotionAmount <= 0)
+        if (myHealingPotion <= 0)
             return false;
-        --myHealingPotions;
+        --myHealingPotion;
         super.increaseHP(myHealByPotionAmount);
         return true;
     }
@@ -106,7 +97,7 @@ public abstract class Hero extends DungeonCharacter{
      * Increase the amount of healing potions
      */
     void addHealingPotion(){
-        ++myHealingPotions;
+        ++myHealingPotion;
     }
 
     /**
@@ -129,6 +120,20 @@ public abstract class Hero extends DungeonCharacter{
         myPillarStorage.clear();
         return res;
     }
+
+    /**
+     * To string method
+     * Add in healing potion amount
+     */
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder (super.toString());
+        res.append("Your healing potions: ").append(myHealingPotion).append("\n");
+
+        return res.toString();
+    }
+
 
 
 }

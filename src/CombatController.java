@@ -90,11 +90,11 @@ public class CombatController {
             //Player's turn
             int userChoice = myCombatView.promptUserForFightAction(message.toString(), theHero, theMonster);
             message = new StringBuilder("Turn ").append(++turnNumber);
-
+            message.append("\nYour Turn: ");
             switch (userChoice){
                 //attack
                 case (0)-> {
-                    message.append("\nYour attack: ");
+                    message.append("\n- You attacked: ");
                     double [] playerInflictDamage = theHero.normalAttackMove();
                     for (int i = 0; i < playerInflictDamage.length; ++i) {
                         double playerActualInflictDamage = theMonster.applyDamage(playerInflictDamage[i]);
@@ -114,8 +114,21 @@ public class CombatController {
 
                 //Use potion
                 case (2) ->{
-                    System.out.println("I use a potion");
-                    System.out.println("It suppose to be a function but there it has not been developed so you just lost a turn, for now");
+                    double hpBeforeHeal = theHero.getMyHitPoints();
+                    boolean useHealing = theHero.useHealingPotion();
+                    double hpAfterHeal = theHero.getMyHitPoints();
+                    double amountHealed = hpAfterHeal - hpBeforeHeal;
+
+                    message.append("\n- You chose to use a healing potion:\n");
+                    if (!useHealing){
+                        message.append("\tYou rummaged your inventory but sadly, there was no healing potion left!");
+                    }else if (amountHealed == 0){
+                        message.append("\tYou burped loudly. Drinking a potion felt weird when you are at full health.");
+                    }
+                    else{
+                        message.append("\tYou used a healing potion, healed for ");
+                        message.append(String.format("%.2f", amountHealed));
+                    }
                 }
             }
 
@@ -126,8 +139,9 @@ public class CombatController {
             }
 
             //Monster's turn
+            message.append("\n\nThe monster's turn: ");
             //just attack for now
-            message.append("\nThe monster's attack: ");
+            message.append("\n- The monster's attack: ");
             double[] monsterInflictDamage = theMonster.normalAttackMove();
             for (int i = 0; i < monsterInflictDamage.length; ++i) {
                 double monsterActualInflictDamage = theHero.applyDamage(monsterInflictDamage[i]);

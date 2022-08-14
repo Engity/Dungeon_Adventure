@@ -50,29 +50,21 @@ public class DungeonCharacter implements Serializable {
 
     void setDamageMax(final int theMax) {
         this.myDamageMax = theMax;
-
     }
 
 
     protected void setDamageMin(final int theMin) {
-
         this.myDamageMin = theMin;
-
     }
 
 
     protected void setChanceToHit(final double theChance) {
-
         this.myHitChance = theChance;
-
     }
 
 
     protected void setAttackSpeed(final int theAttack) {
-
-    
         this.myAttackSpeed = theAttack;
-
     }
 
 
@@ -88,8 +80,6 @@ public class DungeonCharacter implements Serializable {
     }
 
     protected void setName(final String theName) {
-
-
         this.myCharacterName = theName;
     }
 
@@ -126,7 +116,7 @@ public class DungeonCharacter implements Serializable {
         this.myMaxHitPoints = theMaxHitPoints;
     }
 
-    protected double getMyBlockChance() {
+    protected double getBlockChance() {
         return myBlockChance;
     }
 
@@ -157,7 +147,10 @@ public class DungeonCharacter implements Serializable {
         sb.append ("Hit Points: ").append((String.format("%.2f", myHitPoints))).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
         sb.append ("Chance to hit: ").append(String.format("%.2f", myHitChance)).append("\n");
-        sb.append ("Chance to block: ").append(String.format("%.2f", myBlockChance)).append("\n");
+
+        if (myBlockChance > 0) {
+            sb.append("Chance to block: ").append(String.format("%.2f", myBlockChance)).append("\n");
+        }
 
         sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
         sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");

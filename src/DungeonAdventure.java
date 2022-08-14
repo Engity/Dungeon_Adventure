@@ -123,7 +123,7 @@ public class DungeonAdventure implements Serializable {
         myHero = HeroFactory.createHero(theHeroName, theHeroClass);
 
         //Cheat, turn on god like mode
-        if (theHeroName.equals("Toan")){
+        if (theHeroName.equals("Toan Nguyen")){
             //Super health
             myHero.setMaxHitPoints(1e8);
             myHero.setHitPoint(1e8);
@@ -583,8 +583,6 @@ public class DungeonAdventure implements Serializable {
                 returnToMain = true;
                 break;
             }
-
-
         }
 
         if (DungeonAdventure.getInstance().myVictoryStatus){
