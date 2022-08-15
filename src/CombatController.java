@@ -104,12 +104,62 @@ public class CombatController {
                         } else {
                             message.append("\t\tMonster managed to block your attack");
                         }
+
+                        if (theMonster.isDead()){
+                            message.append("\n\tThe monster appears to be not moving anymore, so you stopped your attack.");
+                            break;
+                        }
                     }
                 }
                 //Special attack
                 case(1)-> {
-                    System.out.println("I use special attack");
-                    System.out.println("It suppose to be a function but there it has not been developed so you just lost a turn, for now");
+                    message.append("\n- You try to use your special attack skill: ");
+
+                    double specialAttack = theHero.specialSkill(theMonster);
+                    //Not enough mana
+                    if (specialAttack < 0){
+                        message.append("\n\tDespite trying with all your dedication and might, you failed due to not having enough mana!");
+                    }else {
+                        switch (theHero.getClassName()) {
+                            case "Warrior" -> {
+                                //Used special attack but failed to hit
+                                if (specialAttack == 0){
+                                    message.append("\n\tYou used Crushing Blow, but the monster dodged it with ease!");
+                                }
+                                else {
+                                    message.append("\n\tYou used Crushing Blow, dealing ");
+                                    message.append(String.format("%.2f",
+                                            theMonster.applyTrueDamage(specialAttack)
+                                    ));
+                                }
+                            }
+                            case "Priestess" -> {
+                                message.append("\n\tThe heaven heard your prayer, healing you for ");
+                                message.append(String.format("%.2f",
+                                        theMonster.applyTrueDamage(specialAttack)
+                                ));
+                            }
+                            case "Thief" -> {
+                                //Used special attack but failed to hit
+                                if (specialAttack == 0){
+                                    message.append("\n\tYou sneak behind the monster, but it noticed you causing you to miss the attack attack!");
+                                }
+                                else {
+                                    if (specialAttack > 2){
+                                        message.append("\n\tThe monster is surprised by your attack." +
+                                                " Thrilled by the adrenaline inside you, you have gained additional attack speed!");
+                                    }
+                                    double [] sneakAttackDamage = theHero.normalAttackMove();
+                                    double totalSneakAttackDamage = 0;
+                                    for (int i = 0; i < sneakAttackDamage.length; ++i) {
+                                        totalSneakAttackDamage += theMonster.applyDamage(sneakAttackDamage[i]);
+                                    }
+                                    message.append("\n\tCaught the monster by surprised, you have dealt a total damage of " + totalSneakAttackDamage);
+
+                                }
+                            }
+                        }
+                    }
                 }
 
                 //Use potion
@@ -152,6 +202,11 @@ public class CombatController {
                     message.append("\t\tThe monster has attacked you, inflicted ").append(String.format("%.2f", monsterActualInflictDamage)).append(" damage.");
                 } else {
                     message.append("\t\tYou managed to block the monster's attack");
+                }
+
+                if (theHero.isDead()){
+                    message.append("\n\tYou appear to be not moving anymore, so the monster stopped its attack.");
+                    break;
                 }
             }
 

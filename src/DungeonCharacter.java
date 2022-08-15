@@ -1,9 +1,15 @@
-import java.util.Random;
+/**
+ * T CSS 360 A: Software Development And Quality Assurance Techniques
+ * Summer 2022
+ * Professor Tom Capaul
+ */
+
 import java.io.Serializable;
 
-
 /**
- *
+ * Warrior class controller that extends Hero class
+ * {@code @author:} Toan Nguyen, Justin Noel
+ * @version 08 14 2022
  */
 
 public class DungeonCharacter implements Serializable {
@@ -18,8 +24,6 @@ public class DungeonCharacter implements Serializable {
     private double myBlockChance;
     private int myDamageMin;
     private int myDamageMax;
-    static Random MY_RANDOM_SEED;
-
     private String myClassName;
 
     /**
@@ -139,20 +143,9 @@ public class DungeonCharacter implements Serializable {
         this.myBlockChance = theBlockChance;
     }
 
-    double attack(final DungeonCharacter theEnemy) {
-
-        Random rand = new Random();
-
-        double attackHit = 100 * rand.nextDouble();
-        double damage = myDamageMin + (myDamageMax - myDamageMin) * rand.nextDouble();
-
-        // The Warrior hit the enemy
-        if(attackHit > myHitChance) {
-            theEnemy.setHitPoint(theEnemy.getMyHitPoints() - damage);
-        }
-        return damage;
+    void resetAttackSpeed(){
+        myAttackSpeed = myOriginalAttackSpeed;
     }
-
 
     @Override
     public String toString() {
@@ -186,7 +179,7 @@ public class DungeonCharacter implements Serializable {
     }
 
     /**
-     * Apply damage to this character
+     * Apply damage to this character, but also gave this character a chance to block or mitigate the damage
      * Won't go over 0
      * @param theDamage Damage this character should receive
      * @return the damage it actually applied
@@ -195,20 +188,35 @@ public class DungeonCharacter implements Serializable {
         double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
         double theActualDamage = theDamage;
 
-        //Success to block case
+        //Success to block case, minimize the damage
         if (rollTheDice <= myBlockChance){
-            //Reduce damage if manage to block
-            double reducedDamagePortion = Math.abs(1 - myBlockChance);
-            theActualDamage = reducedDamagePortion * theDamage;
+            //Reduce damage if managed to block
+            theActualDamage = 0;
         }
 
-        if (myHitPoints - theActualDamage < 0){
+//        if (myHitPoints - theActualDamage < 0){
+//            theActualDamage = myHitPoints;
+//        }
+//
+//        myHitPoints -= theActualDamage;
+        return applyTrueDamage(theActualDamage);
+
+    }
+    /**
+     * Apply true damage to this character
+     * Won't go over 0
+     * @param theDamage Damage this character should receive
+     * @return the damage it actually applied
+     */
+    double applyTrueDamage(final double theDamage){
+        //The actual damage
+        double theActualDamage = theDamage;
+        if (myHitPoints - theDamage < 0){
             theActualDamage = myHitPoints;
         }
 
         myHitPoints -= theActualDamage;
         return theActualDamage;
-
     }
 
     /**

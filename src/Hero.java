@@ -31,7 +31,7 @@ public abstract class Hero extends DungeonCharacter{
     protected Hero(final double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final Double theBlock, final Double theChance) {
         super(theName, theHit, theAttack, theChance, theMin, theMax);
         setBlockChance(theBlock);
-        myMana = 0;
+        setMyMana(100);
         myHealingPotion = 5;
         myPillarStorage = new HashSet<>();
         myHealByPotionAmount = theHit / 2;//50%
@@ -43,17 +43,6 @@ public abstract class Hero extends DungeonCharacter{
      */
     int getNumberOfPillars() {
         return myPillarStorage.size();
-    }
-
-    /**
-     * Attack method
-     * @param theEnemy the enemy we are attacking
-     * @return the damage inflicted
-     */
-    @Override
-    protected double attack(final DungeonCharacter theEnemy) {
-        myMana += 10; //Increase the mana
-        return super.attack(theEnemy);
     }
 
     // Gets the healing potions
@@ -79,7 +68,12 @@ public abstract class Hero extends DungeonCharacter{
     }
 
     void setMyMana(final double theValue){
-        myMana = theValue;
+        //Mana cap between 0 and 100
+        if (theValue < 0){
+            myMana = 0;
+        }
+        else
+            myMana = Math.min(100, theValue);
     }
 
     double getMyMana(){
@@ -135,9 +129,21 @@ public abstract class Hero extends DungeonCharacter{
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder (super.toString());
+        res.append("Your mana amount: ").append(myMana).append("\n");
         res.append("Your healing potions: ").append(myHealingPotion).append("\n");
 
         return res.toString();
+    }
+
+    /**
+     * Return a random number between the range [myDamageMin, myDamageMax)
+     * Will based on myHitChance if fails, return 0
+     * Increase the hero's mana
+     */
+    @Override
+    protected double normalAttackStrike() {
+        setMyMana(myMana + 10); //Increase the mana
+        return super.normalAttackStrike();
     }
 
 
