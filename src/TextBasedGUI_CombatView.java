@@ -135,7 +135,7 @@ public class TextBasedGUI_CombatView {
         StringBuilder myRepeatingPrompt = new StringBuilder().append("\nNotification: ").append(theMessage);
 
         if (theHeroWin){
-            myRepeatingPrompt.append("\nYou have defeated the monsters\n");
+            myRepeatingPrompt.append("\nYou have defeated the monster.\n");
         }
         else{
             myRepeatingPrompt.append("\nThe monster has defeated you\n");
@@ -187,7 +187,7 @@ public class TextBasedGUI_CombatView {
                 """);
 
         if (theLoot.isEmpty()){
-            repeatingPrompt.append("You have obtained nothing\n");
+            repeatingPrompt.append("There is nothing worthy to pick up\n");
         } else {
             //Loot to get every object
             for (var item : theLoot) {

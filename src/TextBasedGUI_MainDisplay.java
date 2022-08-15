@@ -273,7 +273,7 @@ public class TextBasedGUI_MainDisplay {
             out.flush();
             //closing the stream
             out.close();
-            System.out.println("success");
+            OUTPUT_DESTINATION.println("\nSuccessfully save the game\n");
         }
         catch(Exception e){
             OUTPUT_DESTINATION.println(e.getMessage());

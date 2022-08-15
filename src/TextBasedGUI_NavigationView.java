@@ -222,7 +222,7 @@ public class TextBasedGUI_NavigationView {
             repeatingPrompt.append(item.getMyItemName()).append("\n");
         }
         if (!theRemainPillars.isEmpty()) {
-            repeatingPrompt.append("The remaining pillars are:\n");
+            repeatingPrompt.append("Collect all 4 pillars to win the game. The remaining pillars are:\n");
             i = 0;
             for (var item : theRemainPillars) {
                 repeatingPrompt.append("\t").append(++i).append(". ");

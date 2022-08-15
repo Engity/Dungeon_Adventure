@@ -42,9 +42,6 @@ public class DungeonAdventure implements Serializable {
 
     final static Random RANDOM_SEED = new Random();
 
-    //Grant instant win!
-    private final static boolean PILLAR_CHEAT = false;
-
     //Used in Serialization
     @Serial
     private static final long serialVersionUID = 11L;
@@ -56,6 +53,12 @@ public class DungeonAdventure implements Serializable {
     private boolean myVisionPotionStatus;//Whether vision buff is active or not
 
     private static DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
+
+    //Grant instant win!
+    private final static boolean PILLAR_CHEAT = false;
+
+    //Use for testing defeat mechanic
+    private final static boolean PUNY_LITTLE_PLAYER = false;
 
     /**
      * Default constructor
@@ -128,9 +131,22 @@ public class DungeonAdventure implements Serializable {
             myHero.setMaxHitPoints(1e8);
             myHero.setHitPoint(1e8);
             myHero.setBlockChance(1);
+            //Plenty of potions
+            myHero.setMyHealingPotion(Integer.MAX_VALUE);
             //Super damage
             myHero.setDamageMin(Integer.MAX_VALUE - 1);
             myHero.setDamageMax(Integer.MAX_VALUE);
+        }
+
+        //Testing defeat mechanic
+        if (PUNY_LITTLE_PLAYER){
+            //Little health
+            myHero.setMaxHitPoints(1);
+            myHero.setHitPoint(1);
+            myHero.setBlockChance(0);
+            //Tiny damage
+            myHero.setDamageMin(1);
+            myHero.setDamageMax(2);
         }
 
         gameLoop();
