@@ -166,13 +166,20 @@ public class TextBasedGUI_MainDisplay {
             OUTPUT_DESTINATION.println("Wait, where are my healing potions I left here earlier?");
 
             try {
-                sleep(3000);
+                sleep(2500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-            OUTPUT_DESTINATION.println("Oh ... you have gone to the next stage, okay ...");
+            OUTPUT_DESTINATION.println("Oh ... get back here, you bloody thief!!!!");
 
+            try {
+                sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            OUTPUT_DESTINATION.println("\nAfter a swift chase, you managed to lose the old narrator in the maze. Poor the old man...");
+            OUTPUT_DESTINATION.println("You have gained additional healing potions!\n");
         }
 
         //Starting new game here

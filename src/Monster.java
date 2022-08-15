@@ -6,52 +6,110 @@
 
 public class Monster extends DungeonCharacter{
     private double myChanceToHeal;
-    private int myMinHealPoints;
-    private int myMaxHealPoints;
+    private int myMaximumHealTime;
+    private int myHealTime;
+
+    private int myOriginalDamageMin;
+    private int myOriginalDamageMax;
 
     /**
      *
      * @param theName character Name
-     * @param theHit  the hit points
-     * @param theAttack character attack speed
+     * @param theHitPoint  the hit points
+     * @param theAttackSpeed character attack speed
      * @param theHitChance Chance to hit
-     * @param theMin  the minimum hit point
-     * @param theMax the maximum hit point
+     * @param theMinDamage  the minimum hit point
+     * @param theMaxDamage the maximum hit point
      * @param theHealChance the chance to health
-     * @param theMinHeal the minimum heal points
-     * @param theMaxHeal the maximum heal points
+     * @param theMaximumHealTime Maximum time to heal
      */
 
-    public Monster(final String theName, final int theHit, final int theAttack,
-                   final double theHitChance, final int theMin, final int theMax,final double theHealChance,final int theMinHeal, final int theMaxHeal) {
-        super(theName, theHit, theAttack, theHitChance, theMin, theMax);
-
+    public Monster(final String theName, final double theHitPoint, final int theAttackSpeed,
+                   final double theHitChance, final int theMinDamage, final int theMaxDamage,final double theHealChance,final int theMaximumHealTime) {
+        super(theName, theHitPoint, theAttackSpeed, theHitChance, theMinDamage, theMaxDamage);
+        myOriginalDamageMin = theMinDamage;
+        myOriginalDamageMax = theMaxDamage;
+        myHealTime = 0;
         this.setChanceToHeal(theHealChance);
-        this.setMinHealPoints(theMinHeal);
-        this.setMaxHealPoints(theMaxHeal);
+        myMaximumHealTime = theMaximumHealTime;
     }
     private void setChanceToHeal(final double theHealthChance) {
         this.myChanceToHeal = theHealthChance;
     }
-    private void setMinHealPoints(final int theMinHeal) {
-        this.myMinHealPoints = theMinHeal;
-    }
-    private void setMaxHealPoints(final int theMaxHealth) {
-        this.myMaxHealPoints = theMaxHealth;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder (super.toString());
-
-        sb.append ("Chance to heal: ").append(String.format("%.2f",myChanceToHeal)).append("\n");
-        sb.append ("Minimum Health Points: ").append(myMinHealPoints).append("\n");
-        sb.append ("Maximum Health Points: ").append(myMaxHealPoints).append("\n");
-
+        sb.append ("Chance to self-heal: ").append(String.format("%.2f",myChanceToHeal)).append("\n");
         return sb.toString();
     }
 
-
+    int getMyHealTime() {
+        return myHealTime;
     }
+    //Setter only used for testing purposes
+    void setMyHealTime(final int theHealTime) {
+        this.myHealTime = theHealTime;
+    }
+
+    /**
+     * Process what should the monster do in the fight
+     * @param theEnemy the opponent it is fighting with
+     * @return the choice
+     * 0. Attack
+     * 1. Heal itself
+     * 2. Go frenzy (Increase damage dealt)
+     */
+
+    int combatChoice(final DungeonCharacter theEnemy){
+        //Will only heal when the player is not low enough and the monster need healing
+        //Check if the player can be killed with 1 more turn of attack
+        if (theEnemy.getHitPoints() < getDamageMin() * getAttackSpeed()){
+            return 0;
+        }
+        if (myHealTime < myMaximumHealTime &&
+                (getHitPoints() < (0.25 * getMaxHitPoints()))) {
+            return 1;
+        }
+        //Frenzy time (only activated when the monster has less than 50% Health
+        if (getHitPoints() < (0.5 * getMaxHitPoints()))
+            return 2;
+        //Just attack
+        return 0;
+    }
+
+    /**
+     * Monster self-heal itself
+     * Won't exceed maximum time heal
+     * @return the amount it healed
+     *        return -1 if exceed the amount of time heal
+     *        return 0 if fail to heal
+     */
+    double selfHeal(){
+        double amountHealed = 0;
+        if (myHealTime >= myMaximumHealTime){
+            return -1;
+        }
+
+        //Don't heal at full health
+        if (getHitPoints() == getMaxHitPoints()){
+            return 0;
+        }
+
+        double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
+
+        if (rollTheDice < myChanceToHeal){
+            double theShouldHealedAmount = (0.25 + DungeonAdventure.RANDOM_SEED.nextDouble()) * getMaxHitPoints();//At least 25% of maximum health
+            amountHealed = getHitPoints();
+            increaseHP(theShouldHealedAmount);
+            amountHealed = getHitPoints() - amountHealed;
+            setMyHealTime(getMyHealTime() + 1);
+        }
+
+
+        return amountHealed;
+    }
+
+
+}
 
 

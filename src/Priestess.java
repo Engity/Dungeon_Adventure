@@ -11,14 +11,13 @@
 public class Priestess extends Hero{
 
     /**
-     * makes a priestess object
-     * @param theHit
-     * @param theAttack
-     * @param theName
-     * @param theMin
-     * @param theMax
-     * @param theBlock
-     * @param theCritChance
+     * THis is the super class for all hero characters
+     * @param theHit the characters health
+     * @param theAttack the attack speed
+     * @param theName the name for the character
+     * @param theMin the min damage
+     * @param theMax the max damage
+     * @param theBlock the block speed
      */
     public Priestess(Double theHit, int theAttack, String theName, int theMin, int theMax, Double theBlock, double theCritChance) {
         super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
@@ -37,14 +36,25 @@ public class Priestess extends Hero{
         //Will always heal at least 25% of maxHealth and maximum of 50% of maxHealth
         double healProportion = DungeonAdventure.RANDOM_SEED.nextDouble(0.25) + 0.25;
 
-        double healAmount = getMyMaxHitPoints() * healProportion;
-        double actualHealAmount = getMyHitPoints();
+        double healAmount = getMaxHitPoints() * healProportion;
+        double actualHealAmount = getHitPoints();
         super.increaseHP(healAmount);
 
-        actualHealAmount = getMyHitPoints() - actualHealAmount;
+        actualHealAmount = getHitPoints() - actualHealAmount;
 
         setMyMana(0);//Reset the mana to 0
         return actualHealAmount;
+    }
+
+    /**
+     * Return a random number between the range [myDamageMin, myDamageMax)
+     * Will based on myHitChance if fails, return 0
+     * Priestess increases more mana per attack
+     */
+    @Override
+    protected double normalAttackStrike() {
+        setMyMana(getMyMana() + 15); //Increase the mana
+        return super.normalAttackStrike();
     }
 
 }

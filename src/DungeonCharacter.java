@@ -27,15 +27,14 @@ public class DungeonCharacter implements Serializable {
     private String myClassName;
 
     /**
-     *
-     * @param theName
-     * @param theHit
-     * @param theAttack
-     * @param theChance
-     * @param theMin
-     * @param theMax
+     * THis is the super class for all hero characters
+     * @param theHit the characters health
+     * @param theAttack the attack speed
+     * @param theName the name for the character
+     * @param theMin the min damage
+     * @param theMax the max damage
+     * @param theBlock the block speed
      */
-
     public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
         this.setName(theName);
@@ -107,11 +106,11 @@ public class DungeonCharacter implements Serializable {
         return myCharacterName;
     }
 
-    protected double getMyHitPoints() {
+    protected double getHitPoints() {
         return myHitPoints;
     }
 
-    protected int getMyAttackSpeed() {
+    protected int getAttackSpeed() {
         return myAttackSpeed;
     }
 
@@ -119,7 +118,7 @@ public class DungeonCharacter implements Serializable {
         return myHitChance;
     }
 
-    protected int getMyDamageMin() {
+    protected int getDamageMin() {
         return myDamageMin;
     }
 
@@ -127,7 +126,7 @@ public class DungeonCharacter implements Serializable {
         return myDamageMax;
     }
 
-    protected double getMyMaxHitPoints() {
+    protected double getMaxHitPoints() {
         return myMaxHitPoints;
     }
 
