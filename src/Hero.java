@@ -15,13 +15,13 @@ public abstract class Hero extends DungeonCharacter{
     private int myHealingPotion;
 
     /**
-     *
-     * @param theHit
-     * @param theAttack
-     * @param theName
-     * @param theMin
-     * @param theMax
-     * @param theBlock
+     * THis is the super class for all hero characters
+     * @param theHit the characters health
+     * @param theAttack the attack speed
+     * @param theName the name for the character
+     * @param theMin the min damage
+     * @param theMax the max damage
+     * @param theBlock the block speed
      */
     protected Hero(final double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final int theBlock, final int theChance) {
         super(theName, theHit, theAttack, theChance, theMin, theMax);

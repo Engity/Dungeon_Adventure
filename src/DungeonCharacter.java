@@ -19,15 +19,14 @@ public class DungeonCharacter implements Serializable {
     static Random MY_RANDOM_SEED;
 
     /**
-     *
-     * @param theName
-     * @param theHit
-     * @param theAttack
-     * @param theChance
-     * @param theMin
-     * @param theMax
+     * THis is the super class for all hero characters
+     * @param theHit the characters health
+     * @param theAttack the attack speed
+     * @param theName the name for the character
+     * @param theMin the min damage
+     * @param theMax the max damage
+     * @param theBlock the block speed
      */
-
     public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
         this.setName(theName);

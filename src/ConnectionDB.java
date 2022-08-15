@@ -43,11 +43,14 @@ public class ConnectionDB {
      *  Default constructor
      * @throws SQLException sql error
      */
-    public ConnectionDB() throws SQLException {
+    public ConnectionDB(final boolean theFillTable) throws SQLException {
         monsterTable();
-        fillTableM();
+
         heroTable();
-        fillTableH();
+        if(le) {
+            fillTableM();
+            fillTableH();
+        }
     }
 
 

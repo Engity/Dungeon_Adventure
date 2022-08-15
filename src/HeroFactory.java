@@ -16,7 +16,7 @@ public class HeroFactory {
 
         try {
 
-            sql = new ConnectionDB();
+            sql = new ConnectionDB(false);
 
 
         } catch(Exception e) {
