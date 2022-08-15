@@ -1,9 +1,4 @@
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.TestInstance;
-
-import java.util.Random;
 
 import static org.junit.Assert.*;
 /**
@@ -14,20 +9,20 @@ public class CharacterTests {
     @Test
     public void testHitPointsWarrior() {
         Warrior warrior = new Warrior(50.0, 99, "Warrior", 5,99, 20.0, 20);
-        assertEquals("testHitPointsWarrior failed", 50, warrior.getMyHitPoints(), 0);
+        assertEquals("testHitPointsWarrior failed", 50, warrior.getHitPoints(), 0);
     }
 
     @Test
     public void testHitPointsThief() {
         Thief thief = new Thief(50.0, 99, "Thief", 5,99, 20.0, 20);
-        assertEquals("testHitPoints failed", 50, thief.getMyHitPoints(), 0);
+        assertEquals("testHitPoints failed", 50, thief.getHitPoints(), 0);
     }
 
     @Test
     public void testHitPointsPriestess() {
         Priestess priestess = new Priestess(50.0, 99, "priestess", 5,99, 20.0, 20);
 
-        assertEquals("testHitPoints failed", 50, priestess.getMyHitPoints(), 0);
+        assertEquals("testHitPoints failed", 50, priestess.getHitPoints(), 0);
     }
 
     @Test
@@ -52,20 +47,20 @@ public class CharacterTests {
     @Test
     public void testAttackWarrior() {
         Warrior warrior = new Warrior(50.0, 99, "Warrior", 5,99, 20.0, 20);
-        assertEquals("testAttackWarrior failed", 99, warrior.getMyAttackSpeed(), 0);
+        assertEquals("testAttackWarrior failed", 99, warrior.getAttackSpeed(), 0);
 
     }
 
     @Test
     public void testHitAttackThief() {
         Thief thief = new Thief(50.0, 99, "Thief", 5,99, 20.0, 20);
-        assertEquals("testHitAttackThief failed", 99, thief.getMyAttackSpeed(), 0);
+        assertEquals("testHitAttackThief failed", 99, thief.getAttackSpeed(), 0);
     }
 
     @Test
     public void testHitNAttackPriestess() {
         Priestess priestess = new Priestess(50.0, 99, "priestess", 5,99, 20.0, 20);
-        assertEquals("testHitNAttackPriestess failed", 99, priestess.getMyAttackSpeed(), 0);
+        assertEquals("testHitNAttackPriestess failed", 99, priestess.getAttackSpeed(), 0);
     }
 
     @Test

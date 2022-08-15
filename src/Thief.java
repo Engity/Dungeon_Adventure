@@ -67,7 +67,7 @@ public class Thief extends Hero{
         double[] res;
         if (myBoostAttackSpeed > 0){
             //Gained 1.5 times more attack strikes
-            setAttackSpeed(getMyAttackSpeed() * 3 / 2);
+            setAttackSpeed(getAttackSpeed() * 3 / 2);
         }
         res = super.normalAttackMove();
         if (myBoostAttackSpeed > 0){

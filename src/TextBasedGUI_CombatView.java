@@ -110,7 +110,7 @@ public class TextBasedGUI_CombatView {
         }
         //outputting out the notification
         if (theMessage != null)
-            myRepeatingPrompt.append("\nNotification: ").append(theMessage);
+            myRepeatingPrompt.append("\n\nNotification: ").append(theMessage);
 
         myRepeatingPrompt.append("\nPlease enter your choice: ");
 
@@ -187,7 +187,7 @@ public class TextBasedGUI_CombatView {
                 """);
 
         if (theLoot.isEmpty()){
-            repeatingPrompt.append("There is nothing worthy to pick up\n");
+            repeatingPrompt.append("There is nothing worthy to pick up.\n");
         } else {
             //Loot to get every object
             for (var item : theLoot) {

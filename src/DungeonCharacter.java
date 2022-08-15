@@ -107,11 +107,11 @@ public class DungeonCharacter implements Serializable {
         return myCharacterName;
     }
 
-    protected double getMyHitPoints() {
+    protected double getHitPoints() {
         return myHitPoints;
     }
 
-    protected int getMyAttackSpeed() {
+    protected int getAttackSpeed() {
         return myAttackSpeed;
     }
 
@@ -119,7 +119,7 @@ public class DungeonCharacter implements Serializable {
         return myHitChance;
     }
 
-    protected int getMyDamageMin() {
+    protected int getDamageMin() {
         return myDamageMin;
     }
 
@@ -127,7 +127,7 @@ public class DungeonCharacter implements Serializable {
         return myDamageMax;
     }
 
-    protected double getMyMaxHitPoints() {
+    protected double getMaxHitPoints() {
         return myMaxHitPoints;
     }
 

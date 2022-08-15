@@ -16,6 +16,17 @@ public class Main {
         TextBasedGUI_MainDisplay.getInstance().displayMainMenu();
 
         //TextBasedGUI_CombatView.getInstance().promptUserForFightAction();
+        //Database test
+//        try {
+//            ConnectionDB con = new ConnectionDB();
+//            Hero theHero = con.getHero("WARRIOR");
+//            theHero.setMyHealingPotion(5);
+//
+//            Monster theMonster = con.getMonster("OGRE");
+//            System.out.println(theMonster.toString());
+//        } catch(Exception e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 
 }

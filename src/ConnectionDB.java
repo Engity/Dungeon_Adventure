@@ -24,17 +24,6 @@ https://shanemcd.org/2020/01/24/how-to-set-up-sqlite-with-jdbc-in-eclipse-on-win
  *
  */
 public class ConnectionDB {
-//    public static void main(String[] args) {
-//        try {
-//            ConnectionDB con = new ConnectionDB();
-//            Hero theHero = con.getHero("WARRIOR");
-//            theHero.setMyHealingPotion(5);
-//        } catch(Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
-
-
     private SQLiteDataSource myMonsters;
     private String myQueryM;
     private SQLiteDataSource myHeroes;
@@ -92,12 +81,7 @@ public class ConnectionDB {
                 "ATTACK_SPEED TEXT NOT NULL, " +
                 "HIT_CHANCE TEXT NOT NULL, " +
                 "HEAL_CHANCE TEXT NOT NULL, " +
-                "MIN_HEAL TEXT NOT NULL, " +
-                "MAX_HEAL TEXT NOT NULL, " +
-                "HEAL_MAX TEXT NOT NULL)";
-
-
-
+                "MAX_HEAL_TIME TEXT NOT NULL)";
         try(Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
 
             int rv = stmt.executeUpdate(myQueryM);
@@ -116,7 +100,11 @@ public class ConnectionDB {
         //System.out.println( "Attempting to insert two rows into questions table" );
 
         // Query the data
-        myQueryM = "INSERT INTO myMonsters (NAME, HEALTH, DAMAGE_MIN, DAMAGE_MAX , ATTACK_SPEED , HIT_CHANCE , HEAL_CHANCE, MIN_HEAL, MAX_HEAL, HEAL_MAX) VALUES ( 'Ogre', '200','20', '60', '2', '0.6', '0.1', '20', '40', '1') , ('Skeleton', '110','20', '60', '3', '0.8', '0.4', '20', '30', '2'), ('Gremlin', '80','10', '25', '5', '0.8', '0.2', '20', '40', '4')";
+        myQueryM = "INSERT INTO myMonsters (NAME, HEALTH, DAMAGE_MIN, DAMAGE_MAX , ATTACK_SPEED , HIT_CHANCE , HEAL_CHANCE, MAX_HEAL_TIME) " +
+                "VALUES " +
+                    "( 'Ogre', '200','50', '75', '2', '0.6', '0.1', '1') , " +
+                    "('Skeleton', '110','35', '45', '3', '0.8', '0.4', '2'), " +
+                    "('Gremlin', '80','10', '25', '5', '0.8', '0.2', '4')";
 
         try (Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
             int rv = stmt.executeUpdate(myQueryM);
@@ -160,17 +148,15 @@ public class ConnectionDB {
             ResultSet rs = stmt.executeQuery(query);
 
             String theName = rs.getString( "NAME" );
-            Integer theHit = Integer.parseInt(rs.getString( "HEALTH" ));
+            Double theHit = Double.parseDouble(rs.getString( "HEALTH" ));
             Integer theMin = Integer.parseInt(rs.getString( "DAMAGE_MIN" ));
             Integer theMax = Integer.parseInt(rs.getString( "DAMAGE_MAX" ));
             Integer theAttack = Integer.parseInt(rs.getString( "ATTACK_SPEED" ));
-            Integer theChance = Integer.parseInt(rs.getString( "HEAL_CHANCE" ));
-            Integer theMinHeal = Integer.parseInt(rs.getString( "MIN_HEAL" ));
-            Integer theMaxHeal = Integer.parseInt(rs.getString( "MAX_HEAL" ));
-            Integer theHealChance = Integer.parseInt(rs.getString( "HEAL_MAX" ));
+            Double theChance = Double.parseDouble(rs.getString( "HIT_CHANCE" ));
+            Double theHealChance = Double.parseDouble(rs.getString( "HEAL_CHANCE"));
+            Integer theMaximumHealTime = Integer.parseInt(rs.getString( "MAX_HEAL_TIME" ));
 
-
-            monster = new Monster(theName,theHit,theAttack, theChance, theMin,  theMax,theHealChance,theMinHeal,theMaxHeal);
+            monster = new Monster(theName,theHit,theAttack, theChance, theMin,  theMax,theHealChance, theMaximumHealTime);
 
 
         } catch ( SQLException e ) {
@@ -240,8 +226,8 @@ public class ConnectionDB {
         // Query the data
         myQueryH = "INSERT INTO myHeros (theName, theHit, theMin, theMax, theAttack, theCritChance, theBlock) " +
                 "VALUES ( 'Warrior', '650', '30', '40', '3', '0.5', '0.6'), " +
-                "('Priestess', '350', '10', '25', '5', '0.7', '0.2'), " +
-                "('Thief', '400', '15', '30', '6', '0.9', '0.4')";
+                "('Priestess', '350', '10', '25', '4', '0.7', '0.2'), " +
+                "('Thief', '400', '15', '30', '5', '0.9', '0.4')";
 
         try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement(); ) {
             int rv = stmt.executeUpdate(myQueryH);

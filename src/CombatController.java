@@ -164,9 +164,9 @@ public class CombatController {
 
                 //Use potion
                 case (2) ->{
-                    double hpBeforeHeal = theHero.getMyHitPoints();
+                    double hpBeforeHeal = theHero.getHitPoints();
                     boolean useHealing = theHero.useHealingPotion();
-                    double hpAfterHeal = theHero.getMyHitPoints();
+                    double hpAfterHeal = theHero.getHitPoints();
                     double amountHealed = hpAfterHeal - hpBeforeHeal;
 
                     message.append("\n- You chose to use a healing potion:\n");
@@ -190,29 +190,54 @@ public class CombatController {
 
             //Monster's turn
             message.append("\n\nThe monster's turn: ");
-            //just attack for now
-            message.append("\n- The monster's attack: ");
-            double[] monsterInflictDamage = theMonster.normalAttackMove();
-            for (int i = 0; i < monsterInflictDamage.length; ++i) {
-                double monsterActualInflictDamage = theHero.applyDamage(monsterInflictDamage[i]);
-                message.append("\n\tIn strike ").append(i + 1).append(":\n");
-                //Update notification
-                //if the monster chose to attack
-                if (monsterActualInflictDamage != 0) {
-                    message.append("\t\tThe monster has attacked you, inflicted ").append(String.format("%.2f", monsterActualInflictDamage)).append(" damage.");
-                } else {
-                    message.append("\t\tYou managed to block the monster's attack");
-                }
+            int theMonsterChoice = theMonster.combatChoice(theHero);
+            switch (theMonsterChoice){
+                //Attack
+                case 0 ->{
+                    message.append("\n- The monster's attack: ");
+                    double[] monsterInflictDamage = theMonster.normalAttackMove();
+                    for (int i = 0; i < monsterInflictDamage.length; ++i) {
+                        double monsterActualInflictDamage = theHero.applyDamage(monsterInflictDamage[i]);
+                        message.append("\n\tIn strike ").append(i + 1).append(":\n");
+                        //Update notification
+                        //if the monster chose to attack
+                        if (monsterActualInflictDamage != 0) {
+                            message.append("\t\tThe monster has attacked you, inflicted ").append(String.format("%.2f", monsterActualInflictDamage)).append(" damage.");
+                        } else {
+                            message.append("\t\tYou managed to block the monster's attack");
+                        }
 
-                if (theHero.isDead()){
-                    message.append("\n\tYou appear to be not moving anymore, so the monster stopped its attack.");
-                    break;
-                }
-            }
+                        if (theHero.isDead()){
+                            message.append("\n\tYou appear to be not moving anymore, so the monster stopped its attack.");
+                            break;
+                        }
+                    }
 
-            if (theHero.isDead()) {
-                TextBasedGUI_CombatView.getInstance().displayNotificationForTheLastCombatTurn(message.toString(), false);
-                return 0;
+                    if (theHero.isDead()) {
+                        TextBasedGUI_CombatView.getInstance().displayNotificationForTheLastCombatTurn(message.toString(), false);
+                        return 0;
+                    }
+                }
+                //Healing
+                case 1->{
+                    double amountHeal = theMonster.selfHeal();
+                    message.append("\n- The monster try to heal itself");
+                    if (amountHeal == 0){
+                        message.append("\n\tIt appears to be too wounded and tired from the fight. It has failed at healing itself.");
+                    }
+                    else{
+                        message.append("\n\tThe monster roars, its vein starting to show. It has successfully healed itself for the amount ");
+                        message.append(String.format("%.2f", amountHeal));
+                    }
+
+                }
+                //Frenzy
+                case 2->{
+                    message.append("\n- Low on health, the monster entered a frenzy stage, increasing its damage");
+                    //Triple damage
+                    double increaseDamageProportion = 3;
+                    theMonster.setDamageMax((int) (theMonster.getMyDamageMax() * increaseDamageProportion));
+                    theMonster.setDamageMin((int) (theMonster.getDamageMin() * increaseDamageProportion));               }
             }
         }
 
