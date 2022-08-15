@@ -14,14 +14,13 @@ public class Warrior extends Hero{
     private double mySpecialDamage;
 
     /**
-     * makes a warrior object
-     * @param theHit
-     * @param theAttack
-     * @param theName
-     * @param theMin
-     * @param theMax
-     * @param theBlock
-     * @param theCritChance
+     * THis is the super class for all hero characters
+     * @param theHit the characters health
+     * @param theAttack the attack speed
+     * @param theName the name for the character
+     * @param theMin the min damage
+     * @param theMax the max damage
+     * @param theBlock the block speed
      */
     public Warrior(Double theHit, int theAttack, String theName, int theMin, int theMax, Double theBlock, double theCritChance) {
         super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
