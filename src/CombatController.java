@@ -240,10 +240,10 @@ public class CombatController {
                 //Frenzy
                 case 2->{
                     message.append("\n- Low on health, the monster entered a frenzy stage, increasing its damage");
+
                     //Triple damage
-                    double increaseDamageProportion = 3;
-                    theMonster.setDamageMax((int) (theMonster.getMyDamageMax() * increaseDamageProportion));
-                    theMonster.setDamageMin((int) (theMonster.getDamageMin() * increaseDamageProportion));               }
+                    theMonster.frenzyMode(3);
+                }
             }
         }
 

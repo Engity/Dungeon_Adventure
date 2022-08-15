@@ -121,7 +121,7 @@ public class DungeonCharacter implements Serializable {
         return myDamageMin;
     }
 
-    protected int getMyDamageMax() {
+    protected int getDamageMax() {
         return myDamageMax;
     }
 

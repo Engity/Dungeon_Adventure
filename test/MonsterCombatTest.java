@@ -113,6 +113,13 @@ public class MonsterCombatTest {
         int combatChoice = myMonster.combatChoice(myHero);
         //The monster will choose to go crazy
         assertEquals(2, combatChoice);
+        double beforeFrenzyMinDamage = myMonster.getDamageMin();
+        double beforeFrenzyMaxDamage = myMonster.getDamageMax();
+
+        double damageProportion = 3;
+        myMonster.frenzyMode(3);
+        assertEquals(damageProportion * beforeFrenzyMinDamage, myMonster.getDamageMin());
+        assertEquals(damageProportion * beforeFrenzyMaxDamage, myMonster.getDamageMax());
     }
 
     /**
@@ -145,5 +152,6 @@ public class MonsterCombatTest {
         //The monster will choose to go crazy
         assertEquals(2, combatChoice);
     }
+
 }
 
