@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *  @version 08 14 2022
  */
 
-public class monsterCombatTest{
+public class MonsterCombatTest {
     private Monster myMonster;
     private Hero myHero;
 
