@@ -120,6 +120,12 @@ public class MonsterCombatTest {
         myMonster.frenzyMode(3);
         assertEquals(damageProportion * beforeFrenzyMinDamage, myMonster.getDamageMin());
         assertEquals(damageProportion * beforeFrenzyMaxDamage, myMonster.getDamageMax());
+
+
+        //Ask again
+        combatChoice = myMonster.combatChoice(myHero);
+        //The monster will choose heal or attack
+        assertEquals(0, combatChoice);
     }
 
     /**
