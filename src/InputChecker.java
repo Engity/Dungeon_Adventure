@@ -178,7 +178,7 @@ public class InputChecker {
 
         //Default repeating prompt for YN question
         if (myRepeatingPrompt.isBlank()){
-            myRepeatingPrompt = "1. Yes\n2. No";
+            myRepeatingPrompt = "\t1. Yes\n\t2. No";
         }
 
         //Loop till the user get it right

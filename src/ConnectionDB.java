@@ -24,18 +24,9 @@ https://shanemcd.org/2020/01/24/how-to-set-up-sqlite-with-jdbc-in-eclipse-on-win
  *
  */
 public class ConnectionDB {
-//    public static void main(String[] args) {
-//        try {
-//            ConnectionDB con = new ConnectionDB();
-//        } catch(Exception e) {
-//            System.out.println("error");
-//        }
-//    }
-
-
     private SQLiteDataSource myMonsters;
     private String myQueryM;
-    private SQLiteDataSource myHeros;
+    private SQLiteDataSource myHeroes;
     private String myQueryH;
 
 
@@ -54,7 +45,7 @@ public class ConnectionDB {
     }
 
 
-    // Makes the mosnter table
+    // Makes the monster table
     private void monsterTable() {
 
         // Properties
@@ -73,6 +64,17 @@ public class ConnectionDB {
             System.exit(0);
         }
 
+        //Drop the table if it has existed and create it again
+        myQueryM = "DROP TABLE IF EXISTS myMonsters";
+
+        try(Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
+
+            int rv = stmt.executeUpdate(myQueryM);
+
+        } catch(Exception e) {
+            System.out.println("Error: " + e);
+        }
+
         // Set up table statement
         myQueryM = "CREATE TABLE IF NOT EXISTS myMonsters ( " +
                 "NAME TEXT NOT NULL, " +
@@ -82,12 +84,7 @@ public class ConnectionDB {
                 "ATTACK_SPEED TEXT NOT NULL, " +
                 "HIT_CHANCE TEXT NOT NULL, " +
                 "HEAL_CHANCE TEXT NOT NULL, " +
-                "MIN_HEAL TEXT NOT NULL, " +
-                "MAX_HEAL TEXT NOT NULL, " +
-                "HEAL_MAX TEXT NOT NULL)";
-
-
-
+                "MAX_HEAL_TIME TEXT NOT NULL)";
         try(Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
 
             int rv = stmt.executeUpdate(myQueryM);
@@ -106,7 +103,11 @@ public class ConnectionDB {
         //System.out.println( "Attempting to insert two rows into questions table" );
 
         // Query the data
-        myQueryM = "INSERT INTO myMonsters (NAME, HEALTH, DAMAGE_MIN, DAMAGE_MAX , ATTACK_SPEED , HIT_CHANCE , HEAL_CHANCE, MIN_HEAL, MAX_HEAL, HEAL_MAX) VALUES ( 'Ogre', '200','20', '60', '2', '0.6', '0.1', '20', '40', '1') , ('Skeleton', '110','20', '60', '3', '0.8', '0.4', '20', '30', '2'), ('Gremlin', '80','10', '25', '5', '0.8', '0.2', '20', '40', '4')";
+        myQueryM = "INSERT INTO myMonsters (NAME, HEALTH, DAMAGE_MIN, DAMAGE_MAX , ATTACK_SPEED , HIT_CHANCE , HEAL_CHANCE, MAX_HEAL_TIME) " +
+                "VALUES " +
+                    "( 'Ogre', '200','50', '75', '2', '0.6', '0.1', '1') , " +
+                    "('Skeleton', '110','35', '45', '3', '0.8', '0.4', '2'), " +
+                    "('Gremlin', '80','10', '25', '5', '0.8', '0.2', '4')";
 
         try (Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
             int rv = stmt.executeUpdate(myQueryM);
@@ -150,17 +151,15 @@ public class ConnectionDB {
             ResultSet rs = stmt.executeQuery(query);
 
             String theName = rs.getString( "NAME" );
-            Integer theHit = Integer.parseInt(rs.getString( "HEALTH" ));
+            Double theHit = Double.parseDouble(rs.getString( "HEALTH" ));
             Integer theMin = Integer.parseInt(rs.getString( "DAMAGE_MIN" ));
             Integer theMax = Integer.parseInt(rs.getString( "DAMAGE_MAX" ));
             Integer theAttack = Integer.parseInt(rs.getString( "ATTACK_SPEED" ));
-            Integer theChance = Integer.parseInt(rs.getString( "HEAL_CHANCE" ));
-            Integer theMinHeal = Integer.parseInt(rs.getString( "MIN_HEAL" ));
-            Integer theMaxHeal = Integer.parseInt(rs.getString( "MAX_HEAL" ));
-            Integer theHealChance = Integer.parseInt(rs.getString( "HEAL_MAX" ));
+            Double theChance = Double.parseDouble(rs.getString( "HIT_CHANCE" ));
+            Double theHealChance = Double.parseDouble(rs.getString( "HEAL_CHANCE"));
+            Integer theMaximumHealTime = Integer.parseInt(rs.getString( "MAX_HEAL_TIME" ));
 
-
-            monster = new Monster(theName,theHit,theAttack, theChance, theMin,  theMax,theHealChance,theMinHeal,theMaxHeal);
+            monster = new Monster(theName,theHit,theAttack, theChance, theMin,  theMax,theHealChance, theMaximumHealTime);
 
 
         } catch ( SQLException e ) {
@@ -175,19 +174,28 @@ public class ConnectionDB {
     private void heroTable() {
 
         // Properties
-        myHeros = null;
+        myHeroes = null;
 
         try {
-
             // Get the DB connection and create the table/statement
-            myHeros = new SQLiteDataSource();
-            myHeros.setUrl("jdbc:sqlite:myHeros.db");
+            myHeroes = new SQLiteDataSource();
+            myHeroes.setUrl("jdbc:sqlite:myHeros.db");
 
         } catch (Exception e) {
 
             // There was an error
-            System.out.println("ERROR creating hero table: " + e);
             System.exit(0);
+        }
+
+        //Drop the table if it has existed and create it again
+        myQueryH = "DROP TABLE IF EXISTS myHeros";
+
+        try(Connection conn = myHeroes.getConnection();
+            Statement stmt = conn.createStatement(); ) {
+
+            int rv = stmt.executeUpdate(myQueryH);
+
+        } catch(Exception e) {
         }
 
         // Set up table statement
@@ -200,13 +208,12 @@ public class ConnectionDB {
                 "theCritChance TEXT NOT NULL, " +
                 "theBlock TEXT NOT NULL) ";
 
-        try(Connection conn = myHeros.getConnection();
+        try(Connection conn = myHeroes.getConnection();
             Statement stmt = conn.createStatement(); ) {
 
             int rv = stmt.executeUpdate(myQueryH);
 
         } catch(Exception e) {
-            System.out.println("Error: " + e);
         }
 
 
@@ -220,9 +227,12 @@ public class ConnectionDB {
         //System.out.println( "Attempting to insert two rows into hero table" );
 
         // Query the data
-        myQueryH = "INSERT INTO myHeros (theName, theHit, theMin, theMax, theAttack, theCritChance, theBlock) VALUES ( 'Warrior', '180', '60', '80', '4', '0.5', '0.6'), ('Priestess', '80', '20', '50', '5', '0.7', '0.2'), ('Thief', '60', '15', '40', '4', '0.9', '0.4')";
+        myQueryH = "INSERT INTO myHeros (theName, theHit, theMin, theMax, theAttack, theCritChance, theBlock) " +
+                "VALUES ( 'Warrior', '650', '30', '40', '3', '0.5', '0.6'), " +
+                "('Priestess', '350', '10', '25', '4', '0.7', '0.2'), " +
+                "('Thief', '400', '15', '30', '5', '0.9', '0.4')";
 
-        try (Connection conn = myHeros.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement(); ) {
             int rv = stmt.executeUpdate(myQueryH);
         } catch ( SQLException e ) {
             e.printStackTrace();
@@ -259,7 +269,7 @@ public class ConnectionDB {
 
         }
 
-        try (Connection conn = myHeros.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement(); ) {
 
             ResultSet rs = stmt.executeQuery(query);
 
@@ -268,10 +278,8 @@ public class ConnectionDB {
             Integer theMin = Integer.parseInt(rs.getString( "theMin" ));
             Integer theMax = Integer.parseInt(rs.getString( "theMax" ));
             Integer theAttack =Integer.parseInt(rs.getString( "theAttack" ));
-            Integer theCritChance = Integer.parseInt(rs.getString( "theCritChance" ));
-            Integer theBlock = Integer.parseInt(rs.getString( "theBlock" ));
-
-            System.out.println(theHit);
+            Double theCritChance = Double.parseDouble(rs.getString( "theCritChance" ));
+            Double theBlock = Double.parseDouble(rs.getString( "theBlock" ));
 
             switch (theHero.toUpperCase()) {
                 case "WARRIOR":

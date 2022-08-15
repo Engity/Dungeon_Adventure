@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Stack;
 
@@ -36,7 +37,7 @@ public class DungeonAdventure implements Serializable {
     private Room myPreviousRoom;
 
     private int numberOfPillarsDroppedOff;
-    private DungeonCharacter myHero;
+    private Hero myHero;
     private boolean[][] myRoomVisitedStatus;//True if the room has been visited, false otherwise
 
     final static Random RANDOM_SEED = new Random();
@@ -53,13 +54,18 @@ public class DungeonAdventure implements Serializable {
 
     private static DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
 
+    //Grant instant win!
+    private final static boolean PILLAR_CHEAT = false;
+
+    //Use for testing defeat mechanic
+    private final static boolean PUNY_LITTLE_PLAYER = false;
+
     /**
      * Default constructor
      * Attach controller to the views
      * Init the components
      */
-
-    private DungeonAdventure(){       
+    private DungeonAdventure(){
         init();
         TextBasedGUI_MainDisplay.attachController(this);
         CombatController.attachController(this);
@@ -117,7 +123,31 @@ public class DungeonAdventure implements Serializable {
 
         //Create the hero, for now it is just display the stat of ogre
         //Will update to use hero factory when it is implemented
-        myHero = new DungeonCharacter(theHeroName, 200, 2, .6, 30, 60);
+        myHero = HeroFactory.createHero(theHeroName, theHeroClass);
+
+        //Cheat, turn on god like mode
+        if (theHeroName.equals("Toan Nguyen")){
+            //Super health
+            myHero.setMaxHitPoints(1e8);
+            myHero.setHitPoint(1e8);
+            myHero.setBlockChance(1);
+            //Plenty of potions
+            myHero.setMyHealingPotion(Integer.MAX_VALUE);
+            //Super damage
+            myHero.setDamageMin(Integer.MAX_VALUE - 1);
+            myHero.setDamageMax(Integer.MAX_VALUE);
+        }
+
+        //Testing defeat mechanic
+        if (PUNY_LITTLE_PLAYER){
+            //Little health
+            myHero.setMaxHitPoints(1);
+            myHero.setHitPoint(1);
+            myHero.setBlockChance(0);
+            //Tiny damage
+            myHero.setDamageMin(1);
+            myHero.setDamageMax(2);
+        }
 
         gameLoop();
     }
@@ -205,8 +235,7 @@ public class DungeonAdventure implements Serializable {
      * P is current location of player
      * Full visibility is only used for testing purposes
      */
-
-     String getWorldMapFullVisibility(){
+    String getWorldMapFullVisibility(){
         StringBuilder res = new StringBuilder();
         res.append("Width: " + MAP_SIZE_WIDTH + " Height: " + MAP_SIZE_HEIGHT + "\n");
         res.append("X means no access, ' ' means there is a way\n");
@@ -490,15 +519,48 @@ public class DungeonAdventure implements Serializable {
     static void gameLoop(){
         boolean returnToMain = false;
         while (!DungeonAdventure.getInstance().myGameOverStatus || !DungeonAdventure.getInstance().myVictoryStatus){
-            //Check player is at the entrance to ask whether they would like drop off pillar
+            //Cheat adding all pillar
+            if (PILLAR_CHEAT) {
+                Pillar temp = PillarFactory.createPillar(1);
+                DungeonAdventure.getInstance().myHero.addPillarsToStorage(temp);
+                temp = PillarFactory.createPillar(2);
+                DungeonAdventure.getInstance().myHero.addPillarsToStorage(temp);
+                temp = PillarFactory.createPillar(3);
+                DungeonAdventure.getInstance().myHero.addPillarsToStorage(temp);
+                temp = PillarFactory.createPillar(4);
+                DungeonAdventure.getInstance().myHero.addPillarsToStorage(temp);
+            }
 
-                //Only ask if there is pillar in the player's inventory, and they are at the entrance
-            if (DungeonAdventure.getInstance().isPlayerAtTheEntrance()){
+            //Check player is at the entrance to ask whether they would like drop off pillar
+            //Only ask if there is pillar in the player's inventory, and they are at the entrance
+            if (DungeonAdventure.getInstance().isPlayerAtTheEntrance() &&
+                DungeonAdventure.getInstance().myHero.getNumberOfPillars() > 0
+                ){
+
                 boolean dropOffConfirm = TextBasedGUI_NavigationView.getInstance().displayDropOffPillarMenu();
                 if (dropOffConfirm){
-                    //Increase the number of pillars dropped off
-                    DungeonAdventure.getInstance().numberOfPillarsDroppedOff++;
+                    //Pillar list
+                    HashSet<String> remainPillars = new HashSet<>();
+                    remainPillars.add("Abstraction");
+                    remainPillars.add("Encapsulation");
+                    remainPillars.add("Inheritance");
+                    remainPillars.add("Polymorphism");
+
+
                     //Call remove pillar from the player's inventory
+                    ArrayList<Pillar> pillars = DungeonAdventure.getInstance().myHero.retrievePillars();
+
+                    if (!pillars.isEmpty()) {
+                        //Checking what pillar is missing
+                        for (var pillar : pillars) {
+                            remainPillars.remove(pillar.getMyItemName());
+                        }
+
+                        TextBasedGUI_NavigationView.getInstance().displayRemainPillar(remainPillars, pillars);
+                    }
+
+                    //Increase the number of pillars dropped off
+                    DungeonAdventure.getInstance().numberOfPillarsDroppedOff += pillars.size();
 
                     //Trigger victory condition
                     if (DungeonAdventure.getInstance().numberOfPillarsDroppedOff == 4){
@@ -510,7 +572,7 @@ public class DungeonAdventure implements Serializable {
                 }
             }
             //Checking if there is a monster in a room
-            if (DungeonAdventure.getInstance().myCurrentRoom.getMyGuardian() != null){
+            if (DungeonAdventure.getInstance().myCurrentRoom.getGuardian() != null && !DungeonAdventure.getInstance().myCurrentRoom.getGuardian().isDead()){
                 int userFightingStatus = CombatController.getInstance().initiateFight(DungeonAdventure.getInstance().myHero, DungeonAdventure.getInstance().myCurrentRoom);
                 //User chose to chicken out
                 if (userFightingStatus == 3){
@@ -563,8 +625,7 @@ public class DungeonAdventure implements Serializable {
         if (!myVisionPotionStatus){
             return false;
         }
-
-            //THis code works but don't merge yet because we don't have buff/debuff
+        //THis code works but don't merge yet because we don't have buff/debuff
         //offset to track surrounding
         final int[] dx = {-1,  0,  1, 1, 1, 0, -1, -1};
         final int[] dy = {-1, -1, -1, 0, 1, 1, 1,   0};
@@ -596,6 +657,5 @@ public class DungeonAdventure implements Serializable {
     private Object readResolve()  {
         return myDungeonAdventureInstance;
     }
-
 
 }

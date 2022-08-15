@@ -79,10 +79,10 @@ class PopulationControllerTest {
         //Loop the map and count
         for (int i = 0 ;  i < MAP_HEIGHT; i++){
             for (int j = 0 ;  j < MAP_WIDTH; j++){
-                Monster guardian = myMap[i][j].getMyGuardian();
+                Monster guardian = myMap[i][j].getGuardian();
                 //Check to see if there is a monster in the room
                 if (guardian != null){
-                    switch (guardian.getMyCharacterName()){
+                    switch (guardian.getCharacterName()){
                         case "Gremlin"-> amountOfMonster[0]++;
                         case "Skeleton"-> amountOfMonster[1]++;
                         case "Ogre"-> amountOfMonster[2]++;
@@ -110,10 +110,10 @@ class PopulationControllerTest {
         //Loop the map and count
         for (int i = 0 ;  i < MAP_HEIGHT; i++){
             for (int j = 0 ;  j < MAP_WIDTH; j++){
-                Monster guardian = myMap[i][j].getMyGuardian();
+                Monster guardian = myMap[i][j].getGuardian();
                 //Check to see if there is a monster in the room
                 if (guardian != null){
-                    switch (guardian.getMyCharacterName()){
+                    switch (guardian.getCharacterName()){
                         case "Gremlin"-> amountOfMonster[0]++;
                         case "Skeleton"-> amountOfMonster[1]++;
                         case "Ogre"-> amountOfMonster[2]++;
@@ -141,10 +141,10 @@ class PopulationControllerTest {
         //Loop the map and count
         for (int i = 0 ;  i < MAP_HEIGHT; i++){
             for (int j = 0 ;  j < MAP_WIDTH; j++){
-                Monster guardian = myMap[i][j].getMyGuardian();
+                Monster guardian = myMap[i][j].getGuardian();
                 //Check to see if there is a monster in the room
                 if (guardian != null){
-                    switch (guardian.getMyCharacterName()){
+                    switch (guardian.getCharacterName()){
                         case "Gremlin"-> amountOfMonster[0]++;
                         case "Skeleton"-> amountOfMonster[1]++;
                         case "Ogre"-> amountOfMonster[2]++;

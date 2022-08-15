@@ -1,9 +1,15 @@
-import java.util.Random;
+/**
+ * T CSS 360 A: Software Development And Quality Assurance Techniques
+ * Summer 2022
+ * Professor Tom Capaul
+ */
+
 import java.io.Serializable;
 
-
 /**
- *
+ * Warrior class controller that extends Hero class
+ * {@code @author:} Toan Nguyen, Justin Noel
+ * @version 08 14 2022
  */
 
 public class DungeonCharacter implements Serializable {
@@ -11,12 +17,14 @@ public class DungeonCharacter implements Serializable {
     private double myHitPoints;
     private double myMaxHitPoints;
     private int myAttackSpeed;
+    private int myOriginalAttackSpeed;
+    private double myOriginalHitChance;
     private double myHitChance;
 
     private double myBlockChance;
     private int myDamageMin;
     private int myDamageMax;
-    static Random MY_RANDOM_SEED;
+    private String myClassName;
 
     /**
      * THis is the super class for all hero characters
@@ -30,50 +38,59 @@ public class DungeonCharacter implements Serializable {
     public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
         this.setName(theName);
-        this.setHitPoint(theHit);
+
         this.setAttackSpeed(theAttack);
         this.setChanceToHit(theChance);
         this.setDamageMin(theMin);
         this.setDamageMax(theMax);
 
-        setMyMaxHitPoints(theHit);
+        setMaxHitPoints(theHit);
+        setHitPoint(theHit);
 
-
+        myOriginalHitChance = myHitChance;
+        myOriginalAttackSpeed = myAttackSpeed;
     }
 
-    private void setDamageMax(final int theMax) {
-        this.myDamageMax = theMax;
+    /**
+     * Getter for myClassName
+     */
+    String getClassName(){
+        return myClassName;
+    }
 
+    /**
+     * Setter for myClassName
+     */
+
+    void setClassName(final String theClassName){
+        myClassName = theClassName;
+    }
+
+    void setDamageMax(final int theMax) {
+        this.myDamageMax = theMax;
     }
 
 
     protected void setDamageMin(final int theMin) {
-
         this.myDamageMin = theMin;
-
     }
 
 
     protected void setChanceToHit(final double theChance) {
-
         this.myHitChance = theChance;
-
     }
 
 
     protected void setAttackSpeed(final int theAttack) {
-
-    
         this.myAttackSpeed = theAttack;
-
     }
 
 
     protected void setHitPoint(final double theHit) {
         if(theHit < 0) {
             this.myHitPoints = 0;
-        } else if(theHit > 100) {
-            this.myHitPoints = 100;
+        } else if(theHit > myMaxHitPoints) {
+            this.myHitPoints = myMaxHitPoints;
         } else {
             myHitPoints = theHit;
         }
@@ -81,21 +98,19 @@ public class DungeonCharacter implements Serializable {
     }
 
     protected void setName(final String theName) {
-
-
         this.myCharacterName = theName;
     }
 
 
-    protected String getMyCharacterName() {
+    protected String getCharacterName() {
         return myCharacterName;
     }
 
-    protected double getMyHitPoints() {
+    protected double getHitPoints() {
         return myHitPoints;
     }
 
-    protected int getMyAttackSpeed() {
+    protected int getAttackSpeed() {
         return myAttackSpeed;
     }
 
@@ -103,7 +118,7 @@ public class DungeonCharacter implements Serializable {
         return myHitChance;
     }
 
-    protected int getMyDamageMin() {
+    protected int getDamageMin() {
         return myDamageMin;
     }
 
@@ -111,45 +126,42 @@ public class DungeonCharacter implements Serializable {
         return myDamageMax;
     }
 
-    protected double getMyMaxHitPoints() {
+    protected double getMaxHitPoints() {
         return myMaxHitPoints;
     }
 
-    protected void setMyMaxHitPoints(final double theMaxHitPoints) {
+    protected void setMaxHitPoints(final double theMaxHitPoints) {
         this.myMaxHitPoints = theMaxHitPoints;
     }
 
-    protected double getMyBlockChance() {
+    protected double getBlockChance() {
         return myBlockChance;
     }
 
-    protected void setMyBlockChance(final double theBlockChance) {
+    protected void setBlockChance(final double theBlockChance) {
         this.myBlockChance = theBlockChance;
     }
 
-    double attack(final DungeonCharacter theEnemy) {
-
-        Random rand = new Random();
-
-        double attackHit = 100 * rand.nextDouble();
-        double damage = myDamageMin + (myDamageMax - myDamageMin) * rand.nextDouble();
-
-        // The Warrior hit the enemy
-        if(attackHit > myHitChance) {
-            theEnemy.setHitPoint(theEnemy.getMyHitPoints() - damage);
-        }
-        return damage;
+    void resetAttackSpeed(){
+        myAttackSpeed = myOriginalAttackSpeed;
     }
-
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder ();
         sb.append ("Name: ").append(myCharacterName).append("\n");
 
-        sb.append ("Hit Points: ").append(myHitPoints).append("\n");
+        if (myClassName != null) {
+            sb.append("Class: ").append(myClassName).append("\n");
+        }
+
+        sb.append ("Hit Points: ").append((String.format("%.2f", myHitPoints))).append("\n");
         sb.append ("Attack Speed: ").append(myAttackSpeed).append("\n");
-        sb.append ("Chance to hit: ").append(myHitChance).append("\n");
+        sb.append ("Chance to hit: ").append(String.format("%.2f", myHitChance)).append("\n");
+
+        if (myBlockChance > 0) {
+            sb.append("Chance to block: ").append(String.format("%.2f", myBlockChance)).append("\n");
+        }
 
         sb.append ("Minimum Damage: ").append(myDamageMin).append("\n");
         sb.append ("Maximum Damage: ").append(myDamageMax).append("\n");
@@ -166,7 +178,7 @@ public class DungeonCharacter implements Serializable {
     }
 
     /**
-     * Apply damage to this character
+     * Apply damage to this character, but also gave this character a chance to block or mitigate the damage
      * Won't go over 0
      * @param theDamage Damage this character should receive
      * @return the damage it actually applied
@@ -175,21 +187,35 @@ public class DungeonCharacter implements Serializable {
         double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
         double theActualDamage = theDamage;
 
-        //Fail to block case
+        //Success to block case, minimize the damage
         if (rollTheDice <= myBlockChance){
-            //Reduce damage if manage to block
-            double reducedDamage = rollTheDice * theDamage;
-            theActualDamage = reducedDamage;
+            //Reduce damage if managed to block
+            theActualDamage = 0;
         }
 
-        if (myHitPoints - theActualDamage < 0){
+//        if (myHitPoints - theActualDamage < 0){
+//            theActualDamage = myHitPoints;
+//        }
+//
+//        myHitPoints -= theActualDamage;
+        return applyTrueDamage(theActualDamage);
+
+    }
+    /**
+     * Apply true damage to this character
+     * Won't go over 0
+     * @param theDamage Damage this character should receive
+     * @return the damage it actually applied
+     */
+    double applyTrueDamage(final double theDamage){
+        //The actual damage
+        double theActualDamage = theDamage;
+        if (myHitPoints - theDamage < 0){
             theActualDamage = myHitPoints;
-            myHitPoints = 0;
         }
 
         myHitPoints -= theActualDamage;
         return theActualDamage;
-
     }
 
     /**
@@ -205,7 +231,7 @@ public class DungeonCharacter implements Serializable {
      * Return a random number between the range [myDamageMin, myDamageMax)
      * Will based on myHitChance if fails, return 0
      */
-    double normalAttackMove(){
+    double normalAttackStrike(){
         double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
         //Randomize based on hit chance
         if (rollTheDice > myHitChance){
@@ -213,6 +239,19 @@ public class DungeonCharacter implements Serializable {
         }
         //Random the damage this character would inflict
         return DungeonAdventure.RANDOM_SEED.nextDouble(myDamageMin, myDamageMax);
+    }
+
+    /**
+     * Loop reflecting attack speed (how many times this character can strike in a turn)
+     * Call the singular attack methods to represent a strike
+     * @return an array, showing the damage for each strike
+     */
+    double[] normalAttackMove(){
+        double[] res = new double[myAttackSpeed];
+        for (int i = 0 ; i < myAttackSpeed; i++){
+            res[i] = Math.abs(Math.round(normalAttackStrike() * 100.0) / 100.0);
+        }
+        return res;
     }
 
 }
