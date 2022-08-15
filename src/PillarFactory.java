@@ -1,3 +1,13 @@
+/**
+ * T CSS 360 A: Software Development And Quality Assurance Techniques
+ * Summer 2022
+ * Professor Tom Capaul
+ */
+/**
+ * Pillar Factory
+ * {@code @author:} Toan Nguyen, Thao Nguyen
+ * @version 08 14 2022
+ */
 public class PillarFactory {
     /**
      *

@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 /**
  *
- * @author Justin Noel
+ * @author Justin Noel, Toan Nguyen
  *
  * Simple class to demonstrate SQLite connectivity
  * 1) create connection
@@ -29,20 +29,23 @@ public class ConnectionDB {
     private SQLiteDataSource myHeroes;
     private String myQueryH;
 
+    private static final ConnectionDB myConnectionDBInstance = new ConnectionDB();
 
     /**
      *  Default constructor
-     * @throws SQLException sql error
      */
-    public ConnectionDB(final boolean theFillTable) throws SQLException {
+    private ConnectionDB() {
         monsterTable();
-
         heroTable();
-        if(le) {
-            fillTableM();
-            fillTableH();
-        }
+        fillTableM();
+        fillTableH();
     }
+
+    public static ConnectionDB getInstance(){
+        return myConnectionDBInstance;
+    }
+
+
 
 
     // Makes the monster table
