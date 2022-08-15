@@ -45,7 +45,7 @@ public abstract class Hero extends DungeonCharacter{
 
     /**
      * this method gets the number of pillars in your inventory
-     * @return
+     * @return the number of pillars
      */
     int getNumberOfPillars() {
         return myPillarStorage.size();

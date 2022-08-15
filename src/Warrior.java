@@ -3,7 +3,7 @@
  * Summer 2022
  * Professor Tom Capaul
  */
-import java.util.*;
+
 /**
  * Warrior class controller that extends Hero class
  * {@code @author:} Toan Nguyen, Justin Noel

@@ -15,7 +15,6 @@ import java.util.Scanner;
  */
 public class CombatController {
     private final TextBasedGUI_CombatView myCombatView;
-    private int myCurrentTurnAmount;
 
     private static DungeonAdventure myGameController;
 
@@ -23,7 +22,7 @@ public class CombatController {
         myGameController = theGameController;
     }
     private CombatController(){
-        myCurrentTurnAmount = 0;
+        int myCurrentTurnAmount = 0;
         myCombatView = TextBasedGUI_CombatView.getInstance();
     }
 
