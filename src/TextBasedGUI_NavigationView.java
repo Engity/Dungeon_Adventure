@@ -28,7 +28,6 @@ public class TextBasedGUI_NavigationView {
      */
     private static final PrintStream OUTPUT_DESTINATION = System.out;
 
-    
     private TextBasedGUI_NavigationView(){
 
     }
@@ -44,7 +43,7 @@ public class TextBasedGUI_NavigationView {
      * Prompt the user for what to do while navigating, mainly direction they wish to go and access to the pause menu
      * @return the user choice
      */
-    public int promptUserForDirection(){
+    public int promptUserForDirection(final Hero theHero){
         int theCurrentRoomAccess = DungeonAdventure.getInstance().getCurrentRoomAccessCode();
 
         int userChoice;
@@ -60,7 +59,12 @@ public class TextBasedGUI_NavigationView {
                 """);
 
         //Add the map to repeating prompt
-        StringBuilder repeatingPrompt = new StringBuilder("Current Location: \n");
+        StringBuilder repeatingPrompt = new StringBuilder();
+        //Get the inventory
+        repeatingPrompt.append("\n").append(parsePlayerInventory(theHero));
+
+        //Start to append the map
+        repeatingPrompt.append("\nCurrent Location: \n");
         repeatingPrompt.append(DungeonAdventure.getInstance().parseWorldMapWithVisibility());
 
         //Name of the direction
@@ -234,6 +238,38 @@ public class TextBasedGUI_NavigationView {
 
         remainPillarChecker.setMyRepeatingPrompt(repeatingPrompt.toString());
         return remainPillarChecker.inputAnyKeyToContinue();
+    }
+
+    /**
+     * Parse the player inventory
+     *  Display the pillar they have
+     *  Display the buff they have
+     */
+    String parsePlayerInventory(final Hero theHero){
+        StringBuilder res = new StringBuilder("Current inventory: ");
+        var pillars = theHero.getPillars();
+
+        if (pillars.isEmpty()){
+            res.append("\n\tYou don't have any pillar right now.");
+        }else{
+            for (int i = 0 ; i < pillars.size(); i++){
+                res.append("\n\t").append(i + 1).append(". ");
+                res.append(pillars.get(i).getMyItemName());
+                res.append(".");
+            }
+        }
+        if (pillars.size() == 4){
+            res.append("\nYou have all the pillars. Bring it to the entrance to win the game!\n");
+        }
+
+        if (theHero.getMyVisionBuff().getDuration() != 0){
+            res.append("\nYou have the item \"");
+            res.append(theHero.getMyVisionBuff().getMyItemName());
+            res.append("\" for the duration ").append(theHero.getMyVisionBuff().getDuration());
+            res.append(".\n");
+        }
+
+        return res.toString();
     }
 
 }

@@ -187,19 +187,25 @@ public class TextBasedGUI_CombatView {
                 """);
 
         if (theLoot.isEmpty()){
-            repeatingPrompt.append("There is nothing worthy to pick up.\n");
+            repeatingPrompt.append("\nThere is nothing worthy to pick up.\n");
         } else {
             //Loot to get every object
             for (var item : theLoot) {
                 //If it is pillar
                 if (item.getClass() == Pillar.class) {
-                    repeatingPrompt.append("You have obtained the pillar ").append(((Pillar) item).getMyItemName());
+                    repeatingPrompt.append("\nYou have obtained the pillar ").append(((Pillar) item).getMyItemName());
                     repeatingPrompt.append("\n");
+                }
+                //If it is a vision buff
+                if (item.getClass() == VisionBuff.class){
+                    repeatingPrompt.append("\nYou have obtained an item. ").append(((VisionBuff) item).getMyItemName());
+                    repeatingPrompt.append(". It has the effect: \n\t").append(((VisionBuff) item).getMyDescription());
+                    repeatingPrompt.append("\n\tDuration: ").append(((VisionBuff) item).getDuration()).append("\n");
                 }
             }
         }
 
-        repeatingPrompt.append("Press Enter key to continue.");
+        repeatingPrompt.append("\nPress Enter key to continue.");
 
         postFightMenuChecker.setMyRepeatingPrompt(repeatingPrompt.toString());
         return postFightMenuChecker.inputAnyKeyToContinue();

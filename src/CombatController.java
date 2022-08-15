@@ -57,6 +57,13 @@ public class CombatController {
                             if (item.getClass() == Pillar.class){
                                 theHero.addPillarsToStorage((Pillar)item);
                             }
+
+                            //Refresh the vision potion for the player
+                            if (item.getClass() == VisionBuff.class){
+                                theHero.getMyVisionBuff().refreshDuration();
+                                //Tell the dungeon adventure about the buff
+                                myGameController.setVisionBuffStatus(true);
+                            }
                         }
 
                         //If it is buff or de-buff then use different stuffs

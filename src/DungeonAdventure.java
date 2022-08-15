@@ -49,10 +49,8 @@ public class DungeonAdventure implements Serializable {
     //Used to track the state of the game
     private boolean myGameOverStatus;//Is false if the player has not lost yet
     private boolean myVictoryStatus;//Is false if the player has not won yet
-
-    private boolean myVisionPotionStatus;//Whether vision buff is active or not
-
     private static DungeonAdventure myDungeonAdventureInstance = new DungeonAdventure();
+    private boolean myVisionBuffStatus;
 
     //Grant instant win!
     private final static boolean PILLAR_CHEAT = false;
@@ -80,6 +78,7 @@ public class DungeonAdventure implements Serializable {
         myRoomVisitedStatus = new boolean[MAP_SIZE_HEIGHT][MAP_SIZE_WIDTH];
         myEntranceY = RANDOM_SEED.nextInt(MAP_SIZE_WIDTH);
         myEntranceX = RANDOM_SEED.nextInt(MAP_SIZE_HEIGHT);//Randomly selected starting cell
+        myVisionBuffStatus = false;
 
         int id = 0;
         for (int i = 0 ; i < MAP_SIZE_HEIGHT; i++){
@@ -126,7 +125,7 @@ public class DungeonAdventure implements Serializable {
         myHero = HeroFactory.createHero(theHeroName, theHeroClass);
 
         //Cheat, turn on god like mode
-        if (theHeroName.equals("Toan Nguyen")){
+        if (theHeroName.equals("Toan")){
             //Super health
             myHero.setMaxHitPoints(1e8);
             myHero.setHitPoint(1e8);
@@ -304,20 +303,23 @@ public class DungeonAdventure implements Serializable {
         char[][][][] roomPresentation = new char[MAP_SIZE_HEIGHT] [MAP_SIZE_WIDTH][3][3];
         for (int i = 0 ; i < MAP_SIZE_HEIGHT; i++){
             for (int j = 0 ; j < MAP_SIZE_WIDTH; j++){
-                //Fill the room with 'X'
-                if (myRoomVisitedStatus[i][j] || canBeSeenByVisionPotion(i,j)) {
+                //Fill the room with '+'
+                if (myRoomVisitedStatus[i][j] || canBeSeenByVisionPotion(i, j)) {
                     for (int k = 0; k < 3; k++) {
                         for (int l = 0; l < 3; l++) {
                             //The wall
                             roomPresentation[i][j][k][l] = '+';
                         }
                     }
+                    //Room has not been visited but can be seen by vision potion
+                    if (canBeSeenByVisionPotion(i, j) && !myRoomVisitedStatus[i][j])
+                        roomPresentation[i][j][1][1] = '?';
                 }
                 else{
                     for (int k = 0; k < 3; k++) {
                         for (int l = 0; l < 3; l++) {
                             //The unvisited room
-                            roomPresentation[i][j][k][l] = '?';
+                            roomPresentation[i][j][k][l] = '@';
                         }
                     }
                 }
@@ -337,7 +339,7 @@ public class DungeonAdventure implements Serializable {
 //                            else roomPresentation[i][j][x][y] = '-';
                         }
                         else{
-                            roomPresentation[i][j][x][y] = '?';
+                            roomPresentation[i][j][x][y] = '@';
                         }
                     }
                 }
@@ -346,7 +348,9 @@ public class DungeonAdventure implements Serializable {
                 else if (i == myEntranceX && j == myEntranceY)
                     roomPresentation[i][j][1][1] = 'E';//Entrance
                 else if (!myRoomVisitedStatus[i][j] && !canBeSeenByVisionPotion(i,j))
-                    roomPresentation[i][j][1][1] = '?';//Unknown
+                    roomPresentation[i][j][1][1] = '@';//Unknown
+                else if (canBeSeenByVisionPotion(i, j) && !myRoomVisitedStatus[i][j])
+                    roomPresentation[i][j][1][1] = '?';//Room not visited but can be seen by vision potion
                 else
                     roomPresentation[i][j][1][1] = '.';//Visited Room
             }
@@ -365,7 +369,7 @@ public class DungeonAdventure implements Serializable {
                         prevSpace = j;
                     }
                     for (int l = 0; l < 3; l++){
-                        if (roomPresentation[i][j][k][l] != '?') {
+                        if (roomPresentation[i][j][k][l] != '@') {
                             res.append(roomPresentation[i][j][k][l]);
                             addANewLine = true;
                         }
@@ -464,6 +468,20 @@ public class DungeonAdventure implements Serializable {
     }
 
     /**
+     * Getter for visionBuffStatus
+     */
+    boolean getVisionBuffStatus(){
+        return myVisionBuffStatus;
+    }
+
+    /**
+     * Setter for visionBuffStatus
+     */
+    void setVisionBuffStatus(final boolean theBuff){
+        myVisionBuffStatus = theBuff;
+    }
+
+    /**
      * Return whether a room is visited or not
      * @param theXPos the desired room's x position
      * @param theYPos the desired room's y position
@@ -472,22 +490,6 @@ public class DungeonAdventure implements Serializable {
     boolean getRoomVisitedStatus(final int theXPos, final int theYPos){
         return myRoomVisitedStatus[theXPos][theYPos];
     }
-
-    /**
-     * Getter for myVisionPotionStatus
-     * @return value of myVisionPotionStatus
-     */
-    boolean getVisionPotionStatus(){
-        return myVisionPotionStatus;
-    }
-
-    /**
-     * Setter for myVisionPotionStatus
-     */
-    void setVisionPotionStatus(final boolean theStatus){
-        myVisionPotionStatus = theStatus;
-    }
-
 
     /**
      * Set the player's position, only used for testing
@@ -585,9 +587,13 @@ public class DungeonAdventure implements Serializable {
                 }
             }
             //moving
-            int userInputDirection = TextBasedGUI_NavigationView.getInstance().promptUserForDirection();
+            int userInputDirection = TextBasedGUI_NavigationView.getInstance().promptUserForDirection(getInstance().myHero);
             if (userInputDirection > 0 && userInputDirection <= 4){
                 DungeonAdventure.getInstance().movePlayer(userInputDirection - 1);
+                //Disable vision buff
+                if (!DungeonAdventure.getInstance().myHero.getMyVisionBuff().useVisionBuff()){
+                    DungeonAdventure.getInstance().setVisionBuffStatus(false);
+                }
             }
 
             if (userInputDirection == 5){
@@ -616,16 +622,14 @@ public class DungeonAdventure implements Serializable {
     }
 
     /**
-     * Experimenting fields
+     * Seen by vision buff
      */
 
-    //These fields will be brought up if tested and implemented
-
     private boolean canBeSeenByVisionPotion(final int theXPos, final int theYPos){
-        if (!myVisionPotionStatus){
+        if (!myVisionBuffStatus){
             return false;
         }
-        //THis code works but don't merge yet because we don't have buff/debuff
+
         //offset to track surrounding
         final int[] dx = {-1,  0,  1, 1, 1, 0, -1, -1};
         final int[] dy = {-1, -1, -1, 0, 1, 1, 1,   0};

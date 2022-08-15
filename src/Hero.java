@@ -19,6 +19,8 @@ public abstract class Hero extends DungeonCharacter{
     private int myHealingPotion;
     private double myHealByPotionAmount;
 
+    private VisionBuff myVisionBuff;
+
     /**
      * THis is the super class for all hero characters
      * @param theHit the characters health
@@ -35,6 +37,10 @@ public abstract class Hero extends DungeonCharacter{
         myHealingPotion = 5;
         myPillarStorage = new HashSet<>();
         myHealByPotionAmount = theHit / 2;//50%
+
+        //Disable vision buff
+        myVisionBuff = new VisionBuff();
+        myVisionBuff.setDuration(0);
     }
 
     /**
@@ -109,14 +115,23 @@ public abstract class Hero extends DungeonCharacter{
     }
 
     /**
-     * Use to retrieve the pillar and clear the storage
-     * @return An array containing all pillars the hero has
+     * Return the pillars in storage
+     * Do not clear the inventory space
      */
-    ArrayList<Pillar> retrievePillars(){
+    ArrayList<Pillar> getPillars(){
         ArrayList<Pillar> res = new ArrayList<>();
         for (var item: myPillarStorage){
             res.add(item);
         }
+        return res;
+    }
+
+    /**
+     * Use to retrieve the pillar and clear the storage
+     * @return An array containing all pillars the hero has
+     */
+    ArrayList<Pillar> retrievePillars(){
+        ArrayList<Pillar> res = getPillars();
         myPillarStorage.clear();
         return res;
     }
@@ -146,8 +161,9 @@ public abstract class Hero extends DungeonCharacter{
         return super.normalAttackStrike();
     }
 
-
-
+    VisionBuff getMyVisionBuff(){
+        return myVisionBuff;
+    }
 }
 
 

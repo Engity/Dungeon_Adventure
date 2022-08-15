@@ -7,7 +7,7 @@ import org.sqlite.SQLiteDataSource;
 
 /**
  *
- * @author Justin Noel
+ * @author Justin Noel, Toan Nguyen
  *
  * Simple class to demonstrate SQLite connectivity
  * 1) create connection
@@ -34,14 +34,11 @@ public class ConnectionDB {
      *  Default constructor
      * @throws SQLException sql error
      */
-    public ConnectionDB(final boolean theFillTable) throws SQLException {
+    public ConnectionDB() throws SQLException {
         monsterTable();
-
         heroTable();
-        if(le) {
-            fillTableM();
-            fillTableH();
-        }
+        fillTableM();
+        fillTableH();
     }
 
 

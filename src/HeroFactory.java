@@ -16,11 +16,8 @@ public class HeroFactory {
 
         Hero theHero = null;
 
-
-            
-
         try {
-            sql = new ConnectionDB(false);
+            sql = new ConnectionDB();
             //Default choice is Warrior
             theHero = sql.getHero("WARRIOR");
             theHero.setMyHealingPotion(5);
