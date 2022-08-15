@@ -11,7 +11,7 @@ public class MonsterFactory {
         Monster theMonster = null;
 
         try {
-            sql = new ConnectionDB();
+            sql = ConnectionDB.getInstance();
             //Default choice is Warrior
             theMonster = sql.getMonster("GREMLIN");
 

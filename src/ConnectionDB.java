@@ -29,17 +29,23 @@ public class ConnectionDB {
     private SQLiteDataSource myHeroes;
     private String myQueryH;
 
+    private static final ConnectionDB myConnectionDBInstance = new ConnectionDB();
 
     /**
      *  Default constructor
-     * @throws SQLException sql error
      */
-    public ConnectionDB() throws SQLException {
+    private ConnectionDB() {
         monsterTable();
         heroTable();
         fillTableM();
         fillTableH();
     }
+
+    public static ConnectionDB getInstance(){
+        return myConnectionDBInstance;
+    }
+
+
 
 
     // Makes the monster table

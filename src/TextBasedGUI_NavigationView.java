@@ -64,7 +64,7 @@ public class TextBasedGUI_NavigationView {
         repeatingPrompt.append("\n").append(parsePlayerInventory(theHero));
 
         //Start to append the map
-        repeatingPrompt.append("\nCurrent Location: \n");
+        repeatingPrompt.append("\nThe map: (P is the player current location)\n");
         repeatingPrompt.append(DungeonAdventure.getInstance().parseWorldMapWithVisibility());
 
         //Name of the direction

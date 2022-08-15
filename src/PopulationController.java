@@ -132,7 +132,7 @@ class PopulationController {
         for (int i = 0 ; i < myMonsterPool.size(); i++){
             //Has a 25% chance to spawn a vision buff here
             double rollTheDice = DungeonAdventure.RANDOM_SEED.nextDouble();
-            if (rollTheDice < 1) {
+            if (rollTheDice < 0.25) {
                 int[] coordinate = Room.convertIDtoCoordinate(randomRoomPool.get(i));
                 myMap[coordinate[0]][coordinate[1]].addRoomContent(new VisionBuff());
             }
