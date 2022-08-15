@@ -239,9 +239,9 @@ public class ConnectionDB {
 
         // Query the data
         myQueryH = "INSERT INTO myHeros (theName, theHit, theMin, theMax, theAttack, theCritChance, theBlock) " +
-                "VALUES ( 'Warrior', '680', '60', '80', '4', '0.5', '0.6'), " +
-                "('Priestess', '380', '20', '50', '5', '0.7', '0.2'), " +
-                "('Thief', '460', '15', '40', '4', '0.9', '0.4')";
+                "VALUES ( 'Warrior', '650', '30', '40', '3', '0.5', '0.6'), " +
+                "('Priestess', '350', '10', '25', '5', '0.7', '0.2'), " +
+                "('Thief', '400', '15', '30', '6', '0.9', '0.4')";
 
         try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement(); ) {
             int rv = stmt.executeUpdate(myQueryH);

@@ -1,5 +1,12 @@
 /**
- * this is the complete Priestess class that extends the Hero class
+ * T CSS 360 A: Software Development And Quality Assurance Techniques
+ * Summer 2022
+ * Professor Tom Capaul
+ */
+/**
+ * Priestess class controller that extends Hero class
+ * {@code @author:} Toan Nguyen, Justin Noel
+ * @version 08 14 2022
  */
 public class Priestess extends Hero{
 
@@ -17,22 +24,27 @@ public class Priestess extends Hero{
         super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
     }
 
-    @Override
-    protected boolean useHealingPotion() {
-        return super.useHealingPotion();
-    }
-
+    /**
+     * Apply super healing
+     * @return Return the amount heal
+     */
     @Override
     protected double specialSkill(DungeonCharacter theEnemy) {
         if (getMyMana() < 100){
             //Do nothing if we don't have enough mana
             return -1;
         }
+        //Will always heal at least 25% of maxHealth and maximum of 50% of maxHealth
+        double healProportion = DungeonAdventure.RANDOM_SEED.nextDouble(0.25) + 0.25;
 
-        double healAmount = super.getMyHitPoints()+(10 + (50-10) * DungeonCharacter.MY_RANDOM_SEED.nextDouble());
-        super.setMaxHitPoints(healAmount);
+        double healAmount = getMyMaxHitPoints() * healProportion;
+        double actualHealAmount = getMyHitPoints();
+        super.increaseHP(healAmount);
+
+        actualHealAmount = getMyHitPoints() - actualHealAmount;
+
         setMyMana(0);//Reset the mana to 0
-        return healAmount;
+        return actualHealAmount;
     }
 
 }
