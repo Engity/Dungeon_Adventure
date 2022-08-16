@@ -3,7 +3,11 @@ import org.junit.jupiter.api.Test;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Pillar Factory Test
+ * {@code @author:} Toan Nguyen, Thao Nguyen
+ * @version 08 14 2022
+ */
 class PillarFactoryTest {
     /**
      * Test method for {@link PillarFactory# createPillarOfAbstraction ()}.

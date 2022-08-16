@@ -1,7 +1,10 @@
-/**
- * This Monster class contains all additional instance methods the monster characters
- */
 
+/**
+ *
+ *  This Monster class contains all additional instance methods the monster characters
+ * {@code @author:} Toan Nguyen, Thao Nguyen
+ * @version 08 14 2022
+ */
 
 
 public class Monster extends DungeonCharacter{

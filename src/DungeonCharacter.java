@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * Warrior class controller that extends Hero class
- * {@code @author:} Toan Nguyen, Justin Noel
+ * {@code @author:} Toan Nguyen, Justin Noel, Thao Nguyen
  * @version 08 14 2022
  */
 

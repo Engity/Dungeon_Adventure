@@ -1,4 +1,9 @@
 import java.io.Serializable;
+/**
+ * Game object
+ * {@code @author:} Toan Nguyen, Thao Nguyen
+ * @version 08 14 2022
+ */
 public class GameObjects implements Serializable {
     private String myItemName;
 

@@ -1,10 +1,13 @@
 public class MonsterFactory {
+
     /**
      *
      * @param theChoice
      *          if 1 create the Gremlin,
      *          if 2 create the Skeleton,
      *          if 3 create the Ogre
+     * {@code @author:} Toan Nguyen, Thao Nguyen
+     *  @version 08 14 2022
      */
     public static Monster createMonster(final int theChoice) {
         ConnectionDB sql;

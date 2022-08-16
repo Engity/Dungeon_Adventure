@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 /**
  *
- * @author Justin Noel, Toan Nguyen
+ * @author Justin Noel, Toan Nguyen, Thao Nguyen
  *
  * Simple class to demonstrate SQLite connectivity
  * 1) create connection
