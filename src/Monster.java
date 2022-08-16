@@ -9,6 +9,8 @@ public class Monster extends DungeonCharacter{
     private int myMaximumHealTime;
     private int myHealTime;
 
+    private boolean myFrenzyStage;
+
     private int myOriginalDamageMin;
     private int myOriginalDamageMax;
 
@@ -32,6 +34,7 @@ public class Monster extends DungeonCharacter{
         myHealTime = 0;
         this.setChanceToHeal(theHealChance);
         myMaximumHealTime = theMaximumHealTime;
+        myFrenzyStage = false;
     }
     private void setChanceToHeal(final double theHealthChance) {
         this.myChanceToHeal = theHealthChance;
@@ -52,6 +55,16 @@ public class Monster extends DungeonCharacter{
     }
 
     /**
+     * activate frenzy Mode
+     * @param theIncreaseDamageProportion the proportion the damages are increased
+     */
+    void frenzyMode(double theIncreaseDamageProportion){
+        myFrenzyStage = true;
+        setDamageMax((int) (getDamageMax() * theIncreaseDamageProportion));
+        setDamageMin((int) (getDamageMin() * theIncreaseDamageProportion));
+    }
+
+    /**
      * Process what should the monster do in the fight
      * @param theEnemy the opponent it is fighting with
      * @return the choice
@@ -66,13 +79,18 @@ public class Monster extends DungeonCharacter{
         if (theEnemy.getHitPoints() < getDamageMin() * getAttackSpeed()){
             return 0;
         }
+
+        //Frenzy time (only activated when the monster has less than 50% Health
+        if (getHitPoints() < (0.5 * getMaxHitPoints()))
+            //Only activate frenzy once
+            if (!myFrenzyStage)
+                return 2;
+
         if (myHealTime < myMaximumHealTime &&
                 (getHitPoints() < (0.25 * getMaxHitPoints()))) {
             return 1;
         }
-        //Frenzy time (only activated when the monster has less than 50% Health
-        if (getHitPoints() < (0.5 * getMaxHitPoints()))
-            return 2;
+
         //Just attack
         return 0;
     }

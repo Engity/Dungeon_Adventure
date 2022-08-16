@@ -32,10 +32,6 @@ class VisionBuff extends GameObjects{
         myDuration = DEFAULT_VISION_DURATION;
     }
 
-    void increaseDuration(){
-        myDuration = Math.max(DEFAULT_VISION_DURATION, 1 + myDuration);
-    }
-
     boolean useVisionBuff(){
         if (myDuration > 0){
             myDuration--;

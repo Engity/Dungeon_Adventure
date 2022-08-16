@@ -3,7 +3,7 @@
  * Summer 2022
  * Professor Tom Capaul
  */
-import java.util.*;
+
 /**
  * Warrior class controller that extends Hero class
  * {@code @author:} Toan Nguyen, Justin Noel
@@ -37,7 +37,7 @@ public class Warrior extends Hero{
         double attackChance = DungeonAdventure.RANDOM_SEED.nextDouble();
 
         //Deal 1.5 x Max Damage to 3
-        mySpecialDamage = (1.5 + 1.5 * DungeonAdventure.RANDOM_SEED.nextDouble()) * getMyDamageMax();
+        mySpecialDamage = (1.5 + 1.5 * DungeonAdventure.RANDOM_SEED.nextDouble()) * getDamageMax();
 
         //Have 40% chance of succeed
         if(attackChance <= 0.4) {

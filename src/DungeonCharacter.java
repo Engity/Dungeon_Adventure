@@ -33,7 +33,6 @@ public class DungeonCharacter implements Serializable {
      * @param theName the name for the character
      * @param theMin the min damage
      * @param theMax the max damage
-     * @param theBlock the block speed
      */
     public DungeonCharacter(final String theName, final double theHit, final int theAttack,
                             final double theChance, final int theMin, final int theMax) {
@@ -122,7 +121,7 @@ public class DungeonCharacter implements Serializable {
         return myDamageMin;
     }
 
-    protected int getMyDamageMax() {
+    protected int getDamageMax() {
         return myDamageMax;
     }
 

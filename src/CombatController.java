@@ -15,7 +15,6 @@ import java.util.Scanner;
  */
 public class CombatController {
     private final TextBasedGUI_CombatView myCombatView;
-    private int myCurrentTurnAmount;
 
     private static DungeonAdventure myGameController;
 
@@ -23,7 +22,7 @@ public class CombatController {
         myGameController = theGameController;
     }
     private CombatController(){
-        myCurrentTurnAmount = 0;
+        int myCurrentTurnAmount = 0;
         myCombatView = TextBasedGUI_CombatView.getInstance();
     }
 
@@ -241,10 +240,10 @@ public class CombatController {
                 //Frenzy
                 case 2->{
                     message.append("\n- Low on health, the monster entered a frenzy stage, increasing its damage");
+
                     //Triple damage
-                    double increaseDamageProportion = 3;
-                    theMonster.setDamageMax((int) (theMonster.getMyDamageMax() * increaseDamageProportion));
-                    theMonster.setDamageMin((int) (theMonster.getDamageMin() * increaseDamageProportion));               }
+                    theMonster.frenzyMode(3);
+                }
             }
         }
 

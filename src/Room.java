@@ -25,27 +25,11 @@ public class Room implements Serializable {
 
     private Monster myGuardian;
 
-    //Default constructor, creating an empty room with no guardian
-    public Room(){
-        this(0);
-    }
-
     public Room(final int theID){
         myContents = new ArrayList<>();
         myAccessCode = 0;//Every door is closed
         myGuardian = null;
         id = theID;
-    }
-
-    /**
-     * Set @link Room#myAccessCode
-     * @param theNewAccessCode new data for {@link Room#myAccessCode}
-     */
-    void setAccessCode(final byte theNewAccessCode){
-        byte mask = 0xf;//15 in Dec, 0000 1111 in Bin
-
-        //Override the last 4 bits
-        myAccessCode &= theNewAccessCode & mask;
     }
 
     /**

@@ -10,7 +10,6 @@
  */
 public class PillarFactory {
     /**
-     *
      * @param theChoice if 1 create the pillar abstraction, if 2 create the pillar encapsulation, if 3 create the pillar inheritance, if 4 create the pillar Polymorphism
      */
     public static Pillar createPillar (final int theChoice) {
@@ -27,12 +26,6 @@ public class PillarFactory {
 
     }//end createPillar()
 
-
-
-    /**
-     *
-     * @return
-     */
     private static Pillar createPillarOfAbstraction() {
 
         return new Pillar("Abstraction","This item is 1 in 4 object you need to collect");

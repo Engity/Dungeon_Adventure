@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *  @version 08 14 2022
  */
 
-public class monsterCombatTest {
+public class MonsterCombatTest {
     private Monster myMonster;
     private Hero myHero;
 
@@ -113,6 +113,19 @@ public class monsterCombatTest {
         int combatChoice = myMonster.combatChoice(myHero);
         //The monster will choose to go crazy
         assertEquals(2, combatChoice);
+        double beforeFrenzyMinDamage = myMonster.getDamageMin();
+        double beforeFrenzyMaxDamage = myMonster.getDamageMax();
+
+        double damageProportion = 3;
+        myMonster.frenzyMode(3);
+        assertEquals(damageProportion * beforeFrenzyMinDamage, myMonster.getDamageMin());
+        assertEquals(damageProportion * beforeFrenzyMaxDamage, myMonster.getDamageMax());
+
+
+        //Ask again
+        combatChoice = myMonster.combatChoice(myHero);
+        //The monster will choose heal or attack
+        assertEquals(0, combatChoice);
     }
 
     /**
@@ -145,5 +158,6 @@ public class monsterCombatTest {
         //The monster will choose to go crazy
         assertEquals(2, combatChoice);
     }
+
 }
 
