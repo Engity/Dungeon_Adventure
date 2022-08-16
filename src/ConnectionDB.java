@@ -70,7 +70,7 @@ public class ConnectionDB {
         //Drop the table if it has existed and create it again
         myQueryM = "DROP TABLE IF EXISTS myMonsters";
 
-        try(Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try(Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement()) {
 
             int rv = stmt.executeUpdate(myQueryM);
 
@@ -88,7 +88,7 @@ public class ConnectionDB {
                 "HIT_CHANCE TEXT NOT NULL, " +
                 "HEAL_CHANCE TEXT NOT NULL, " +
                 "MAX_HEAL_TIME TEXT NOT NULL)";
-        try(Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try(Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement()) {
 
             int rv = stmt.executeUpdate(myQueryM);
 
@@ -112,7 +112,7 @@ public class ConnectionDB {
                     "('Skeleton', '110','35', '45', '3', '0.8', '0.4', '2'), " +
                     "('Gremlin', '80','10', '25', '5', '0.8', '0.2', '4')";
 
-        try (Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try (Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement()) {
             int rv = stmt.executeUpdate(myQueryM);
         } catch ( SQLException e ) {
             e.printStackTrace();
@@ -149,7 +149,7 @@ public class ConnectionDB {
 
         }
 
-        try (Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try (Connection conn = myMonsters.getConnection(); Statement stmt = conn.createStatement()) {
 
             ResultSet rs = stmt.executeQuery(query);
 
@@ -194,7 +194,7 @@ public class ConnectionDB {
         myQueryH = "DROP TABLE IF EXISTS myHeros";
 
         try(Connection conn = myHeroes.getConnection();
-            Statement stmt = conn.createStatement(); ) {
+            Statement stmt = conn.createStatement()) {
 
             int rv = stmt.executeUpdate(myQueryH);
 
@@ -212,7 +212,7 @@ public class ConnectionDB {
                 "theBlock TEXT NOT NULL) ";
 
         try(Connection conn = myHeroes.getConnection();
-            Statement stmt = conn.createStatement(); ) {
+            Statement stmt = conn.createStatement()) {
 
             int rv = stmt.executeUpdate(myQueryH);
 
@@ -231,11 +231,11 @@ public class ConnectionDB {
 
         // Query the data
         myQueryH = "INSERT INTO myHeros (theName, theHit, theMin, theMax, theAttack, theCritChance, theBlock) " +
-                "VALUES ( 'Warrior', '650', '30', '40', '3', '0.5', '0.6'), " +
-                "('Priestess', '350', '10', '25', '4', '0.7', '0.2'), " +
-                "('Thief', '400', '15', '30', '5', '0.9', '0.4')";
+                "VALUES ( 'Warrior', '650', '30', '40', '3', '0.5', '0.3'), " +
+                "('Priestess', '350', '10', '25', '4', '0.7', '0.15'), " +
+                "('Thief', '400', '15', '30', '5', '0.9', '0.25')";
 
-        try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement()) {
             int rv = stmt.executeUpdate(myQueryH);
         } catch ( SQLException e ) {
             e.printStackTrace();
@@ -272,7 +272,7 @@ public class ConnectionDB {
 
         }
 
-        try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement(); ) {
+        try (Connection conn = myHeroes.getConnection(); Statement stmt = conn.createStatement()) {
 
             ResultSet rs = stmt.executeQuery(query);
 
@@ -295,11 +295,8 @@ public class ConnectionDB {
                     hero = new Thief (theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
                     break;
                 default:
-                    hero = new Thief(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);;
+                    hero = new Thief(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
             }
-
-
-
         } catch ( SQLException e ) {
             e.printStackTrace();
             System.exit( 0 );

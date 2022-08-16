@@ -33,7 +33,7 @@ public abstract class Hero extends DungeonCharacter{
     protected Hero(final double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final Double theBlock, final Double theChance) {
         super(theName, theHit, theAttack, theChance, theMin, theMax);
         setBlockChance(theBlock);
-        setMyMana(100);
+        setMyMana(50);
         myHealingPotion = 5;
         myPillarStorage = new HashSet<>();
         myHealByPotionAmount = theHit / 2;//50%
