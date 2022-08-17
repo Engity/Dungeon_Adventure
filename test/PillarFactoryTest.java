@@ -2,6 +2,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
+/**
+ * T CSS 360 A: Software Development And Quality Assurance Techniques
+ * Summer 2022
+ * Professor Tom Capaul
+ */
 import static org.junit.jupiter.api.Assertions.*;
 /**
  * Pillar Factory Test

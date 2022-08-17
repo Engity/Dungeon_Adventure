@@ -1,6 +1,10 @@
+/**
+ * T CSS 360 A: Software Development And Quality Assurance Techniques
+ * Summer 2022
+ * Professor Tom Capaul
+ */
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-
 import java.util.Objects;
 
 

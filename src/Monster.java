@@ -1,4 +1,8 @@
-
+/**
+ * T CSS 360 A: Software Development And Quality Assurance Techniques
+ * Summer 2022
+ * Professor Tom Capaul
+ */
 /**
  *
  *  This Monster class contains all additional instance methods the monster characters
