@@ -8,6 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Scanner;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -157,6 +161,36 @@ public class MonsterCombatTest {
         int combatChoice = myMonster.combatChoice(myHero);
         //The monster will choose to go crazy
         assertEquals(2, combatChoice);
+    }
+
+    /**
+     * Test method for {@link Monster#combatChoice(DungeonCharacter)}
+     * Test to see whether the monster choose to heal rather than destroy the player on low health
+     * With UI
+     */
+    @Test
+    void testCombatDecision_HeroLowHealth_WithUI() {
+        //Reduce the monster to low health
+        myMonster.applyTrueDamage(0.75 * myMonster.getMaxHitPoints());
+        myMonster.setMyHealTime(1);
+        //Reduce hero to low health
+        myHero.applyTrueDamage(0.9 * myHero.getMaxHitPoints());
+
+        //Replace inputStream with a string to simulate user input
+        InputStream stdin = System.in;
+
+        System.setIn(new ByteArrayInputStream("1".getBytes()));
+
+        //Start the stimulation for combat
+        int combatChoice = myMonster.combatChoice(myHero);
+        //The monster will choose to maul the hero
+        assertEquals(0, combatChoice);
+
+        CombatController.getInstance().fighting(myHero, myMonster);
+        assertTrue(myHero.isDead());
+
+        //Restore System.in
+        System.setIn(stdin);
     }
 
 }
