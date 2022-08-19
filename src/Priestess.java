@@ -19,7 +19,7 @@ public class Priestess extends Hero{
      * @param theMax the max damage
      * @param theBlock the block speed
      */
-    public Priestess(Double theHit, int theAttack, String theName, int theMin, int theMax, Double theBlock, double theCritChance) {
+    public Priestess(final Double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final Double theBlock, final double theCritChance) {
         super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
     }
 
@@ -28,7 +28,7 @@ public class Priestess extends Hero{
      * @return Return the amount heal
      */
     @Override
-    protected double specialSkill(DungeonCharacter theEnemy) {
+    protected double specialSkill(final DungeonCharacter theEnemy) {
         if (getMyMana() < 100){
             //Do nothing if we don't have enough mana
             return -1;

@@ -19,7 +19,7 @@ public class Thief extends Hero{
      * @param theMax the max damage
      * @param theBlock the block speed
      */
-    public Thief(Double theHit, int theAttack, String theName, int theMin, int theMax, Double theBlock, double theCritChance) {
+    public Thief(final Double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final Double theBlock, final double theCritChance) {
         super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
     }
 

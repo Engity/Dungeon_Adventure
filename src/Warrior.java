@@ -22,7 +22,7 @@ public class Warrior extends Hero{
      * @param theMax the max damage
      * @param theBlock the block speed
      */
-    public Warrior(Double theHit, int theAttack, String theName, int theMin, int theMax, Double theBlock, double theCritChance) {
+    public Warrior(final Double theHit, final int theAttack, final String theName, final int theMin, final int theMax, final Double theBlock, final double theCritChance) {
         super(theHit, theAttack, theName, theMin, theMax, theBlock, theCritChance);
         mySpecialDamage = 0;
     }
